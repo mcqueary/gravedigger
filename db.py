@@ -1,5 +1,5 @@
 
-import sys
+#import sys
 import sqlite3 as sql
 
 def makeGraveDatabase():
@@ -30,18 +30,18 @@ def addRowToDatabase(grave):
         c.executemany(insert, [row])
         conn.commit()
         conn.close()
-    except:
-        print('Memorial #' + grave['id'] + ' is already in database.')
+    except Exception as e:
+        print('Memorial #' + grave['id'] + ' is already in database. (' + e +')')
 
 def extractBirth(grave, str):
     try:
-        if 'Birthplace' in str:
+        if 'birthPlace' in str:
             grave.update({'birth': str.split('\n')[0]})
             grave.update({'birthplace': str.split('\n')[1].replace('Birthplace: ', '')})
         else:
             grave.update({'birth': str})
-    except:
-        print('error:', sys.exc_info())
+    except Exception as e:
+        print('error:', e)
 
 def extractDeath(grave, str):
     if 'Death place:' in str:
@@ -49,3 +49,16 @@ def extractDeath(grave, str):
         grave['deathplace'] = str.split('\n')[1].replace('Death place: ', '')
     else:
         grave['death'] = str
+
+def  addRowToOutputFile(file_handle, grave):
+    try:
+        row = grave['id'] + '\t'
+        row += grave['name'] + '\t'
+        row += grave['birth'] + '\t'
+        row += grave['birthplace'] + '\t'
+        row += grave['death'] + '\t'
+        row += grave['deathplace'] + '\t'
+        row+='\n'
+        file_handle.write(row)
+    except Exception as e:
+        print('Exception encountered when writing row to file:', e)

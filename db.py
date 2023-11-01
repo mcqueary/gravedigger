@@ -1,9 +1,10 @@
 
 #import sys
+import logging as log
 import sqlite3 as sql
 
-def makeGraveDatabase():
-    conn = sql.connect('graves.db')
+def makeGraveDatabase(filename):
+    conn = sql.connect(filename)
     c = conn.cursor()
     c.execute('''CREATE TABLE findAGrave
         (graveid INTEGER PRIMARY KEY, url TEXT,
@@ -11,7 +12,7 @@ def makeGraveDatabase():
          burial TEXT, plot TEXT, more_info BOOL)''')
     conn.close()
 
-def addRowToDatabase(grave):
+def addRowToDatabase(filename, grave):
     row = (grave['id'],)
     keys = ['graveid']
     for key in grave.keys():
@@ -25,13 +26,15 @@ def addRowToDatabase(grave):
     insert = 'INSERT INTO findAGrave ' + col_names + ' VALUES ' + value_hold
 
     try:
-        conn = sql.connect('graves.db')
+        conn = sql.connect(filename)
         c = conn.cursor()
         c.executemany(insert, [row])
         conn.commit()
         conn.close()
+    except sql.IntegrityError:
+        log.warn('Memorial #' + grave['id'] + ' is already in database.')
     except Exception as e:
-        print('Memorial #' + grave['id'] + ' is already in database. (' + e +')')
+        log.exception(e)
 
 def extractBirth(grave, str):
     try:
@@ -41,7 +44,7 @@ def extractBirth(grave, str):
         else:
             grave.update({'birth': str})
     except Exception as e:
-        print('error:', e)
+        log.exception('error:', e)
 
 def extractDeath(grave, str):
     if 'Death place:' in str:
@@ -50,15 +53,29 @@ def extractDeath(grave, str):
     else:
         grave['death'] = str
 
-def  addRowToOutputFile(file_handle, grave):
+def  addRowToOutputFile(file, grave):
     try:
-        row = grave['id'] + '\t'
-        row += grave['name'] + '\t'
-        row += grave['birth'] + '\t'
-        row += grave['birthplace'] + '\t'
-        row += grave['death'] + '\t'
-        row += grave['deathplace'] + '\t'
+        row = grave['id']
+        row += '\t'
+
+        row += grave['name']
+        row += '\t'
+
+        if grave['birth'] is not None:
+            row += grave['birth']
+        row += '\t'
+
+        if grave['birthplace'] is not None:
+            row += grave['birthplace']
+        row += '\t'
+
+        if grave['death'] is not None:
+            row += grave['death']
+        row += '\t'
+
+        if grave['deathplace'] is not None:
+            row += grave['deathplace']
         row+='\n'
-        file_handle.write(row)
+        file.write(row)
     except Exception as e:
-        print('Exception encountered when writing row to file:', e)
+        log.exception('Exception encountered when writing row to file:', e)

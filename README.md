@@ -1,4 +1,4 @@
-# scrape-a-grave
+# gravedigger
 
 >  Scrape and Retrieve [FindAGrave](http://findagrave.com) memorial page data and save them to an SQL database.
 
@@ -17,7 +17,7 @@ $ pip3 install bs4
 ## Usage
 Download these files and change the contents of input text to be a list of FindAGrave ids, or FindAGrave urls. Then run
 ```sh
-$ python3 getgraveids.py
+$ python3 gravedigger.py
 ```
 
 The citations will be printed to the console and saved in an SQL database named `graves.db`.
@@ -29,4 +29,4 @@ It is also possible to **read links from a GEDCOM** by un-highlighting the ["rea
 
 This is intended as a convenient tool for personal genealogy research. Please be aware of FindAGrave's [Terms of Service](https://secure.findagrave.com/terms.html).
 
-MIT © [Robert Pirtle](https://pirtle.xyz)
+MIT © [Larry McQueary](https://github.com/mcqueary), [Robert Pirtle](https://pirtle.xyz)

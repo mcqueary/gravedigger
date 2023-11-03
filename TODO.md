@@ -4,14 +4,20 @@ The mission of gravedigger is to provide a simple but flexible commmand line too
 
 ### Todo
 
-- [ ] Use csv package instead of manual formatting ~1d #feat @mcqueary 2024-03-20  
-- [ ] Fix the homepage ~1d #bug @jane  
-  - [ ] Sub-task or description  
+- [ ] Add test cases  
+- [ ] Refactor I/O functions  
+- [ ] Add support for sqlite UPSERT  
+- [ ] Accept IDs from stdin ~1d #feat @mcqueary  
+  - [ ] One per line  
+  - [ ] Whitespace-delimited  
 
 ### In Progress
 
-- [ ] Work on Github Repo
+- [ ] Overhaul README ~1d #feat @mcqueary  
+- [ ] Work on Github Repo  
 
 ### Done ✓
 
+- [x] Use csv package instead of manual formatting ~1d #feat @mcqueary 2024-03-20  
 - [x] Create TODO.md  
+

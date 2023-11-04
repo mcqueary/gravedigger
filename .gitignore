@@ -1,4 +1,7 @@
 __pycache__/
-tree.ged
+.DS_Store
+*.ged
 *.db
 *.csv
+.venv
+.coverage

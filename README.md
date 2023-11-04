@@ -9,9 +9,9 @@
 
 ## Requirements
 
-You are expected to have [Python3](https://www.python.org/downloads/). It also requires the BeautifulSoup package, downloadable through pip:
+You are expected to have [Python3](https://www.python.org/downloads/). The main requirement is the BeautifulSoup, but in case more are added in future, please install from the requirements.txt to be sure you have everything:
 ```sh
-$ pip3 install bs4
+$ pip install -r requirements.txt
 ```
 
 ## Usage

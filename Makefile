@@ -3,7 +3,7 @@
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
 mkfile_path := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-PYTHONPATH:=$(mkfile_path)src:$(PYTHONPATH)
+PYTHONPATH:=$(mkfile_path)graver:$(PYTHONPATH)
 export PYTHONPATH
 
 VENV?=.venv

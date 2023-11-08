@@ -1,14 +1,13 @@
-# import pytest
 from bs4 import BeautifulSoup
+
 from soup import (
-    get_name,
     get_birth_date,
     get_birth_place,
+    get_burial_plot,
     get_death_date,
     get_death_place,
-    get_burial_plot,
+    get_name,
 )
-
 
 soup = BeautifulSoup(open("./tests/asimov.html"), "lxml")
 

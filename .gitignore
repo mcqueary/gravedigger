@@ -5,3 +5,5 @@ __pycache__/
 *.csv
 .venv
 .coverage
+.vscode/
+bandit.yml

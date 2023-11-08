@@ -1,5 +1,5 @@
 import pytest
-from gravedigger import findagravecitation, main
+from graver import findagravecitation, main
 
 
 def test_always_passes():

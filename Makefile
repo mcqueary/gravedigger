@@ -20,13 +20,13 @@ test: ## run pytest
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
 
 lint: ## run flake8 to check the code
-	. $(VENV)/bin/activate && flake8 --max-line-length 88 src tests
+	. $(VENV)/bin/activate && flake8 --max-line-length 88 graver tests
 
 install-editable:
 	. $(VENV)/bin/activate && pip install -e .
 
 fmt: ## run black to format the code
-	. $(VENV)/bin/activate && black -q --line-length 88 src tests
+	. $(VENV)/bin/activate && black -q --line-length 88 graver tests
 
 $(VENV)/init: ## init the virtual environment
 	python3 -m venv $(VENV)

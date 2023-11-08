@@ -6,4 +6,5 @@ __pycache__/
 .venv
 .coverage
 .vscode/
-bandit.yml
+.trunk/
+bandit.yaml

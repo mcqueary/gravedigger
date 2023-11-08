@@ -14,7 +14,8 @@ def get_soup(url):
             soup = BeautifulSoup(response.read(), "lxml")
         except urllib.error.HTTPError as err:
             log.exception(
-                f"An HTTPError was thrown when reading id {url}: {err.code} {err.reason}"
+                "An HTTPError was thrown when reading id "
+                f"{url}: {err.code} {err.reason}"
             )
             raise
         except Exception as e:

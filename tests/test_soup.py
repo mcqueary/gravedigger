@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from soup import (
+from graver.soup import (
     get_birth_date,
     get_birth_place,
     get_burial_plot,

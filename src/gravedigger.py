@@ -8,13 +8,13 @@ import sys
 # import sqlite3 as sql
 from db import add_row_to_database, make_grave_database
 from soup import (
-    get_soup,
-    get_name,
     get_birth_date,
     get_birth_place,
+    get_burial_plot,
     get_death_date,
     get_death_place,
-    get_burial_plot,
+    get_name,
+    get_soup,
 )
 
 # Constants

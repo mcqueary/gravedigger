@@ -3,6 +3,7 @@ __pycache__/
 *.ged
 *.db
 *.csv
+.bandit
 .env
 .venv
 .coverage

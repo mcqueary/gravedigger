@@ -1,4 +1,4 @@
-# gravedigger
+# graver
 
 >  Scrape and Retrieve [FindAGrave](http://findagrave.com) memorial page data and save them to an SQL database.
 
@@ -17,7 +17,7 @@ $ pip install -r requirements.txt
 ## Usage
 Download these files and change the contents of input text to be a list of FindAGrave ids, or FindAGrave urls. Then run
 ```sh
-$ python3 gravedigger.py
+$ python3 graver.py
 ```
 
 The citations will be printed to the console and saved in an SQL database named `graves.db`.

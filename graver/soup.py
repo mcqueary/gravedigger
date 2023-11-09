@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 
 def get_soup(url):
     req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    # trunk-ignore(bandit/B310)
     with urlopen(req) as response:
         try:
-            # trunk-ignore(bandit/B310)
             soup = BeautifulSoup(response.read(), "lxml")
         except urllib.error.HTTPError as err:
             log.exception(

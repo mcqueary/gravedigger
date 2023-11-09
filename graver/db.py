@@ -3,18 +3,6 @@ import logging as log
 import sqlite3 as sql
 
 
-def make_grave_database(filename):
-    conn = sql.connect(filename)
-    c = conn.cursor()
-    c.execute(
-        """CREATE TABLE findAGrave
-        (graveid INTEGER PRIMARY KEY, url TEXT,
-         name TEXT, birth TEXT, birthplace TEXT, death TEXT, deathplace TEXT,
-         burial TEXT, plot TEXT, more_info BOOL)"""
-    )
-    conn.close()
-
-
 def add_row_to_database(filename, grave):
     row = (grave["id"],)
     keys = ["graveid"]

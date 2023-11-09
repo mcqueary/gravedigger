@@ -3,6 +3,7 @@ __pycache__/
 *.ged
 *.db
 *.csv
+.env
 .venv
 .coverage
 .vscode/

@@ -1,12 +1,13 @@
 import argparse
 import csv
 import logging as log
-import os.path
+import os
 import re
 import sys
 
 # import sqlite3 as sql
-from db import add_row_to_database, make_grave_database
+from db import add_row_to_database
+from models import Grave
 from soup import (
     get_birth_date,
     get_birth_place,
@@ -146,8 +147,7 @@ def main(args=None):
         else:
             db_file_name = DEFAULT_DB_FILE_NAME
 
-    if not os.path.exists(db_file_name):
-        make_grave_database(db_file_name)
+    Grave.create_table(db_file_name)
 
     # # read from gedcom
     # with open('tree.ged', encoding='utf8') as ged:
@@ -179,7 +179,19 @@ def main(args=None):
             grave = findagravecitation(gid)
             # Optionally write grave to the specified database
             if db_file_name is not None:
+                os.environ["DATABASE_NAME"] = db_file_name
                 add_row_to_database(db_file_name, grave)
+            Grave(
+                id=grave["id"],
+                name=grave["name"],
+                birth=grave["birth"],
+                birthplace=grave["birthplace"],
+                death=grave["death"],
+                deathplace=grave["deathplace"],
+                burial=grave["burial"],
+                plot=grave["plot"],
+                more_info=grave["more_info"],
+            ).save()
 
             # Optionally write grave to CSV file
             if csvwriter is not None:

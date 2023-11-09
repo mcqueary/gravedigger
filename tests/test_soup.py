@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from soup import (
+from graver.soup import (
     get_birth_date,
     get_birth_place,
     get_burial_plot,
@@ -8,11 +8,11 @@ from soup import (
     get_name,
 )
 
-soup = BeautifulSoup(open("./tests/asimov.html"), "lxml")
+soup = BeautifulSoup(open("./tests/unit/asimov.html"), "lxml")
 
 
 def test_get_name():
-    # soup = BeautifulSoup(open("./tests/asimov.html"))
+    # soup = BeautifulSoup(open("./tests/unit/asimov.html"))
     name = get_name(soup)
     assert name == "Isaac Asimov"
 

@@ -106,7 +106,7 @@ def test_memorial():
 
 def test_memorial_save():
     Memorial.create_table()
-    memorial = Memorial(
+    expected = Memorial(
         id=10101,
         url="http://www.findagrave.com/memorial/12345/",
         name="John Smith",
@@ -118,4 +118,22 @@ def test_memorial_save():
         plot="Garden of Memory, C1, Plot 54",
         more_info=False,
     ).save()
-    assert memorial is not None
+    assert expected is not None
+
+
+def test_memorial_get_by_id():
+    Memorial.create_table()
+    expected = Memorial(
+        id=10101,
+        url="http://www.findagrave.com/memorial/12345/",
+        name="John Smith",
+        birth="01 Jan 1959",
+        birthplace="Kansas City, Jackson, Missouri, USA",
+        death="20 Oct 1999",
+        deathplace="Reno, Washoe, Nevada, USA",
+        burial="Reno, Washoe, Nevada, USA",
+        plot="Garden of Memory, C1, Plot 54",
+        more_info=False,
+    ).save()
+    result = Memorial.get_by_id(10101)
+    assert result == expected

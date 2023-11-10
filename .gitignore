@@ -3,6 +3,7 @@ __pycache__/
 *.ged
 *.db
 *.csv
+*.egg-info
 .bandit
 .env
 .venv

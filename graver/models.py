@@ -1,13 +1,10 @@
 import os
 import re
+import sqlite3
 from enum import Enum
 from urllib.request import Request, urlopen
-from bs4 import BeautifulSoup
-import sqlite3
 
-# from bs4 import BeautifulSoup
-# from pydantic import BaseModel
-# from typing import dataclass
+from bs4 import BeautifulSoup
 
 from .soup import (
     get_birth_date,
@@ -18,11 +15,19 @@ from .soup import (
     get_name,
 )
 
+# from bs4 import BeautifulSoup
+# from pydantic import BaseModel
+# from typing import dataclass
+
 
 class PageType(Enum):
     MEMORIAL = 1
     CEMETERY = 2
     LIST = 3
+
+
+class NotFound(Exception):
+    pass
 
 
 class Page(object):
@@ -33,6 +38,11 @@ class Page(object):
 
     def __init__(self, url):
         self._url = url
+
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
+        return self.__dict__ == other.__dict__
 
     @property
     def url(self):
@@ -100,6 +110,61 @@ class Memorial:
     @property
     def url(self):
         return self._url
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def birth(self):
+        return self._birth
+
+    @property
+    def birthplace(self):
+        return self._birthplace
+
+    @property
+    def death(self):
+        return self._death
+
+    @property
+    def deathplace(self):
+        return self._deathplace
+
+    @property
+    def burial(self):
+        return self._burial
+
+    @property
+    def plot(self):
+        return self._plot
+
+    @property
+    def more_info(self):
+        return self._more_info
+
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
+        return self.__dict__ == other.__dict__
+
+    @classmethod
+    def get_by_id(cls, grave_id: int):
+        con = sqlite3.connect(os.getenv("DATABASE_NAME", "graver.db"))
+        con.row_factory = sqlite3.Row
+
+        cur = con.cursor()
+        cur.execute("SELECT * FROM graves WHERE id=?", (grave_id,))
+
+        record = cur.fetchone()
+
+        if record is None:
+            raise NotFound
+
+        article = cls(**record)  # Row can be unpacked as dict
+        con.close()
+
+        return article
 
     @staticmethod
     def instance_from_soup(id, tree):

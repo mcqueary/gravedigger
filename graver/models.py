@@ -1,7 +1,14 @@
 import os
+import re
+from enum import Enum
+from urllib.request import Request, urlopen
+from bs4 import BeautifulSoup
 import sqlite3
 
-from pydantic import BaseModel
+# from bs4 import BeautifulSoup
+# from pydantic import BaseModel
+# from typing import dataclass
+
 from .soup import (
     get_birth_date,
     get_birth_place,
@@ -9,11 +16,72 @@ from .soup import (
     get_death_date,
     get_death_place,
     get_name,
-    get_soup,
 )
 
 
-class Grave(BaseModel):
+class PageType(Enum):
+    MEMORIAL = 1
+    CEMETERY = 2
+    LIST = 3
+
+
+class Page(object):
+    _url: str = None
+    _type: PageType = None
+    _html: bytes
+    _soup: BeautifulSoup = None
+
+    def __init__(self, url):
+        self._url = url
+
+    @property
+    def url(self):
+        return self._url
+
+    @property
+    def type(self):
+        if self._type is None:
+            if (
+                re.match(
+                    "^https://www.findagrave.com/cemetery/[0-9]+/memorial-search.*$",
+                    self._url,
+                )
+                is not None
+            ):
+                self._type = PageType.LIST
+            elif (
+                re.match("^https://www.findagrave.com/memorial/[0-9]+.*$", self._url)
+                is not None
+            ):
+                self._type = PageType.MEMORIAL
+            elif (
+                re.match("^https://www.findagrave.com/cemetery/[0-9]+.*$", self._url)
+                is not None
+            ):
+                self._type = PageType.CEMETERY
+
+        return self._type
+
+    @property
+    def html(self):
+        if self._html is None:
+            req = Request(self._url, headers={"User-Agent": "Mozilla/5.0"})
+            with urlopen(req) as response:
+                self._html = response.read()
+            with urlopen(req) as response:
+                self._html = BeautifulSoup(response.read(), "lxml")
+        return self._html
+
+    @property
+    def soup(self):
+        if self._soup is None:
+            if self._html is not None:
+                self._soup = BeautifulSoup(self._html, "lxml")
+        return self._soup
+
+
+# class Memorial(BaseModel):
+class Memorial:
     _id: int
     _url: str
     _name: str
@@ -25,7 +93,15 @@ class Grave(BaseModel):
     _plot: str
     _more_info: bool
 
-    @classmethod
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def url(self):
+        return self._url
+
+    @staticmethod
     def instance_from_soup(id, tree):
         url = "https://www.findagrave.com/memorial/" + str(id)
         name = get_name(tree)
@@ -35,38 +111,51 @@ class Grave(BaseModel):
         deathplace = get_death_place(tree)
         plot = get_burial_plot(tree)
         more_info = False
-        return Grave(
+        return Memorial(
             id, url, name, birth, birthplace, death, deathplace, plot, more_info
         )
 
     @classmethod
-    def create_table(cls, database_name="graver.db"):
+    def create_table(cls, database_name="graves.db"):
         conn = sqlite3.connect(database_name)
         conn.execute(
             """CREATE TABLE IF NOT EXISTS graves
-            (graveid INTEGER PRIMARY KEY, url TEXT,
+            (id INTEGER PRIMARY KEY, url TEXT,
             name TEXT, birth TEXT, birthplace TEXT, death TEXT, deathplace TEXT,
             burial TEXT, plot TEXT, more_info BOOL)"""
         )
         conn.close()
 
-    def __init__(self, url):
+    def __init__(
+        self,
+        id,
+        url,
+        name,
+        birth,
+        birthplace,
+        death,
+        deathplace,
+        burial,
+        plot,
+        more_info,
+    ):
+        self._id = id
         self._url = url
-        tree = get_soup(url)
-        self._name = get_name(tree)
-        self._birth = get_birth_date(tree)
-        self._birthplace = get_birth_place(tree)
-        self._death = get_death_date(tree)
-        self._deathplace = get_death_place(tree)
-        self._plot = get_burial_plot(tree)
-        self._more_info = False
-        return self
+        self._name = name
+        self._birth = birth
+        self._birthplace = birthplace
+        self._death = death
+        self._deathplace = deathplace
+        self._burial = burial
+        self._plot = plot
+        self._more_info = more_info
 
-    def save(self) -> "Grave":
+    def save(self) -> "Memorial":
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:
             con.cursor().execute(
-                "INSERT INTO graves (id,author,title,content) VALUES"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO graves (id,url,name,birth,birthplace,death,"
+                + "deathplace,burial,plot,more_info) VALUES"
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
                     self._id,
                     self._url,

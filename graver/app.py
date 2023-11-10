@@ -6,7 +6,7 @@ import re
 import sys
 
 # import sqlite3 as sql
-from .models import Grave
+from .models import Memorial
 from .soup import (
     get_birth_date,
     get_birth_place,
@@ -75,7 +75,7 @@ parser.add_argument(
 )
 
 
-def findagravecitation(graveid):
+def scrape_grave(graveid):
     grave = {}
     grave["id"] = graveid
 
@@ -146,7 +146,7 @@ def main(args=None):
         else:
             db_file_name = DEFAULT_DB_FILE_NAME
 
-    Grave.create_table(db_file_name)
+    Memorial.create_table(db_file_name)
 
     # # read from gedcom
     # with open('tree.ged', encoding='utf8') as ged:
@@ -175,12 +175,12 @@ def main(args=None):
     failedids = []
     for gid in graveids:
         try:
-            grave = findagravecitation(gid)
+            grave = scrape_grave(gid)
             # Optionally write grave to the specified database
             if db_file_name is not None:
                 os.environ["DATABASE_NAME"] = db_file_name
                 # add_row_to_database(db_file_name, grave)
-                Grave(
+                Memorial(
                     id=grave["id"],
                     name=grave["name"],
                     birth=grave["birth"],

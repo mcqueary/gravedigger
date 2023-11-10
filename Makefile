@@ -1,4 +1,4 @@
-.PHONY: test help fmt install-editable lint git-setup clean
+.PHONY: test run help fmt install-editable lint git-setup clean
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
@@ -14,6 +14,9 @@ help: ## list targets with short description
 
 cov: ## run pytest coverage report
 	. $(VENV)/bin/activate && pytest --cov=gravedigger tests/ --cov=soup tests/ --cov=db tests/
+
+run: ## sample run
+	. $(VENV)/bin/activate && $(PY) graver/app.py -i input.txt
 
 test: ## run pytest
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO

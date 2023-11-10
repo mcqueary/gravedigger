@@ -106,34 +106,36 @@ def test_memorial():
 
 def test_memorial_save():
     Memorial.create_table()
+
     expected = Memorial(
-        id=10101,
-        url="http://www.findagrave.com/memorial/12345/",
-        name="John Smith",
-        birth="01 Jan 1959",
-        birthplace="Kansas City, Jackson, Missouri, USA",
-        death="20 Oct 1999",
-        deathplace="Reno, Washoe, Nevada, USA",
-        burial="Reno, Washoe, Nevada, USA",
-        plot="Garden of Memory, C1, Plot 54",
-        more_info=False,
+        10101,
+        "http://www.findagrave.com/memorial/12345/",
+        "John Smith",
+        "01 Jan 1959",
+        "Kansas City, Jackson, Missouri, USA",
+        "20 Oct 1999",
+        "Reno, Washoe, Nevada, USA",
+        "Reno, Washoe, Nevada, USA",
+        "Garden of Memory, C1, Plot 54",
+        False,
     ).save()
+
     assert expected is not None
 
 
 def test_memorial_get_by_id():
     Memorial.create_table()
     expected = Memorial(
-        id=10101,
-        url="http://www.findagrave.com/memorial/12345/",
-        name="John Smith",
-        birth="01 Jan 1959",
-        birthplace="Kansas City, Jackson, Missouri, USA",
-        death="20 Oct 1999",
-        deathplace="Reno, Washoe, Nevada, USA",
-        burial="Reno, Washoe, Nevada, USA",
-        plot="Garden of Memory, C1, Plot 54",
-        more_info=False,
+        10101,
+        "http://www.findagrave.com/memorial/12345/",
+        "John Smith",
+        "01 Jan 1959",
+        "Kansas City, Jackson, Missouri, USA",
+        "20 Oct 1999",
+        "Reno, Washoe, Nevada, USA",
+        "Reno, Washoe, Nevada, USA",
+        "Garden of Memory, C1, Plot 54",
+        False,
     ).save()
     result = Memorial.get_by_id(10101)
     assert result == expected

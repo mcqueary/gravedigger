@@ -6,8 +6,8 @@ import re
 import sys
 
 # import sqlite3 as sql
-from .models import Memorial
-from .soup import (
+from graver.models import Memorial
+from graver.soup import (
     get_birth_date,
     get_birth_place,
     get_burial_plot,
@@ -179,18 +179,18 @@ def main(args=None):
             # Optionally write grave to the specified database
             if db_file_name is not None:
                 os.environ["DATABASE_NAME"] = db_file_name
-                # add_row_to_database(db_file_name, grave)
-                Memorial(
-                    id=grave["id"],
-                    name=grave["name"],
-                    birth=grave["birth"],
-                    birthplace=grave["birthplace"],
-                    death=grave["death"],
-                    deathplace=grave["deathplace"],
-                    burial=grave["burial"],
-                    plot=grave["plot"],
-                    more_info=grave["more_info"],
-                ).save()
+                # Memorial(
+                #     id=grave["id"],
+                #     name=grave["name"],
+                #     birth=grave["birth"],
+                #     birthplace=grave["birthplace"],
+                #     death=grave["death"],
+                #     deathplace=grave["deathplace"],
+                #     burial=grave["burial"],
+                #     plot=grave["plot"],
+                #     more_info=grave["more_info"],
+                # ).save()
+            Memorial(**grave).save()
 
             # Optionally write grave to CSV file
             if csvwriter is not None:

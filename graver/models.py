@@ -1,6 +1,7 @@
 import os
 import re
 import sqlite3
+from dataclasses import dataclass
 from enum import Enum
 from urllib.request import Request, urlopen
 
@@ -90,8 +91,10 @@ class Page(object):
         return self._soup
 
 
-# class Memorial(BaseModel):
+@dataclass
 class Memorial:
+    """Class for keeping track of a FindAGrave memorial."""
+
     _id: int
     _url: str
     _name: str
@@ -161,10 +164,11 @@ class Memorial:
         if record is None:
             raise NotFound
 
-        article = cls(**record)  # Row can be unpacked as dict
+        memorial = Memorial(*record)  # Row can be unpacked as dict
+
         con.close()
 
-        return article
+        return memorial
 
     @staticmethod
     def instance_from_soup(id, tree):
@@ -191,29 +195,29 @@ class Memorial:
         )
         conn.close()
 
-    def __init__(
-        self,
-        id,
-        url,
-        name,
-        birth,
-        birthplace,
-        death,
-        deathplace,
-        burial,
-        plot,
-        more_info,
-    ):
-        self._id = id
-        self._url = url
-        self._name = name
-        self._birth = birth
-        self._birthplace = birthplace
-        self._death = death
-        self._deathplace = deathplace
-        self._burial = burial
-        self._plot = plot
-        self._more_info = more_info
+    # def __init__(
+    #     self,
+    #     id,
+    #     url,
+    #     name,
+    #     birth,
+    #     birthplace,
+    #     death,
+    #     deathplace,
+    #     burial,
+    #     plot,
+    #     more_info,
+    # ):
+    #     self._id = id
+    #     self._url = url
+    #     self._name = name
+    #     self._birth = birth
+    #     self._birthplace = birthplace
+    #     self._death = death
+    #     self._deathplace = deathplace
+    #     self._burial = burial
+    #     self._plot = plot
+    #     self._more_info = more_info
 
     def save(self) -> "Memorial":
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:
@@ -249,7 +253,6 @@ class Memorial:
 
     #     col_names = "(" + ", ".join(keys) + ")"
     #     value_hold = "(" + "?," * (len(keys) - 1) + "?)"
-    #     trunk-ignore(bandit/B608)
     #     insert = "INSERT INTO findAGrave " + col_names + " VALUES " + value_hold
 
     #     try:

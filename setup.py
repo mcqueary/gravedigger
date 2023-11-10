@@ -12,7 +12,7 @@ with open(path.join(here, "README.md"), encoding="utf-8") as f:
 setup(
     name="graver",
     version="0.1.0",
-    description='A Python module for scraping FindAGrave memorials.',
+    description="A Python module for scraping FindAGrave memorials.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mcqueary/graver",

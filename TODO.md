@@ -4,6 +4,7 @@ The mission of gravedigger is to provide a simple but flexible commmand line too
 
 ### Todo
 
+- [ ] Integrate Typer  
 - [ ] Add test cases  
 - [ ] Refactor I/O functions  
 - [ ] Add support for sqlite UPSERT  

@@ -1,7 +1,5 @@
 import logging as log
 import re
-import urllib.error
-import urllib.request
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
@@ -12,12 +10,6 @@ def get_soup(url):
     with urlopen(req) as response:
         try:
             soup = BeautifulSoup(response.read(), "lxml")
-        except urllib.error.HTTPError as err:
-            log.exception(
-                "An HTTPError was thrown when reading id "
-                f"{url}: {err.code} {err.reason}"
-            )
-            raise
         except Exception as e:
             log.exception("The following error was thrown when reading this grave: ", e)
             raise

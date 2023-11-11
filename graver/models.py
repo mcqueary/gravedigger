@@ -11,14 +11,12 @@ from graver.soup import (
     get_birth_date,
     get_birth_place,
     get_burial_plot,
+    get_canonical_link,
     get_death_date,
     get_death_place,
+    get_id,
     get_name,
 )
-
-# from bs4 import BeautifulSoup
-# from pydantic import BaseModel
-# from typing import dataclass
 
 
 class PageType(Enum):
@@ -185,11 +183,13 @@ class Memorial:
         )
 
     @classmethod
-    def scrape(cls, url):
+    def scrape(cls, input_url):
         tree = None
-        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        req = Request(input_url, headers={"User-Agent": "Mozilla/5.0"})
         with urlopen(req) as response:
             tree = BeautifulSoup(response.read(), "lxml")
+        url = get_canonical_link(tree)
+        id = get_id(tree)
         name = get_name(tree)
         birth = get_birth_date(tree)
         birthplace = get_birth_place(tree)

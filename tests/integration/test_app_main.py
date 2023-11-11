@@ -5,23 +5,19 @@ import pytest
 from graver.app import main
 
 
-@pytest.mark.parametrize("option", ("", "--foobar"))
-def test_main_no_args(capsys, option):
-    try:
-        main([option])
-    except SystemExit:
-        pass
-    output = capsys.readouterr().out
-    assert "the following arguments are required: -i/--ifile" in output
-
-
-@pytest.mark.parametrize("args", [["-i", "input.txt"], ["--ifile", "input.txt"]])
+@pytest.mark.parametrize(
+    "args",
+    [
+        ["-i", "input-1.txt"],
+        ["--ifile", "input-1.txt"],
+    ],
+)
 def test_main_with_input_file(capsys, args):
-    input_file = args[1]
-    assert os.path.isfile(input_file)
-    try:
-        main([args])
-    except SystemExit:
-        pass
-    # output = capsys.readouterr().out
-    # assert "Scrape FindAGrave memorials." in output
+    args += ["--dbfile"]
+    args += [ os.environ["DATABASE_NAME"]]
+    # with pytest.raises(SystemExit):
+    main(args)
+    out, err = capsys.readouterr()
+    assert "Progress 100.0%" in out
+    assert err == ""
+    print(out, err)

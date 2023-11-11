@@ -21,7 +21,7 @@ def test_main_with_input_file(capsys, args):
     assert os.path.isfile(input_file)
     try:
         main([args])
-    except SystemExit as e:
+    except SystemExit:
         pass
     # output = capsys.readouterr().out
     # assert "Scrape FindAGrave memorials." in output

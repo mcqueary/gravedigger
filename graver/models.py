@@ -7,7 +7,7 @@ from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
 
-from .soup import (
+from graver.soup import (
     get_birth_date,
     get_birth_place,
     get_burial_plot,
@@ -170,18 +170,36 @@ class Memorial:
 
         return memorial
 
-    @staticmethod
-    def instance_from_soup(id, tree):
-        url = "https://www.findagrave.com/memorial/" + str(id)
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            data.get["id"],
+            data.get["name"],
+            data.get["birth"],
+            data.get["birthplace"],
+            data.gete["death"],
+            data.get["deathplace"],
+            data.get["burial"],
+            data.get["plot"],
+            data.get["more_info"],
+        )
+
+    @classmethod
+    def scrape(cls, url):
+        tree = None
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(req) as response:
+            tree = BeautifulSoup(response.read(), "lxml")
         name = get_name(tree)
         birth = get_birth_date(tree)
         birthplace = get_birth_place(tree)
         death = get_death_date(tree)
         deathplace = get_death_place(tree)
         plot = get_burial_plot(tree)
+        burial = None
         more_info = False
         return Memorial(
-            id, url, name, birth, birthplace, death, deathplace, plot, more_info
+            id, url, name, birth, birthplace, death, deathplace, burial, plot, more_info
         )
 
     @classmethod
@@ -194,30 +212,6 @@ class Memorial:
             burial TEXT, plot TEXT, more_info BOOL)"""
         )
         conn.close()
-
-    # def __init__(
-    #     self,
-    #     id,
-    #     url,
-    #     name,
-    #     birth,
-    #     birthplace,
-    #     death,
-    #     deathplace,
-    #     burial,
-    #     plot,
-    #     more_info,
-    # ):
-    #     self._id = id
-    #     self._url = url
-    #     self._name = name
-    #     self._birth = birth
-    #     self._birthplace = birthplace
-    #     self._death = death
-    #     self._deathplace = deathplace
-    #     self._burial = burial
-    #     self._plot = plot
-    #     self._more_info = more_info
 
     def save(self) -> "Memorial":
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:

@@ -178,31 +178,17 @@ def main(args=None):
     failedids = []
     for gid in graveids:
         try:
-            grave = scrape_grave(gid)
-            # Optionally write grave to the specified database
+            # grave = scrape_grave(gid)
             if db_file_name is not None:
-                os.environ["DATABASE_NAME"] = db_file_name
-                Memorial(
-                    grave["id"],
-                    grave["name"],
-                    grave["birth"],
-                    grave["birthplace"],
-                    grave["death"],
-                    grave["deathplace"],
-                    grave["burial"],
-                    grave["plot"],
-                    grave["more_info"],
-                ).save()
-                # Memorial(**grave).save()
-                # print(grave.values())
-                # Memorial(**grave.values()).save()
+                os.environ("DATABASE_NAME", db_file_name)
+            Memorial.scrape(DEFAULT_URL_PREFIX + str(gid)).save()
 
             # Optionally write grave to CSV file
-            if csvwriter is not None:
-                try:
-                    csvwriter.writerow(grave)
-                except Exception as e:
-                    log.exception("Exception encountered when writing row to CSV:", e)
+            # if csvwriter is not None:
+            #     try:
+            #         csvwriter.writerow(grave)
+            #     except Exception as e:
+            #         log.exception("Exception encountered when writing row to CSV:", e)
 
             parsed += 1
             print("Progress {:2.1%}".format(parsed / len(graveids)), end="\r")
@@ -218,12 +204,12 @@ def main(args=None):
         out = "Problem childz were:" + problemchilds
         log.info(out)
 
-    with open('results.txt', 'w') as f:
-        f.write(out + '\n')
-        f.write('\nProblem childz were:\n')
-        f.write('\n'.join(problemchilds))
-        f.write('\nUnable to parse:\n')
-        f.write('\n'.join(failedids))
+    with open("results.txt", "w") as f:
+        f.write(out + "\n")
+        f.write("\nProblem childz were:\n")
+        f.write("\n".join(problemchilds))
+        f.write("\nUnable to parse:\n")
+        f.write("\n".join(failedids))
 
 
 if __name__ == "__main__":

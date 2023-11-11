@@ -33,5 +33,5 @@ test = [
 Home = "https://github.com/mcqueary/graver"
 
 [project.scripts]
-graver = "graver:app"
+graver = "graver.app:main"
 

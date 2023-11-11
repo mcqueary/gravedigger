@@ -14,7 +14,7 @@ from graver.app import main
 )
 def test_main_with_input_file(capsys, args):
     args += ["--dbfile"]
-    args += [ os.environ["DATABASE_NAME"]]
+    args += [os.environ["DATABASE_NAME"]]
     # with pytest.raises(SystemExit):
     main(args)
     out, err = capsys.readouterr()

@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "cards"
+name = "graver"
 authors = [{name = "Larry McQueary", email = "contact@mcqueary.org"}]
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -33,5 +33,5 @@ test = [
 Home = "https://github.com/mcqueary/graver"
 
 [project.scripts]
-cards = "graver:app"
+graver = "graver:app"
 

@@ -43,36 +43,39 @@ problemchilds = []
 parsed_args = None
 db_file_name = None
 
-# configure arguments
 
-parser = argparse.ArgumentParser(description="Scrape FindAGrave memorials.")
-parser.add_argument(
-    "-i",
-    "--ifile",
-    type=argparse.FileType("r", encoding="UTF-8"),
-    required=True,
-    help="the input file containing findagrave URLs/IDs",
-)
-parser.add_argument(
-    "-o",
-    "--ofile",
-    type=argparse.FileType("w", encoding="UTF-8"),
-    required=False,
-    default=DEFAULT_OUTPUT_FILE,
-    help="the desired output file for collected data",
-)
-parser.add_argument(
-    "--dbfile",
-    type=str,
-    required=False,
-    help="store the collected information in the specified SQLite db file",
-)
-parser.add_argument(
-    "--log",
-    type=str,
-    required=False,
-    help="log level, e.g. DEBUG, INFO, WARNING, ERROR, CRITICAL",
-)
+def parse_args(args):
+    """configure and parse arguments"""
+
+    parser = argparse.ArgumentParser(description="Scrape FindAGrave memorials.")
+    parser.add_argument(
+        "-i",
+        "--ifile",
+        type=argparse.FileType("r", encoding="UTF-8"),
+        required=True,
+        help="the input file containing findagrave URLs/IDs",
+    )
+    parser.add_argument(
+        "-o",
+        "--ofile",
+        type=argparse.FileType("w", encoding="UTF-8"),
+        required=False,
+        default=DEFAULT_OUTPUT_FILE,
+        help="the desired output file for collected data",
+    )
+    parser.add_argument(
+        "--dbfile",
+        type=str,
+        required=False,
+        help="store the collected information in the specified SQLite db file",
+    )
+    parser.add_argument(
+        "--log",
+        type=str,
+        required=False,
+        help="log level, e.g. DEBUG, INFO, WARNING, ERROR, CRITICAL",
+    )
+    return parser.parse_args(args)
 
 
 def scrape_grave(graveid):
@@ -111,7 +114,7 @@ def main(args=None):
     numcites = 0
     numids = 0
 
-    parsed_args = parser.parse_args(args)
+    parsed_args = parse_args(args)
 
     # Configure logging
     log_level = DEFAULT_LOG_LEVEL
@@ -179,18 +182,20 @@ def main(args=None):
             # Optionally write grave to the specified database
             if db_file_name is not None:
                 os.environ["DATABASE_NAME"] = db_file_name
-                # Memorial(
-                #     id=grave["id"],
-                #     name=grave["name"],
-                #     birth=grave["birth"],
-                #     birthplace=grave["birthplace"],
-                #     death=grave["death"],
-                #     deathplace=grave["deathplace"],
-                #     burial=grave["burial"],
-                #     plot=grave["plot"],
-                #     more_info=grave["more_info"],
-                # ).save()
-            Memorial(**grave).save()
+                Memorial(
+                    grave["id"],
+                    grave["name"],
+                    grave["birth"],
+                    grave["birthplace"],
+                    grave["death"],
+                    grave["deathplace"],
+                    grave["burial"],
+                    grave["plot"],
+                    grave["more_info"],
+                ).save()
+                # Memorial(**grave).save()
+                # print(grave.values())
+                # Memorial(**grave.values()).save()
 
             # Optionally write grave to CSV file
             if csvwriter is not None:
@@ -213,12 +218,12 @@ def main(args=None):
         out = "Problem childz were:" + problemchilds
         log.info(out)
 
-    # with open('results.txt', 'w') as f:
-    #     f.write(out + '\n')
-    #     f.write('\nProblem childz were:\n')
-    #     f.write('\n'.join(problemchilds))
-    #     f.write('\nUnable to parse:\n')
-    #     f.write('\n'.join(failedids))
+    with open('results.txt', 'w') as f:
+        f.write(out + '\n')
+        f.write('\nProblem childz were:\n')
+        f.write('\n'.join(problemchilds))
+        f.write('\nUnable to parse:\n')
+        f.write('\n'.join(failedids))
 
 
 if __name__ == "__main__":

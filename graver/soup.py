@@ -1,4 +1,5 @@
 import logging as log
+import re
 import urllib.error
 import urllib.request
 from urllib.request import Request, urlopen
@@ -21,6 +22,16 @@ def get_soup(url):
             log.exception("The following error was thrown when reading this grave: ", e)
             raise
     return soup
+
+
+def get_canonical_link(soup):
+    link = soup.find("link", rel=re.compile("canonical"))["href"]
+    return link
+
+
+def get_id(soup):
+    link = get_canonical_link(soup)
+    return int(re.match(".*/([0-9]+)/.*$", link).group(1))
 
 
 def get_name(soup):

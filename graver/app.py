@@ -7,15 +7,6 @@ import sys
 
 # import sqlite3 as sql
 from graver.models import Memorial
-from graver.soup import (
-    get_birth_date,
-    get_birth_place,
-    get_burial_plot,
-    get_death_date,
-    get_death_place,
-    get_name,
-    get_soup,
-)
 
 # Constants
 DEFAULT_URL_PREFIX = "https://www.findagrave.com/memorial/"
@@ -78,36 +69,6 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def scrape_grave(graveid):
-    grave = {}
-    grave["id"] = graveid
-
-    url = DEFAULT_URL_PREFIX + str(graveid)
-    grave["url"] = url
-
-    tree = get_soup(url)
-
-    # Get name
-    grave["name"] = get_name(tree)
-
-    # Get Birth Date
-    grave["birth"] = get_birth_date(tree)
-
-    # Get Birth Place
-    grave["birthplace"] = get_birth_place(tree)
-
-    # Get Death Date
-    grave["death"] = get_death_date(tree)
-
-    # Get Death Place
-    grave["deathplace"] = get_death_place(tree)
-
-    # Get Plot
-    grave["plot"] = get_burial_plot(tree)
-
-    return grave
-
-
 # main
 def main(args=None):
     graveids = []
@@ -146,8 +107,6 @@ def main(args=None):
     if parsed_args is not None:
         if parsed_args.dbfile is not None:
             db_file_name = parsed_args.dbfile
-        else:
-            db_file_name = DEFAULT_DB_FILE_NAME
 
     Memorial.create_table(db_file_name)
 
@@ -178,10 +137,10 @@ def main(args=None):
     failedids = []
     for gid in graveids:
         try:
-            # grave = scrape_grave(gid)
             if db_file_name is not None:
-                os.environ("DATABASE_NAME", db_file_name)
-            Memorial.scrape(DEFAULT_URL_PREFIX + str(gid)).save()
+                os.environ["DATABASE_NAME"] = db_file_name
+            url = DEFAULT_URL_PREFIX + str(gid)
+            Memorial.scrape(url).save()
 
             # Optionally write grave to CSV file
             # if csvwriter is not None:

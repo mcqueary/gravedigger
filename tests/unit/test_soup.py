@@ -1,18 +1,30 @@
 from bs4 import BeautifulSoup
+
 from graver.soup import (
     get_birth_date,
     get_birth_place,
     get_burial_plot,
+    get_canonical_link,
     get_death_date,
     get_death_place,
+    get_id,
     get_name,
 )
 
 soup = BeautifulSoup(open("./tests/unit/asimov.html"), "lxml")
 
 
+def test_get_canonical_link():
+    link = get_canonical_link(soup)
+    assert link == "https://www.findagrave.com/memorial/10325/isaac-asimov"
+
+
+def test_get_id():
+    id = get_id(soup)
+    assert id == 10325
+
+
 def test_get_name():
-    # soup = BeautifulSoup(open("./tests/unit/asimov.html"))
     name = get_name(soup)
     assert name == "Isaac Asimov"
 

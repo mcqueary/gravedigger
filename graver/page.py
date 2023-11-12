@@ -2,11 +2,13 @@ from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
 
+# from graver.soup import get_canonical_link
+
 
 class Page(object):
-    _url: str = None
+    _url: str
     _html: bytes
-    _soup: BeautifulSoup = None
+    _soup: BeautifulSoup
 
     def __init__(self, url):
         self._url = url
@@ -19,30 +21,6 @@ class Page(object):
     @property
     def url(self):
         return self._url
-
-    # @property
-    # def type(self):
-    #     if self._type is None:
-    #         if (
-    #             re.match(
-    #                 "^https://www.findagrave.com/cemetery/[0-9]+/memorial-search.*$",
-    #                 self._url,
-    #             )
-    #             is not None
-    #         ):
-    #             self._type = PageType.LIST
-    #         elif (
-    #             re.match("^https://www.findagrave.com/memorial/[0-9]+.*$", self._url)
-    #             is not None
-    #         ):
-    #             self._type = PageType.MEMORIAL
-    #         elif (
-    #             re.match("^https://www.findagrave.com/cemetery/[0-9]+.*$", self._url)
-    #             is not None
-    #         ):
-    #             self._type = PageType.CEMETERY
-
-    #     return self._type
 
     @property
     def html(self):
@@ -60,3 +38,16 @@ class Page(object):
             if self._html is not None:
                 self._soup = BeautifulSoup(self._html, "lxml")
         return self._soup
+
+    # def scrape(cls, input_url):
+    #     tree = None
+    #     req = Request(input_url, headers={"User-Agent": "Mozilla/5.0"})
+    #     with urlopen(req) as response:
+    #         tree = BeautifulSoup(response.read(), "lxml")
+    #     # url = get_canonical_link(tree)
+
+    #     return Page(input_url)
+
+
+class CemeteryPage(Page):
+    pass

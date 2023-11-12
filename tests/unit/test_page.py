@@ -1,4 +1,5 @@
 import pytest
+
 from graver.page import Page
 
 mixed_urls = [

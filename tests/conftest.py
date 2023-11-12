@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from graver.models import Memorial
+from graver.memorial import Memorial
 
 
 @pytest.fixture(autouse=True)

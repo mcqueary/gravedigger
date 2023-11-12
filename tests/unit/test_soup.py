@@ -6,6 +6,7 @@ from graver.soup import (
     get_burial_plot,
     get_canonical_link,
     get_cemetery_id,
+    get_coords,
     get_death_date,
     get_death_place,
     get_id,
@@ -14,6 +15,7 @@ from graver.soup import (
 
 soup = BeautifulSoup(open("./tests/unit/asimov.html"), "lxml")
 soup2 = BeautifulSoup(open("./tests/unit/shoulders.html"), "lxml")
+morrison = BeautifulSoup(open("./tests/unit/morrison.html"), "lxml")
 
 
 def test_get_canonical_link():
@@ -54,6 +56,14 @@ def test_get_death_date():
 def test_get_death_place():
     death_place = get_death_place(soup)
     assert death_place == "New York, New York County, New York, USA"
+
+
+def test_get_coords():
+    coords = get_coords(morrison)
+    # link http://maps.google.com/maps?q=48.8592660,2.3937840&spn=0.004205,0.005249
+    # lat = 48.8592660
+    # lon = 2.3937840
+    assert coords == "48.8592660,2.3937840"
 
 
 def test_get_burial_plot():

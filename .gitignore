@@ -11,4 +11,5 @@ __pycache__/
 .vscode/
 .trunk/
 bandit.yaml
-results.txt
+*.txt
+!require*.txt

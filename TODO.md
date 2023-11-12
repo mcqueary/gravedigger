@@ -4,6 +4,7 @@ The mission of gravedigger is to provide a simple but flexible commmand line too
 
 ### Todo
 
+- [ ] Add GPS Lat/Lon to Memorial model  
 - [ ] Integrate Typer  
 - [ ] Add test cases  
 - [ ] Refactor I/O functions  

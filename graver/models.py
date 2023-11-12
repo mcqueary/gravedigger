@@ -1,7 +1,7 @@
 import os
 import re
 import sqlite3
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from enum import Enum
 from urllib.request import Request, urlopen
 
@@ -17,6 +17,14 @@ from graver.soup import (
     get_id,
     get_name,
 )
+
+
+class GraverException(Exception):
+    pass
+
+
+class MemorialMergedException(GraverException):
+    pass
 
 
 class PageType(Enum):
@@ -150,6 +158,13 @@ class Memorial:
         return self.__dict__ == other.__dict__
 
     @classmethod
+    def from_dict(cls, d):
+        return Memorial(**d)
+
+    def to_dict(self):
+        return asdict(self)
+
+    @classmethod
     def get_by_id(cls, grave_id: int):
         con = sqlite3.connect(os.getenv("DATABASE_NAME", "graver.db"))
         con.row_factory = sqlite3.Row
@@ -167,20 +182,6 @@ class Memorial:
         con.close()
 
         return memorial
-
-    @classmethod
-    def from_dict(cls, data):
-        return cls(
-            data.get["id"],
-            data.get["name"],
-            data.get["birth"],
-            data.get["birthplace"],
-            data.gete["death"],
-            data.get["deathplace"],
-            data.get["burial"],
-            data.get["plot"],
-            data.get["more_info"],
-        )
 
     @classmethod
     def scrape(cls, input_url):
@@ -216,7 +217,7 @@ class Memorial:
     def save(self) -> "Memorial":
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:
             con.cursor().execute(
-                "INSERT INTO graves (id,url,name,birth,birthplace,death,"
+                "INSERT OR REPLACE INTO graves (id,url,name,birth,birthplace,death,"
                 + "deathplace,burial,plot,more_info) VALUES"
                 + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
@@ -235,27 +236,3 @@ class Memorial:
             con.commit()
 
         return self
-
-    # def save(self) -> "Grave":
-    #     row = (grave["id"],)
-    #     keys = ["graveid"]
-    #     for key in grave.keys():
-    #         if key == "id":
-    #             continue
-    #         row += (grave[key],)
-    #         keys.append(key)
-
-    #     col_names = "(" + ", ".join(keys) + ")"
-    #     value_hold = "(" + "?," * (len(keys) - 1) + "?)"
-    #     insert = "INSERT INTO findAGrave " + col_names + " VALUES " + value_hold
-
-    #     try:
-    #         conn = sql.connect(filename)
-    #         c = conn.cursor()
-    #         c.executemany(insert, [row])
-    #         conn.commit()
-    #         conn.close()
-    #     except sql.IntegrityError:
-    #         log.warn("Memorial #" + grave["id"] + " is already in database.")
-    #     except Exception as e:
-    #         log.exception(e)

@@ -101,6 +101,16 @@ def get_death_place(soup):
         )
 
 
+def get_cemetery_id(soup):
+    # id = None
+    div = soup.find("div", itemtype=re.compile("https://schema.org/Cemetery"))
+    # special_divs = soup.find_all('div',{'class':'Special_Div_Name'})
+    anchor = div.find("a")
+    href = anchor["href"]
+    cem_id = int(re.match(".*/([0-9]+)/.*$", href).group(1))
+    return cem_id
+
+
 def get_burial_plot(soup):
     plot = None
     try:

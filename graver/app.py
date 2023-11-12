@@ -1,9 +1,10 @@
 import argparse
-import csv
 import logging as log
 import os
 import re
 import sys
+
+from dataclass_csv import DataclassWriter
 
 # import sqlite3 as sql
 from graver.models import Memorial
@@ -58,6 +59,7 @@ def parse_args(args):
         "--dbfile",
         type=str,
         required=False,
+        default=DEFAULT_DB_FILE_NAME,
         help="store the collected information in the specified SQLite db file",
     )
     parser.add_argument(
@@ -74,6 +76,7 @@ def main(args=None):
     graveids = []
     numcites = 0
     numids = 0
+    memorials = []
 
     parsed_args = parse_args(args)
 
@@ -94,14 +97,8 @@ def main(args=None):
     if parsed_args.ofile is not None:
         output_file = parsed_args.ofile
         log.info("ofile: " + output_file.name)
-        try:
-            csvwriter = csv.DictWriter(output_file, fieldnames=COLUMNS)
-            # writing headers (field names)
-            csvwriter.writeheader()
-        except Exception as e:
-            log.exception(e)
     else:
-        log.info("ofile: stdin")
+        log.info("ofile: stdout")
 
     # Configure output database, if any
     if parsed_args is not None:
@@ -140,14 +137,8 @@ def main(args=None):
             if db_file_name is not None:
                 os.environ["DATABASE_NAME"] = db_file_name
             url = DEFAULT_URL_PREFIX + str(gid)
-            Memorial.scrape(url).save()
-
-            # Optionally write grave to CSV file
-            # if csvwriter is not None:
-            #     try:
-            #         csvwriter.writerow(grave)
-            #     except Exception as e:
-            #         log.exception("Exception encountered when writing row to CSV:", e)
+            memorial = Memorial.scrape(url).save()
+            memorials.append(memorial)
 
             parsed += 1
             print("Progress {:2.1%}".format(parsed / len(graveids)), end="\r")
@@ -155,6 +146,15 @@ def main(args=None):
             out = "Unable to parse Memorial #" + str(gid) + "!"
             log.error(out, e)
             failedids.append(gid)
+
+    if output_file is not None:
+        try:
+            csvwriter = DataclassWriter(output_file, memorials, Memorial)
+            # writing headers (field names)
+            # csvwriter.writeheader()
+            csvwriter.write()
+        except Exception as e:
+            log.exception(e)
 
     out = "Successfully parsed " + str(parsed) + " of "
     out += str(len(graveids))

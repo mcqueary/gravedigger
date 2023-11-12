@@ -7,7 +7,7 @@ import sys
 from dataclass_csv import DataclassWriter
 
 # import sqlite3 as sql
-from graver.models import Memorial
+from graver.memorial import Memorial
 
 # Constants
 DEFAULT_URL_PREFIX = "https://www.findagrave.com/memorial/"

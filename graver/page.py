@@ -1,5 +1,6 @@
-from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
+
+from bs4 import BeautifulSoup
 
 
 class Page(object):

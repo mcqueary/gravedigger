@@ -4,7 +4,7 @@ import pathlib
 import pytest
 from bs4 import BeautifulSoup
 
-from graver.models import Memorial
+from graver.memorial import Memorial
 
 soup = BeautifulSoup(open("./tests/unit/asimov.html"), "lxml")
 

@@ -4,22 +4,22 @@ The mission of gravedigger is to provide a simple but flexible commmand line too
 
 ### Todo
 
+- [ ] Handle burial info (cremated, lost at sea, etc)  
 - [ ] Add GPS Lat/Lon to Memorial model  
 - [ ] Integrate Typer  
-- [ ] Add test cases  
 - [ ] Refactor I/O functions  
-- [ ] Add support for sqlite UPSERT  
+- [ ] Make UPSERT smarter  
 - [ ] Accept IDs from stdin ~1d #feat @mcqueary  
-  - [ ] One per line  
-  - [ ] Whitespace-delimited  
 
 ### In Progress
 
+- [ ] Implement Page class hierarchy  
 - [ ] Overhaul README ~1d #feat @mcqueary  
 - [ ] Work on Github Repo  
 
 ### Done ✓
 
+- [x] Add test cases  
 - [x] Use csv package instead of manual formatting ~1d #feat @mcqueary 2024-03-20  
 - [x] Create TODO.md  
 

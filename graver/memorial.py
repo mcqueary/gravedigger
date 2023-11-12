@@ -10,11 +10,14 @@ from graver.soup import (
     get_birth_place,
     get_burial_plot,
     get_canonical_link,
+    get_coords,
     get_death_date,
     get_death_place,
     get_id,
     get_name,
 )
+
+# from graver.page import Page
 
 
 class GraverException(Exception):
@@ -42,6 +45,7 @@ class Memorial:
     _deathplace: str
     _burial: str
     _plot: str
+    _coords: str
     _more_info: bool
 
     @property
@@ -79,6 +83,10 @@ class Memorial:
     @property
     def plot(self):
         return self._plot
+
+    @property
+    def coords(self):
+        return self._coords
 
     @property
     def more_info(self):
@@ -122,6 +130,7 @@ class Memorial:
         with urlopen(req) as response:
             tree = BeautifulSoup(response.read(), "lxml")
         url = get_canonical_link(tree)
+        coords = get_coords(tree)
         id = get_id(tree)
         name = get_name(tree)
         birth = get_birth_date(tree)
@@ -132,7 +141,17 @@ class Memorial:
         burial = None
         more_info = False
         return Memorial(
-            id, url, name, birth, birthplace, death, deathplace, burial, plot, more_info
+            id,
+            url,
+            name,
+            birth,
+            birthplace,
+            death,
+            deathplace,
+            burial,
+            plot,
+            coords,
+            more_info,
         )
 
     @classmethod
@@ -142,7 +161,7 @@ class Memorial:
             """CREATE TABLE IF NOT EXISTS graves
             (id INTEGER PRIMARY KEY, url TEXT,
             name TEXT, birth TEXT, birthplace TEXT, death TEXT, deathplace TEXT,
-            burial TEXT, plot TEXT, more_info BOOL)"""
+            burial TEXT, plot TEXT, coords TEXT, more_info BOOL)"""
         )
         conn.close()
 
@@ -150,8 +169,8 @@ class Memorial:
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:
             con.cursor().execute(
                 "INSERT OR REPLACE INTO graves (id,url,name,birth,birthplace,death,"
-                + "deathplace,burial,plot,more_info) VALUES"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                + "deathplace,burial,plot,coords,more_info) VALUES"
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
                     self._id,
                     self._url,
@@ -162,6 +181,7 @@ class Memorial:
                     self._deathplace,
                     self._burial,
                     self._plot,
+                    self._coords,
                     self._more_info,
                 ),
             )

@@ -19,9 +19,20 @@ def test_memorial():
     deathplace = "Reno, Washoe, Nevada, USA"
     burial = "Reno, Washoe, Nevada, USA"
     plot = "Garden of Memory, C1, Plot 54"
+    coords = "23.45678000, 12.9876543"
     more_info = False
     result = Memorial(
-        id, url, name, birth, birthplace, death, deathplace, burial, plot, more_info
+        id,
+        url,
+        name,
+        birth,
+        birthplace,
+        death,
+        deathplace,
+        burial,
+        plot,
+        coords,
+        more_info,
     )
     assert result.id == id
     assert result.url == url
@@ -32,6 +43,7 @@ def test_memorial():
     assert result.deathplace == deathplace
     assert result.burial == burial
     assert result.plot == plot
+    assert result.coords == coords
     assert result.more_info == more_info
 
 
@@ -84,9 +96,10 @@ def test_memorial_scrape(url):
 )
 @pytest.mark.parametrize("burial", ["Burial Details Unknown"])
 @pytest.mark.parametrize("plot", [None])
+@pytest.mark.parametrize("coords", [None])
 @pytest.mark.parametrize("more_info", [True])
 def test_memorial_save(
-    id, url, name, birth, birthplace, death, deathplace, burial, plot, more_info
+    id, url, name, birth, birthplace, death, deathplace, burial, plot, coords, more_info
 ):
     Memorial.create_table()
     result = Memorial(
@@ -99,6 +112,7 @@ def test_memorial_save(
         deathplace,
         burial,
         plot,
+        coords,
         more_info,
     ).save()
 
@@ -111,6 +125,7 @@ def test_memorial_save(
     assert result.deathplace == deathplace
     assert result.burial == burial
     assert result.plot == plot
+    assert result.coords == coords
     assert result.more_info == more_info
 
 
@@ -126,6 +141,7 @@ def test_memorial_get_by_id():
         "Reno, Washoe, Nevada, USA",
         "Reno, Washoe, Nevada, USA",
         "Garden of Memory, C1, Plot 54",
+        None,
         False,
     ).save()
     result = Memorial.get_by_id(10101)

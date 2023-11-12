@@ -1,8 +1,12 @@
 import logging as log
 import re
+from collections import namedtuple
+from urllib.parse import parse_qsl, urlparse
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
+
+Coords = namedtuple("Coords", ["lat", "lon"])
 
 
 def get_soup(url):
@@ -102,13 +106,25 @@ def get_death_place(soup):
 
 
 def get_cemetery_id(soup):
-    # id = None
     div = soup.find("div", itemtype=re.compile("https://schema.org/Cemetery"))
-    # special_divs = soup.find_all('div',{'class':'Special_Div_Name'})
     anchor = div.find("a")
     href = anchor["href"]
     cem_id = int(re.match(".*/([0-9]+)/.*$", href).group(1))
     return cem_id
+
+
+def get_coords(soup):
+    """Returns Google Map coordinates, if present, as a string 'nn.nnnnnnn,nn.nnnnnn'"""
+    latlon = None
+    span = soup.find("span", itemtype=re.compile("https://schema.org/Map"))
+    if span is not None:
+        anchor = span.find("a")
+        href = anchor["href"]
+        # just for fun
+        query = urlparse(href).query
+        query_args = parse_qsl(query)
+        name, latlon = query_args[0]
+    return latlon
 
 
 def get_burial_plot(soup):

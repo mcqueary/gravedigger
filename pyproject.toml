@@ -17,7 +17,8 @@ classifiers = [
 requires-python=">=3.7"
 dynamic = ["version", "description"]
 dependencies = [
-    "bs4==0.0.1"
+    "bs4==0.0.1",
+    "dataclass-csv==1.4.0"
 ]
 
 [project.optional-dependencies]

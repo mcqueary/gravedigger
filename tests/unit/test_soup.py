@@ -5,6 +5,7 @@ from graver.soup import (
     get_birth_place,
     get_burial_plot,
     get_canonical_link,
+    get_cemetery_id,
     get_death_date,
     get_death_place,
     get_id,
@@ -12,6 +13,7 @@ from graver.soup import (
 )
 
 soup = BeautifulSoup(open("./tests/unit/asimov.html"), "lxml")
+soup2 = BeautifulSoup(open("./tests/unit/shoulders.html"), "lxml")
 
 
 def test_get_canonical_link():
@@ -37,6 +39,11 @@ def test_get_birth_date():
 def test_get_birth_place():
     birth_place = get_birth_place(soup)
     assert birth_place == "Smolensk Oblast, Russia"
+
+
+def test_get_cemetery_id():
+    id = get_cemetery_id(soup2)
+    assert id == 55276
 
 
 def test_get_death_date():

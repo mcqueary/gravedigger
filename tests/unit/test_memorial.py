@@ -1,9 +1,6 @@
 import pytest
-from bs4 import BeautifulSoup
 
 from graver.memorial import Memorial
-
-soup = BeautifulSoup(open("./tests/unit/asimov.html"), "lxml")
 
 
 def test_memorial():

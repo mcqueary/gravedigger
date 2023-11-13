@@ -1,6 +1,6 @@
 import pytest
 
-from graver.memorial import Memorial
+from graver.parsers import MemorialParser
 
 
 @pytest.mark.parametrize(
@@ -11,6 +11,6 @@ from graver.memorial import Memorial
     ],
 )
 def test_memorial_scrape(url):
-    memorial = Memorial.scrape(url)
+    memorial = MemorialParser().parse(url)
     assert memorial.id == 534
     assert memorial.name == "Andrew Jackson"

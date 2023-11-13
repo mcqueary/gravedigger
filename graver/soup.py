@@ -1,12 +1,9 @@
 import logging as log
 import re
-from collections import namedtuple
 from urllib.parse import parse_qsl, urlparse
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
-
-Coords = namedtuple("Coords", ["lat", "lon"])
 
 
 def get_soup(url):

@@ -1,6 +1,3 @@
-import os
-import pathlib
-
 import pytest
 from bs4 import BeautifulSoup
 
@@ -45,27 +42,6 @@ def test_memorial():
     assert result.plot == plot
     assert result.coords == coords
     assert result.more_info == more_info
-
-
-asimov_abs_path = os.path.abspath("tests/unit/asimov.html")
-asimov_uri = pathlib.Path(asimov_abs_path).as_uri()
-
-shoulders_abs_path = os.path.abspath("tests/unit/shoulders.html")
-shoulders_uri = pathlib.Path(shoulders_abs_path).as_uri()
-
-
-@pytest.mark.parametrize(
-    "url",
-    [
-        asimov_uri,
-        shoulders_uri,
-    ],
-)
-def test_memorial_scrape(url):
-    memorial = Memorial.scrape(url)
-    assert memorial is not None
-    assert memorial.id is not None
-    assert memorial.name is not None
 
 
 @pytest.mark.parametrize(

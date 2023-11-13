@@ -1,23 +1,6 @@
 import os
 import sqlite3
 from dataclasses import asdict, dataclass
-from urllib.request import Request, urlopen
-
-from bs4 import BeautifulSoup
-
-from graver.soup import (
-    get_birth_date,
-    get_birth_place,
-    get_burial_plot,
-    get_canonical_link,
-    get_coords,
-    get_death_date,
-    get_death_place,
-    get_id,
-    get_name,
-)
-
-# from graver.page import Page
 
 
 class GraverException(Exception):
@@ -122,37 +105,6 @@ class Memorial:
         con.close()
 
         return memorial
-
-    @classmethod
-    def scrape(cls, input_url):
-        tree = None
-        req = Request(input_url, headers={"User-Agent": "Mozilla/5.0"})
-        with urlopen(req) as response:
-            tree = BeautifulSoup(response.read(), "lxml")
-        url = get_canonical_link(tree)
-        coords = get_coords(tree)
-        id = get_id(tree)
-        name = get_name(tree)
-        birth = get_birth_date(tree)
-        birthplace = get_birth_place(tree)
-        death = get_death_date(tree)
-        deathplace = get_death_place(tree)
-        plot = get_burial_plot(tree)
-        burial = None
-        more_info = False
-        return Memorial(
-            id,
-            url,
-            name,
-            birth,
-            birthplace,
-            death,
-            deathplace,
-            burial,
-            plot,
-            coords,
-            more_info,
-        )
 
     @classmethod
     def create_table(cls, database_name="graves.db"):

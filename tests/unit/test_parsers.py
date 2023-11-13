@@ -1,8 +1,9 @@
 import os
 import pathlib
+
 import pytest
 
-from parsers import MemorialParser
+from graver.parsers import MemorialParser
 
 mixed_urls = [
     "https://www.findagrave.com/cemetery/53514",

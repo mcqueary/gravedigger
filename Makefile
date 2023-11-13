@@ -13,7 +13,7 @@ help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 cov: ## run pytest coverage report
-	. $(VENV)/bin/activate && pytest --cov=graver tests/ --cov=soup tests/ --cov=db tests/ --cov=memorial tests/
+	. $(VENV)/bin/activate && pytest --cov=graver tests/ --cov=parsers tests/ --cov=memorial tests/
 
 run: ## sample run
 	. $(VENV)/bin/activate && $(PY) graver/app.py -i input.txt

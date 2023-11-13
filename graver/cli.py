@@ -117,7 +117,6 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
             pbar.set_postfix_str(url)
             MemorialParser().parse(url).save()
             parsed += 1
-            pbar.update(1)
         except Exception as ex:
             out = "Unable to parse Memorial []" + url + "]!"
             log.error(out, ex)

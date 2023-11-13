@@ -33,6 +33,7 @@ install-editable:
 	. $(VENV)/bin/activate && pip install -e .
 
 fmt: ## run black to format the code
+	. $(VENV)/bin/activate && isort graver tests
 	. $(VENV)/bin/activate && black -q --line-length 88 graver tests
 
 $(VENV)/init: ## init the virtual environment

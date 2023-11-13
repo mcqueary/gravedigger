@@ -13,3 +13,6 @@ def database():
     Memorial.create_table(database_name=file_name)
     yield
     os.unlink(file_name)
+
+
+pytest_plugins = ["pytester"]

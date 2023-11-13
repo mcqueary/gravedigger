@@ -8,6 +8,7 @@ from dataclass_csv import DataclassWriter
 
 # import sqlite3 as sql
 from graver.memorial import Memorial
+from graver.parsers import MemorialParser
 
 # Constants
 DEFAULT_URL_PREFIX = "https://www.findagrave.com/memorial/"
@@ -137,7 +138,7 @@ def main(args=None):
             if db_file_name is not None:
                 os.environ["DATABASE_NAME"] = db_file_name
             url = DEFAULT_URL_PREFIX + str(gid)
-            memorial = Memorial.scrape(url).save()
+            memorial = MemorialParser().parse(url).save()
             memorials.append(memorial)
 
             parsed += 1

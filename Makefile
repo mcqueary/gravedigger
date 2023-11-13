@@ -1,4 +1,4 @@
-.PHONY: test run help fmt install-editable lint git-setup clean
+.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
@@ -18,8 +18,13 @@ cov: ## run pytest coverage report
 run: ## sample run
 	. $(VENV)/bin/activate && $(PY) graver/app.py -i input.txt
 
-test: ## run pytest
+test-unit:
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
+
+test-integration:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
+
+test: test-unit test-integration
 
 lint: ## run flake8 to check the code
 	. $(VENV)/bin/activate && flake8 --max-line-length 88 graver tests

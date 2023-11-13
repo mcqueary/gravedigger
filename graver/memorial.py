@@ -89,7 +89,7 @@ class Memorial:
 
     @classmethod
     def get_by_id(cls, grave_id: int):
-        con = sqlite3.connect(os.getenv("DATABASE_NAME", "graver.db"))
+        con = sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db"))
         con.row_factory = sqlite3.Row
 
         cur = con.cursor()

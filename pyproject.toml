@@ -4,35 +4,25 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "graver"
-authors = [{name = "Larry McQueary", email = "contact@mcqueary.org"}]
+authors = [{ name = "Larry McQueary", email = "contact@mcqueary.org" }]
 classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
 ]
-requires-python=">=3.7"
+requires-python = ">=3.7"
 dynamic = ["version", "description"]
-dependencies = [
-    "bs4==0.0.1",
-    "dataclass-csv==1.4.0"
-]
+dependencies = ["bs4==0.0.1", "tqdm==4.66.1"]
 
 [project.optional-dependencies]
-test = [
-    "pytest",
-    "faker",
-    "tox",
-    "coverage",
-    "pytest-cov",
-]
+test = ["pytest", "faker", "tox", "coverage", "pytest-cov"]
 
 [project.urls]
 Home = "https://github.com/mcqueary/graver"
 
 [project.scripts]
-graver = "graver.app:main"
-
+graver = "graver.cli:app"

@@ -64,6 +64,22 @@ def get_id_from_url(url: str):
     return result
 
 
+def get_urls_from_gedcom(gedfile: str):
+    # TODO add gedcom input support
+    # # read from gedcom
+    # with open('tree.ged', encoding='utf8') as ged:
+    #     for line in ged.readlines():
+    #         num_memorials+=1
+    #         if '_LINK ' in line and 'findagrave.com' in line:
+    #             for unit in line.split('&'):
+    #                 if 'GRid=' in unit:
+    #                     if unit[5:-1] not in graveids:
+    #                         graveids.append(unit[5:-1])
+    #                         #print(graveids[numids])
+    #                         numids+=1
+    return
+
+
 @app.command()
 def version():
     """Return version of graver application"""
@@ -79,29 +95,18 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
 
     if db is None:
         db = os.getenv("DATABASE_NAME")
+        if db is None:
+            db = DEFAULT_DB_FILE_NAME
     else:
         os.environ["DATABASE_NAME"] = db
     Memorial.create_table(db)
-
-    # TODO add gedcom input support
-    # # read from gedcom
-    # with open('tree.ged', encoding='utf8') as ged:
-    #     for line in ged.readlines():
-    #         num_memorials+=1
-    #         if '_LINK ' in line and 'findagrave.com' in line:
-    #             for unit in line.split('&'):
-    #                 if 'GRid=' in unit:
-    #                     if unit[5:-1] not in graveids:
-    #                         graveids.append(unit[5:-1])
-    #                         #print(graveids[numids])
-    #                         numids+=1
 
     # Main loop
     with open(input_filename) as file:
         while line := file.readline():
             # currid = re.match(".*?([0-9]+)$", line).group(1)
             # currid = get_id_from_url(line)
-            line.strip()
+            line = line.strip()
             if line not in urls:
                 urls.append(line)
 
@@ -114,35 +119,18 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
             parsed += 1
             pbar.update(1)
         except Exception as ex:
-            out = "Unable to parse Memorial #" + url + "!"
-            # template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-            # message = template.format(type(ex).__name__, ex.args)
-            # print(message)
+            out = "Unable to parse Memorial []" + url + "]!"
             log.error(out, ex)
             failed_urls.append(url)
 
-    # if output_file is not None:
-    #     try:
-    #         csvwriter = DataclassWriter(output_file, memorials, Memorial)
-    #         # writing headers (field names)
-    #         # csvwriter.writeheader()
-    #         csvwriter.write()
-    #     except Exception as e:
-    #         print(e)
-
-    out = "Successfully parsed " + str(parsed) + " of "
-    out += str(len(urls))
-    print(out)
+    msg = "Successfully parsed {total} of {expected}"
+    print(msg.format(total=parsed, expected=len(urls)))
+    # out = "Successfully parsed " + str(parsed) + " of "
+    # out += str(len(urls))
+    # print(out)
     if len(problemchilds) > 0:
         out = "Problem childz were:" + problemchilds
         print(out)
-
-    with open("results.txt", "w") as f:
-        f.write(out + "\n")
-        f.write("\nProblem childz were:\n")
-        f.write("\n".join(problemchilds))
-        f.write("\nUnable to parse:\n")
-        f.write("\n".join(failed_urls))
 
 
 if __name__ == "__main__":

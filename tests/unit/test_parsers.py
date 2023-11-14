@@ -77,7 +77,7 @@ maiden_uri = pathlib.Path(maiden_abs_path).as_uri()
 
 
 # @pytest.mark.parametrize("url", [maiden_uri])
-def test_memorial_parser_parser_parse_maiden_name():
+def test_memorial_parser_parse_maiden_name():
     # TODO figure out better way to do this with a fixture
     # req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
     # with urlopen(req) as response:

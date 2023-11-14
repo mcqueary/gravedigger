@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from dataclasses import asdict, dataclass
+from dataclasses import MISSING, Field, asdict, dataclass
 
 
 class GraverException(Exception):
@@ -19,61 +19,25 @@ class NotFound(Exception):
 class Memorial:
     """Class for keeping track of a FindAGrave memorial."""
 
-    _id: int
-    _url: str
-    _name: str
-    _birth: str
-    _birthplace: str
-    _death: str
-    _deathplace: str
-    _burial: str
-    _plot: str
-    _coords: str
-    _more_info: bool
-
-    @property
-    def id(self):
-        return self._id
-
-    @property
-    def url(self):
-        return self._url
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def birth(self):
-        return self._birth
-
-    @property
-    def birthplace(self):
-        return self._birthplace
-
-    @property
-    def death(self):
-        return self._death
-
-    @property
-    def deathplace(self):
-        return self._deathplace
-
-    @property
-    def burial(self):
-        return self._burial
-
-    @property
-    def plot(self):
-        return self._plot
-
-    @property
-    def coords(self):
-        return self._coords
-
-    @property
-    def more_info(self):
-        return self._more_info
+    id: int = Field(
+        default=MISSING,
+        default_factory=MISSING,
+        repr=True,
+        hash=None,
+        init=True,
+        compare=False,
+        metadata=None,
+    )
+    url: str
+    name: str
+    birth: str
+    birthplace: str
+    death: str
+    deathplace: str
+    burial: str
+    plot: str
+    coords: str
+    more_info: bool
 
     def __eq__(self, other):
         if self.__class__ != other.__class__:
@@ -124,17 +88,17 @@ class Memorial:
                 + "deathplace,burial,plot,coords,more_info) VALUES"
                 + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
-                    self._id,
-                    self._url,
-                    self._name,
-                    self._birth,
-                    self._birthplace,
-                    self._death,
-                    self._deathplace,
-                    self._burial,
-                    self._plot,
-                    self._coords,
-                    self._more_info,
+                    self.id,
+                    self.url,
+                    self.name,
+                    self.birth,
+                    self.birthplace,
+                    self.death,
+                    self.deathplace,
+                    self.burial,
+                    self.plot,
+                    self.coords,
+                    self.more_info,
                 ),
             )
             con.commit()

@@ -4,7 +4,7 @@ from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
 
-from graver.memorial import Memorial
+from graver.memorial import Memorial, MemorialMergedException
 
 
 class Parser(object):
@@ -32,6 +32,22 @@ class MemorialParser(Parser):
         )
 
     @staticmethod
+    def check_merged(soup: BeautifulSoup):
+        merged = False
+        merged_url = None
+        popup = soup.find("div", class_="cover-page")
+        if popup is not None:
+            msg = popup.find("h2").get_text().strip()
+            if msg is not None:
+                if msg == "Memorial has been merged":
+                    merged = True
+                    for p in popup.find_all("p"):
+                        anchor = p.find("a")
+                        if anchor is not None:
+                            merged_url = p.find("a").get("href")
+        return merged, merged_url
+
+    @staticmethod
     def parse_canonical_link(soup):
         link = soup.find("link", rel=re.compile("canonical"))["href"]
         return link
@@ -43,6 +59,15 @@ class MemorialParser(Parser):
         name = name.replace("VVeteran", "")
         name = name.strip()
         return name
+
+    @staticmethod
+    def parse_maiden_name(name: str):
+        # name = name.replace("/", "\/")
+        result = None
+        match = re.match(".*<I>(.*)</I>.*", name, re.IGNORECASE)
+        if match is not None:
+            result = match.group(1)
+        return result
 
     @staticmethod
     def parse_birth(soup):
@@ -116,6 +141,11 @@ class MemorialParser(Parser):
         req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urlopen(req) as response:
             soup = BeautifulSoup(response.read(), "lxml")
+
+        merged, newurl = self.check_merged(soup)
+        if merged:
+            msg = "{url} has been merged into {newurl}".format(url=url, newurl=newurl)
+            raise MemorialMergedException(msg)
 
         url = MemorialParser.parse_canonical_link(soup)
         id = int(re.match(".*/([0-9]+)/.*$", url).group(1))

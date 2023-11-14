@@ -27,6 +27,7 @@ class Memorial:
         init=True,
         compare=False,
         metadata=None,
+        kw_only=MISSING,
     )
     url: str
     name: str

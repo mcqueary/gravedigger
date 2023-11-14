@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/mcqueary/graver/badge.svg)](https://coveralls.io/github/mcqueary/graver)
 # graver
 
 >  Scrape and Retrieve [FindAGrave](http://findagrave.com) memorial page data and save them to an SQL database.

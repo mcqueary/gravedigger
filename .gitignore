@@ -7,7 +7,7 @@ __pycache__/
 .bandit
 .env
 .venv
-.coverage
+.coverage*
 .vscode/
 .trunk/
 bandit.yaml

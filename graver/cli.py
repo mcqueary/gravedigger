@@ -9,7 +9,7 @@ from tqdm import tqdm
 from typing_extensions import Annotated
 
 import graver
-from graver.memorial import Memorial
+from graver.memorial import Memorial, MemorialMergedException
 from graver.parsers import MemorialParser
 
 # Constants
@@ -117,6 +117,8 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
             pbar.set_postfix_str(url)
             MemorialParser().parse(url).save()
             parsed += 1
+        except MemorialMergedException as ex:
+            log.warn(ex)
         except Exception as ex:
             out = "Unable to parse Memorial []" + url + "]!"
             log.error(out, ex)

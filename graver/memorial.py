@@ -3,21 +3,25 @@ import sqlite3
 from dataclasses import MISSING, Field, asdict, dataclass
 
 
-class GraverException(Exception):
+class MemorialException(Exception):
     pass
 
 
-class MemorialMergedException(GraverException):
+class MemorialMergedException(MemorialException):
     pass
 
 
-class NotFound(Exception):
+class MemorialRemoveddException(MemorialException):
+    pass
+
+
+class NotFound(MemorialException):
     pass
 
 
 @dataclass
 class Memorial:
-    """Class for keeping track of a FindAGrave memorial."""
+    """Class for keeping track of a Find A Grave memorial."""
 
     id: int = Field(
         default=MISSING,

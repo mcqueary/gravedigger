@@ -1,9 +1,3 @@
-import os
-
-import pytest
-
-from graver.cli import scrape
-
 # @pytest.mark.parametrize("option", ("-h", "--help"))
 # def test_help(capsys, option):
 #     try:

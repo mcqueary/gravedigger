@@ -1,4 +1,8 @@
-# import os
+import os
+
+import pytest
+
+from graver.cli import scrape
 
 # import pytest
 
@@ -17,3 +21,15 @@
 #     assert "Progress 100.0%" in out
 #     assert err == ""
 #     # print(out, err)
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "input-1.txt",
+    ],
+)
+def test_cli_scrape_with_input_1(filename):
+    # TODO test for something here, rather than just db existence
+    scrape(filename)
+    assert os.path.exists(os.getenv("DATABASE_NAME"))

@@ -4,19 +4,6 @@ import pytest
 
 from graver.cli import scrape
 
-
-@pytest.mark.parametrize(
-    "filename",
-    [
-        "input-1.txt",
-    ],
-)
-def test_cli_scrape_with_input_1(filename):
-    # TODO test for something here, rather than just db existence
-    scrape(filename)
-    assert os.path.exists(os.getenv("DATABASE_NAME"))
-
-
 # @pytest.mark.parametrize("option", ("-h", "--help"))
 # def test_help(capsys, option):
 #     try:

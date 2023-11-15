@@ -28,12 +28,11 @@ COLUMNS = [
     "deathplace",
     "burial",
     "plot",
-    "coords" "more_info",
+    "coords",
+    "more_info",
 ]
 
 log_level = DEFAULT_LOG_LEVEL
-csvwriter = None
-problemchilds = []
 parsed_args = None
 
 app = typer.Typer(add_completion=False)
@@ -128,9 +127,9 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
     # out = "Successfully parsed " + str(parsed) + " of "
     # out += str(len(urls))
     # print(out)
-    if len(problemchilds) > 0:
-        print("Problem childz were:")
-        print(*problemchilds, sep="\n")
+    if len(failed_urls) > 0:
+        print("Failed urls were:")
+        print(*failed_urls, sep="\n")
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from urllib.parse import parse_qsl, urlparse
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
+
 from graver.cemetery import Cemetery
 from graver.memorial import Memorial, MemorialMergedException
 

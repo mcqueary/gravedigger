@@ -3,8 +3,8 @@ from urllib.parse import parse_qsl, urlparse
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
-
-from graver.memorial import Memorial, MemorialMergedException
+from cemetery import Cemetery
+from memorial import Memorial, MemorialMergedException
 
 
 class Parser(object):
@@ -18,6 +18,11 @@ class Parser(object):
         with urlopen(req) as response:
             soup = BeautifulSoup(response.read(), "lxml")
         return soup
+
+    @staticmethod
+    def parse_canonical_link(soup):
+        link = soup.find("link", rel=re.compile("canonical"))["href"]
+        return link
 
 
 class MemorialParser(Parser):
@@ -46,11 +51,6 @@ class MemorialParser(Parser):
                         if anchor is not None:
                             merged_url = p.find("a").get("href")
         return merged, merged_url
-
-    @staticmethod
-    def parse_canonical_link(soup):
-        link = soup.find("link", rel=re.compile("canonical"))["href"]
-        return link
 
     @staticmethod
     def parse_name(soup):
@@ -182,3 +182,56 @@ class CemeteryParser(Parser):
         super().__init__(
             CemeteryParser.PAGE_URL, CemeteryParser.NAME, CemeteryParser.SEARCH_URL
         )
+
+    @staticmethod
+    def parse_name(soup):
+        name = None
+        result = soup.find("h1", itemprop="name")
+        if result is not None:
+            name = result.get_text().strip()
+        return name
+
+    @staticmethod
+    def parse_location(soup):
+        location = None
+        result = soup.find("span", itemprop="addressLocality")
+        if result is not None:
+            locality = result.get_text().strip()
+            result = soup.find("span", itemprop="addressRegion")
+            if result is not None:
+                region = result.get_text().strip()
+                result = soup.find("span", itemprop="addressCountry")
+                if result is not None:
+                    country = result.get_text().strip()
+                    location = locality + ", " + region + ", " + country
+        return location
+
+    @staticmethod
+    def parse_coords(soup):
+        result = soup.find("span", title="Latitude:")
+        if result is not None:
+            lat = result.get_text()
+        result = soup.find("span", title="Longitude:")
+        if result is not None:
+            lon = result.get_text()
+        coords = lat + "," + lon
+        return coords
+
+    def parse(self, url):
+        """Parse the information from a cemetery information page.
+
+        Args:
+            url (str): A findagrave cemetery URL, e.g.:
+            "https://www.findagrave.com/cemetery/12345/"
+        """
+
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(req) as response:
+            soup = BeautifulSoup(response.read(), "lxml")
+
+        url = CemeteryParser.parse_canonical_link(soup)
+        id = re.match("https://www.findagrave.com/cemetery/([0-9]+)/.*", url).group(1)
+        name = CemeteryParser.parse_name(soup)
+        location = CemeteryParser.parse_location(soup)
+        coords = CemeteryParser.parse_coords(soup)
+        return Cemetery(int(id), url, name, location, coords)

@@ -21,7 +21,8 @@ dynamic = ["version", "description"]
 dependencies = ["bs4==0.0.1", "tqdm==4.66.1"]
 
 [project.optional-dependencies]
-test = ["pytest", "faker", "tox", "coverage", "pytest-cov", "coveralls", "black", "isort"]
+lint = ["black", "flake8", "prettier", "isort"]
+test = ["pytest", "faker", "tox", "coverage", "pytest-cov", "coveralls"]
 
 [project.urls]
 Home = "https://github.com/mcqueary/graver"

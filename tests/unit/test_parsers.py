@@ -5,7 +5,13 @@ from urllib.request import Request, urlopen
 import pytest
 from bs4 import BeautifulSoup
 
-from graver.parsers import MemorialMergedException, MemorialParser
+from graver.parsers import CemeteryParser, MemorialMergedException, MemorialParser
+
+
+def to_uri(relative_path: str):
+    abs_path = os.path.abspath(relative_path)
+    return pathlib.Path(abs_path).as_uri()
+
 
 mixed_urls = [
     "https://www.findagrave.com/cemetery/53514",
@@ -92,3 +98,26 @@ def test_memorial_parser_parse_maiden_name():
     assert maiden == "Bar/Baz"
     maiden = MemorialParser.parse_maiden_name("Dolores Higginbotham")
     assert maiden is None
+
+
+@pytest.mark.parametrize("url", ["./tests/unit/cem-3136.html"])
+def test_cemetery_parser_parse_canonical_link(url):
+    uri = to_uri(url)
+    req = Request(uri, headers={"User-Agent": "Mozilla/5.0"})
+    with urlopen(req) as response:
+        soup = BeautifulSoup(response.read(), "lxml")
+    link = CemeteryParser.parse_canonical_link(soup)
+    assert link == "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park"
+
+
+@pytest.mark.parametrize("url", ["./tests/unit/cem-3136.html"])
+def test_cemetery_parser_scrape(url):
+    uri = to_uri(url)
+    cem = CemeteryParser().parse(uri)
+    assert cem.id == 3136
+    assert cem.name == "Crown Hill Memorial Park"
+    assert (
+        cem.url == "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park"
+    )
+    assert cem.location == "Dallas, Dallas County, Texas, USA"
+    assert cem.coords == "32.86780,-96.86220"

@@ -3,8 +3,8 @@ import tempfile
 
 import pytest
 
-from memorial import Memorial
-from cemetery import Cemetery
+from graver.memorial import Memorial
+from graver.cemetery import Cemetery
 
 
 @pytest.fixture(autouse=True)

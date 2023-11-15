@@ -1,6 +1,5 @@
-# import os
 import sqlite3
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 
 class CemeteryException(Exception):
@@ -16,7 +15,19 @@ class Cemetery:
     name: str
     location: str
     coords: str
-    
+
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return False
+        return self.__dict__ == other.__dict__
+
+    @classmethod
+    def from_dict(cls, d):
+        return Cemetery(**d)
+
+    def to_dict(self):
+        return asdict(self)
+
     @classmethod
     def create_table(cls, database_name="graves.db"):
         conn = sqlite3.connect(database_name)

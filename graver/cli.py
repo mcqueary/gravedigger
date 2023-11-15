@@ -63,8 +63,7 @@ def get_id_from_url(url: str):
         result = re.match(new_style, url).group(1)
     return result
 
-
-def get_urls_from_gedcom(gedfile: str):
+    # def get_urls_from_gedcom(gedfile: str):
     # TODO add gedcom input support
     # # read from gedcom
     # with open('tree.ged', encoding='utf8') as ged:
@@ -77,7 +76,7 @@ def get_urls_from_gedcom(gedfile: str):
     #                         graveids.append(unit[5:-1])
     #                         #print(graveids[numids])
     #                         numids+=1
-    return
+    # return
 
 
 @app.command()
@@ -118,7 +117,7 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
             MemorialParser().parse(url).save()
             parsed += 1
         except MemorialMergedException as ex:
-            log.warn(ex)
+            log.warning(ex)
         except Exception as ex:
             out = "Unable to parse Memorial []" + url + "]!"
             log.error(out, ex)
@@ -130,8 +129,8 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
     # out += str(len(urls))
     # print(out)
     if len(problemchilds) > 0:
-        out = "Problem childz were:" + problemchilds
-        print(out)
+        print("Problem childz were:")
+        print(*problemchilds, sep="\n")
 
 
 if __name__ == "__main__":

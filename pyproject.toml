@@ -18,7 +18,7 @@ classifiers = [
 ]
 requires-python = ">=3.7"
 dynamic = ["version", "description"]
-dependencies = ["bs4==0.0.1", "tqdm==4.66.1"]
+dependencies = ["beautifulsoup4==4.12.2", "tqdm==4.66.1"]
 
 [project.optional-dependencies]
 lint = ["black", "flake8", "prettier", "isort"]

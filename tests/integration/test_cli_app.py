@@ -3,8 +3,7 @@ import os
 import pytest
 
 from graver.cli import scrape
-
-# import pytest
+from graver.memorial import Memorial
 
 # @pytest.mark.parametrize(
 #     "args",
@@ -22,14 +21,17 @@ from graver.cli import scrape
 #     assert err == ""
 #     # print(out, err)
 
+live_ids = (1075, 534, 574, 627, 544, 6, 7376621, 95929698, 1347)
+
 
 @pytest.mark.parametrize(
-    "filename",
+    "mem_id",
     [
-        "input-1.txt",
+        1075,
     ],
 )
-def test_cli_scrape_with_input_1(filename):
-    # TODO test for something here, rather than just db existence
+def test_cli_scrape_with_single_url_file(mem_id):
+    filename = os.getenv("SINGLE_LINE_FILENAME")
     scrape(filename)
-    assert os.path.exists(os.getenv("DATABASE_NAME"))
+    m = Memorial.get_by_id(mem_id)
+    assert m.id == mem_id

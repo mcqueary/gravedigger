@@ -8,7 +8,6 @@ from graver.cemetery import Cemetery
 from graver.memorial import Memorial
 
 pytest_plugins = ["helpers_namespace"]
-# pytest_plugins = ["pytester"]
 
 
 @pytest.helpers.register
@@ -40,8 +39,19 @@ live_urls = [
 
 
 @pytest.fixture(autouse=True)
-def sample_text_file():
+def single_line_text_file():
     _, file_name = tempfile.mkstemp()
+    os.environ["SINGLE_LINE_FILENAME"] = file_name
+    with open(file_name, "w") as f:
+        f.write(live_urls[0])
+    yield
+    os.unlink(file_name)
+
+
+@pytest.fixture(autouse=True)
+def multi_line_text_file():
+    _, file_name = tempfile.mkstemp()
+    os.environ["MULTI_LINE_FILENAME"] = file_name
     with open(file_name, "w") as f:
         f.write("\n".join(live_urls))
     yield

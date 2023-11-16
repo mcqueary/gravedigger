@@ -44,6 +44,20 @@ class Memorial:
     coords: str
     more_info: bool
 
+    COLUMNS = [
+        "id",
+        "url",
+        "name",
+        "birth",
+        "birthplace",
+        "death",
+        "deathplace",
+        "burial",
+        "plot",
+        "coords",
+        "more_info",
+    ]
+
     def __eq__(self, other):
         if self.__class__ != other.__class__:
             return False

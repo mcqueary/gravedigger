@@ -1,3 +1,4 @@
+import importlib.metadata
 import logging as log
 import os
 import re
@@ -8,7 +9,6 @@ import typer
 from tqdm import tqdm
 from typing_extensions import Annotated
 
-import graver
 from graver.memorial import Memorial, MemorialMergedException
 from graver.parsers import MemorialParser
 
@@ -35,7 +35,27 @@ COLUMNS = [
 log_level = DEFAULT_LOG_LEVEL
 parsed_args = None
 
+
+def version_callback(value: bool):
+    """Return version of graver application"""
+    if value:
+        metadata = importlib.metadata.metadata("graver")
+        name_str = metadata["Name"]
+        version_str = metadata["Version"]
+        print("{} v{}".format(name_str, version_str))
+        raise typer.Exit()
+
+
 app = typer.Typer(add_completion=False)
+
+
+@app.callback()
+def common(
+    ctx: typer.Context,
+    version: bool = typer.Option(None, "--version", callback=version_callback),
+):
+    pass
+
 
 # TODO: Add support for log level DEBUG, INFO, WARNING, ERROR, CRITICAL
 # Configure logging
@@ -54,9 +74,9 @@ app = typer.Typer(add_completion=False)
 
 def get_id_from_url(url: str):
     result = None
-    old_style = ".*?GRid=([0-9]+)$"
-    new_style = MemorialParser.DEFAULT_URL_FORMAT.format("([0-9]+)")
-    if "GRid=" in url:  # oldstyle URL format
+    old_style = ".*?GRid=([0-9]+)/?$"
+    new_style = MemorialParser.DEFAULT_URL_FORMAT.format("([0-9]+)/?")
+    if re.match(old_style, url):  # oldstyle URL format
         result = int(re.match(old_style, url).group(1))
     elif re.match(new_style, url):
         result = int(re.match(new_style, url).group(1))
@@ -79,12 +99,6 @@ def get_id_from_url(url: str):
 
 
 @app.command()
-def version():
-    """Return version of graver application"""
-    print(graver.__version__)
-
-
-@app.command()
 def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] = None):
     """Scrape URLs from a file"""
     print(f"Input file: {input_filename}")
@@ -102,9 +116,9 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
     # Main loop
     with open(input_filename) as file:
         while line := file.readline():
-            # currid = re.match(".*?([0-9]+)$", line).group(1)
-            # currid = get_id_from_url(line)
             line = line.strip()
+            if re.match("^[0-9]+$", line):  # id only
+                line = MemorialParser.DEFAULT_URL_FORMAT.format(line)
             if line not in urls:
                 urls.append(line)
 

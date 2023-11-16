@@ -17,6 +17,7 @@ def to_uri(abs_path: str):
 
 @pytest.fixture(autouse=True)
 def database():
+    """Creates an empty graver database as a tempfile"""
     _, file_name = tempfile.mkstemp()
     os.environ["DATABASE_NAME"] = file_name
     Memorial.create_table(database_name=file_name)
@@ -40,6 +41,7 @@ live_urls = [
 
 @pytest.fixture(autouse=True)
 def single_line_text_file():
+    """Creates a text file containing a single memorial URL"""
     _, file_name = tempfile.mkstemp()
     os.environ["SINGLE_LINE_FILENAME"] = file_name
     with open(file_name, "w") as f:
@@ -50,6 +52,7 @@ def single_line_text_file():
 
 @pytest.fixture(autouse=True)
 def multi_line_text_file():
+    """Creates a text file containing several memorial URLs, one per line"""
     _, file_name = tempfile.mkstemp()
     os.environ["MULTI_LINE_FILENAME"] = file_name
     with open(file_name, "w") as f:

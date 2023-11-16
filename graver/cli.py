@@ -18,19 +18,7 @@ DEFAULT_OUTPUT_FILE = sys.stdout
 DEFAULT_LOG_LINE_FMT = "%(asctime)s %(levelname)s %(message)s"
 DEFAULT_LOG_DATE_FMT = "%m/%d/%Y %I:%M:%S %p"
 DEFAULT_LOG_LEVEL = "INFO"
-COLUMNS = [
-    "id",
-    "url",
-    "name",
-    "birth",
-    "birthplace",
-    "death",
-    "deathplace",
-    "burial",
-    "plot",
-    "coords",
-    "more_info",
-]
+
 
 log_level = DEFAULT_LOG_LEVEL
 parsed_args = None

@@ -21,7 +21,7 @@ dynamic = ["version", "description"]
 dependencies = ["beautifulsoup4==4.12.2", "tqdm==4.66.1"]
 
 [project.optional-dependencies]
-lint = ["black", "flake8", "prettier", "isort"]
+lint = ["black", "flake8", "isort"]
 test = ["pytest", "faker", "tox", "coverage", "pytest-cov", "coveralls"]
 
 [project.urls]

@@ -27,7 +27,7 @@ class Parser(object):
 
 
 class MemorialParser(Parser):
-    DEFAULT_URL_FORMAT = "https://www.findagrave.com/memorial/{}/"
+    DEFAULT_URL_FORMAT = "https://www.findagrave.com/memorial/{}"
     PAGE_URL = "http://www.findagrave.com/memorial"
     NAME = "Memorial Search"
     SEARCH_URL = "search?"

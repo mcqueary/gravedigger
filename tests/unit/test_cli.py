@@ -1,6 +1,6 @@
 import pytest
 
-import cli
+from graver import cli
 
 # @pytest.mark.parametrize("option", ("-h", "--help"))
 # def test_help(capsys, option):

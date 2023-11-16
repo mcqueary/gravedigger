@@ -57,9 +57,9 @@ def get_id_from_url(url: str):
     old_style = ".*?GRid=([0-9]+)$"
     new_style = MemorialParser.DEFAULT_URL_FORMAT.format("([0-9]+)")
     if "GRid=" in url:  # oldstyle URL format
-        result = re.match(old_style, url).group(1)
+        result = int(re.match(old_style, url).group(1))
     elif re.match(new_style, url):
-        result = re.match(new_style, url).group(1)
+        result = int(re.match(new_style, url).group(1))
     return result
 
     # def get_urls_from_gedcom(gedfile: str):

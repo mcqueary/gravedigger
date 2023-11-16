@@ -10,7 +10,7 @@ from graver.parsers import MemorialParser
         "https://www.findagrave.com/memorial/534",
     ],
 )
-def test_memorial_scrape(url):
+def test_memorial_parser_parse(url):
     memorial = MemorialParser().parse(url)
     assert memorial.id == 534
     assert memorial.name == "Andrew Jackson"

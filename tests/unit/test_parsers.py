@@ -6,11 +6,11 @@ from bs4 import BeautifulSoup
 from definitions import ROOT_DIR
 from graver.parsers import CemeteryParser, MemorialMergedException, MemorialParser
 
-asimov_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/asimov.html")
-shoulders_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/shoulders.html")
-merged_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/merged.html")
-maiden_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/dolores-maiden.html")
-cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/cem-3136.html")
+asimov_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/data/asimov.html")
+shoulders_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/data/shoulders.html")
+merged_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/data/merged.html")
+maiden_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/data/dolores-maiden.html")
+cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/unit/data/cem-3136.html")
 
 mixed_urls = [
     "https://www.findagrave.com/cemetery/53514",

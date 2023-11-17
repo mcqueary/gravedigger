@@ -20,7 +20,7 @@ $ pip install -r requirements.txt
 ## Usage
 ### Install
 ```shell
-$ pip install -m graver
+$ pip install -e graver
 ````
 ### Scrape
 ```sh
@@ -38,7 +38,7 @@ sqlite> .output graves.csv
 sqlite> select * from graves;
 sqlite> .quit
 ```
-Alternatively, you can do exactly the same thing by running a shell script like the following (this script is available in `bin/export.sh`:
+Alternatively, you can do exactly the same thing by running a shell script like the following (this script is provided in `bin/export.sh`):
 ```shell
 #!/bin/sh
 sqlite3 graves.db <<EOF

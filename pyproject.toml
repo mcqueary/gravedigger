@@ -31,3 +31,6 @@ graver = "graver.cli:app"
 
 [tool.setuptools.dynamic]
 version = {attr = "package.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,5 +1,6 @@
 import pytest
-from parsers import MemorialParser
+
+from graver.parsers import MemorialParser
 
 
 @pytest.mark.parametrize(

@@ -2,9 +2,9 @@ from urllib.request import Request, urlopen
 
 import pytest
 from bs4 import BeautifulSoup
+from parsers import CemeteryParser, MemorialMergedException, MemorialParser
 
 from definitions import ROOT_DIR
-from graver.parsers import CemeteryParser, MemorialMergedException, MemorialParser
 
 asimov_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/asimov.html")
 shoulders_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/shoulders.html")

@@ -1,10 +1,9 @@
 import importlib.metadata
 
+import cli
 import pytest
+from cli import app
 from typer.testing import CliRunner
-
-from graver import cli
-from graver.cli import app
 
 runner = CliRunner()
 

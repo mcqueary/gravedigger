@@ -6,11 +6,10 @@ import sys
 from typing import Optional
 
 import typer
+from memorial import Memorial, MemorialMergedException
+from parsers import MemorialParser
 from tqdm import tqdm
 from typing_extensions import Annotated
-
-from graver.memorial import Memorial, MemorialMergedException
-from graver.parsers import MemorialParser
 
 # Constants
 DEFAULT_DB_FILE_NAME = "graves.db"

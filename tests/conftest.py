@@ -4,8 +4,8 @@ import tempfile
 
 import pytest
 
-from graver.cemetery import Cemetery
-from graver.memorial import Memorial
+from cemetery import Cemetery
+from memorial import Memorial
 
 pytest_plugins = ["helpers_namespace"]
 

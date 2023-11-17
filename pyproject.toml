@@ -20,9 +20,9 @@ requires-python = ">=3.8"
 dependencies = ["beautifulsoup4==4.12.2", "lxml==4.9.3", "tqdm==4.66.1", "typer==0.9.0"]
 
 [project.optional-dependencies]
-lint = ["black", "flake8", "isort"]
-test = ["pytest", "faker", "coverage", "pytest-cov", "coveralls"]
-
+dev = ["black", "isort"]
+test = ["coveralls", "flake8", "isort", "pytest", "faker", "coverage", "pytest-cov"]
+deploy = ["python-semantic-release"]
 [project.urls]
 Home = "https://github.com/mcqueary/graver"
 

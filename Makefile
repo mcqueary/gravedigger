@@ -1,13 +1,15 @@
-.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean
+.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
 mkfile_path := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-PYTHONPATH:=$(PYTHONPATH):$(mkfile_path)src/
+PYTHONPATH:=$(PYTHONPATH):$(mkfile_path)
 
 VENV?=.venv
 PIP=$(VENV)/bin/pip
 PY=$(VENV)/bin/python
+
+all: ; $(info $$PYTHONPATH is [${PYTHONPATH}])
 
 help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -18,10 +20,10 @@ cov: ## run pytest coverage report
 run: ## sample run
 	. $(VENV)/bin/activate && $(PY) graver/app.py -i input.txt
 
-test-unit:
+test-unit: $(info $$PYTHONPATH is [${PYTHONPATH}])
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/unit
 
-test-integration:
+test-integration: $(info $$PYTHONPATH is [${PYTHONPATH}])
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/integration
 
 test: test-unit test-integration

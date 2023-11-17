@@ -1,5 +1,6 @@
 import pytest
-from memorial import Memorial
+
+from graver.memorial import Memorial
 
 person_js: dict = {
     "id": 12345,

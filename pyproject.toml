@@ -4,6 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "graver"
+dynamic = ["version", "description"]
 authors = [{ name = "Larry McQueary", email = "contact@mcqueary.org" }]
 classifiers = [
   "License :: OSI Approved :: MIT License",
@@ -17,7 +18,6 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
 ]
 requires-python = ">=3.7"
-dynamic = ["version", "description"]
 dependencies = ["beautifulsoup4==4.12.2", "tqdm==4.66.1"]
 
 [project.optional-dependencies]
@@ -29,3 +29,6 @@ Home = "https://github.com/mcqueary/graver"
 
 [project.scripts]
 graver = "graver.cli:app"
+
+[tool.setuptools.dynamic]
+version = {attr = "package.__version__"}

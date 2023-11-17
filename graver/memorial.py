@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from dataclasses import MISSING, Field, asdict, dataclass
+from dataclasses import asdict, dataclass
 
 
 class MemorialException(Exception):
@@ -23,16 +23,7 @@ class NotFound(MemorialException):
 class Memorial:
     """Class for keeping track of a Find A Grave memorial."""
 
-    id: int = Field(
-        default=MISSING,
-        default_factory=MISSING,
-        repr=True,
-        hash=None,
-        init=True,
-        compare=False,
-        metadata=None,
-        kw_only=MISSING,
-    )
+    id: int
     url: str
     name: str
     birth: str

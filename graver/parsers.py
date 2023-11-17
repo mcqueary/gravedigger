@@ -14,12 +14,6 @@ class Parser(object):
         self.name = name
         self.search_url = search_url
 
-    def get_soup(url):
-        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urlopen(req) as response:
-            soup = BeautifulSoup(response.read(), "lxml")
-        return soup
-
     @staticmethod
     def parse_canonical_link(soup):
         link = soup.find("link", rel=re.compile("canonical"))["href"]

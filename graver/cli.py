@@ -40,7 +40,12 @@ app = typer.Typer(add_completion=False)
 @app.callback()
 def common(
     ctx: typer.Context,
-    version: bool = typer.Option(None, "--version", callback=version_callback),
+    version: bool = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        help="Return version of graver application.",
+    ),
 ):
     pass
 

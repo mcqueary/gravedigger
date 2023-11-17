@@ -5,7 +5,6 @@ click==8.1.7
 coverage==6.5.0
 coveralls==3.3.1
 docopt==0.6.2
--e git+ssh://git@github.com/mcqueary/graver.git@3e95326f582dc863fd557f167e8fc92c3d33f8d8#egg=graver
 idna==3.4
 iniconfig==2.0.0
 lxml==4.9.3

@@ -1,9 +1,8 @@
 import os
 
 import pytest
-
-from graver.cli import scrape
-from graver.memorial import Memorial
+from cli import scrape
+from memorial import Memorial
 
 # @pytest.mark.parametrize(
 #     "args",

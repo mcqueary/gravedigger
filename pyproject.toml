@@ -1,6 +1,6 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["graver"]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "graver"
@@ -26,11 +26,42 @@ deploy = ["python-semantic-release"]
 [project.urls]
 Home = "https://github.com/mcqueary/graver"
 
-[project.scripts]
-graver = "graver.cli:app"
-
 [tool.setuptools.dynamic]
 version = {attr = "package.__version__"}
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+version_files = [
+    "src/__version__.py",
+    "pyproject.toml:version"
+]
+update_changelog_on_bump = true
+style = [
+    ["qmark", "fg:#ff9d00 bold"],
+    ["question", "bold"],
+    ["answer", "fg:#ff9d00 bold"],
+    ["pointer", "fg:#ff9d00 bold"],
+    ["highlighted", "fg:#ff9d00 bold"],
+    ["selected", "fg:#cc5454"],
+    ["separator", "fg:#cc5454"],
+    ["instruction", ""],
+    ["text", ""],
+    ["disabled", "fg:#858585 italic"]
+]
+
+[tool.poetry]
+name = "graver"
+version = "0.1.0"
+description = ""
+authors = ["Larry McQueary <contact@mcqueary.org>"]
+readme = "README.md"
+packages = [{include = "graver"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.scripts]
+graver = "graver.cli:app"
+
+

@@ -16,18 +16,16 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.8.1"
 dependencies = ["beautifulsoup4==4.12.2", "lxml==4.9.3", "tqdm==4.66.1", "typer==0.9.0"]
 
-[project.optional-dependencies]
-dev = ["black", "isort"]
-test = ["coveralls", "flake8", "isort", "pytest", "faker", "coverage", "pytest-cov"]
-deploy = ["python-semantic-release"]
 [project.urls]
 Home = "https://github.com/mcqueary/graver"
 
+
 [tool.setuptools.dynamic]
 version = {attr = "package.__version__"}
+
 
 [tool.commitizen]
 name = "cz_conventional_commits"
@@ -50,6 +48,7 @@ style = [
     ["disabled", "fg:#858585 italic"]
 ]
 
+
 [tool.poetry]
 name = "graver"
 version = "0.1.0"
@@ -58,10 +57,28 @@ authors = ["Larry McQueary <contact@mcqueary.org>"]
 readme = "README.md"
 packages = [{include = "graver"}]
 
+
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8.1,<4.0"
+beautifulsoup4 = "4.12.2"
+lxml = "4.9.3"
+tqdm = "4.66.1"
+typer = "0.9.0"
+
+
+[tool.poetry.group.test.dependencies]
+coverage = ">=4.1,<6.0.dev0 || >6.1,<6.1.1 || >6.1.1,<7.0"
+faker = "^20.0.3"
+flake8 = "^6.1.0"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+coveralls = "^3.3.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+isort = "^5.12.0"
+
 
 [tool.poetry.scripts]
 graver = "graver.cli:app"
-
-

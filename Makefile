@@ -4,6 +4,7 @@
 # see also https://stackoverflow.com/a/18137056
 mkfile_path := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 PYTHONPATH:=$(PYTHONPATH):$(mkfile_path):$(mkfile_path)graver
+PACKAGES:=graver
 
 VENV?=.venv
 PIP=$(VENV)/bin/pip
@@ -29,14 +30,15 @@ test-integration: $(info $$PYTHONPATH is [${PYTHONPATH}])
 test: test-unit test-integration
 
 lint: ## run flake8 to check the code
-	. $(VENV)/bin/activate && flake8 --max-line-length 88 src tests
+	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
+	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 install-editable:
 	. $(VENV)/bin/activate && pip install -e .
 
 fmt: ## run black to format the code
-	. $(VENV)/bin/activate && isort src tests
-	. $(VENV)/bin/activate && black -q --line-length 88 src tests
+	. $(VENV)/bin/activate && isort $(PACKAGES) tests
+	. $(VENV)/bin/activate && black -q --line-length 88 $(PACKAGES) tests
 
 $(VENV)/init: ## init the virtual environment
 	python3 -m venv $(VENV)

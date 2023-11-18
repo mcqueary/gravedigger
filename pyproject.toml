@@ -74,6 +74,7 @@ pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
 pytest-helpers-namespace = "^2021.12.29"
 coveralls = "^3.3.1"
+pytest-integration = "^0.2.3"
 
 
 [tool.poetry.group.dev.dependencies]

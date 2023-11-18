@@ -3,6 +3,7 @@ import pytest
 from graver.parsers import MemorialParser
 
 
+@pytest.mark.integration_test
 @pytest.mark.parametrize(
     "url",
     [

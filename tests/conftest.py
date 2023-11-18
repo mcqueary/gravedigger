@@ -2,12 +2,11 @@ import os
 import pathlib
 import tempfile
 
+pytest_plugins = ["helpers_namespace"]
 import pytest
 
-from cemetery import Cemetery
-from memorial import Memorial
-
-pytest_plugins = ["helpers_namespace"]
+from graver.cemetery import Cemetery
+from graver.memorial import Memorial
 
 
 @pytest.helpers.register

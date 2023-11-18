@@ -617,6 +617,25 @@ pytest = ">=4.6"
 testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtualenv"]
 
 [[package]]
+name = "pytest-helpers-namespace"
+version = "2021.12.29"
+description = "Pytest Helpers Namespace Plugin"
+optional = false
+python-versions = ">=3.5.6"
+files = [
+    {file = "pytest-helpers-namespace-2021.12.29.tar.gz", hash = "sha256:792038247e0021beb966a7ea6e3a70ff5fcfba77eb72c6ec8fd6287af871c35b"},
+    {file = "pytest_helpers_namespace-2021.12.29-py3-none-any.whl", hash = "sha256:d5c0262642998437a73d85cb6ae0db57d574facc551c4a4695e92ec50469eb98"},
+]
+
+[package.dependencies]
+pytest = ">=6.0.0"
+
+[package.extras]
+changelog = ["towncrier (==21.9.0rc1)"]
+docs = ["furo", "sphinx", "sphinx-copybutton", "sphinx-prompt", "sphinxcontrib-spelling", "sphinxcontrib-towncrier (>=0.2.0a0)", "towncrier (==21.3.0)"]
+lint = ["black", "pyenchant", "pylint (==2.12.2)", "reorder-python-imports"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -755,4 +774,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0"
-content-hash = "2fa02a6d54a3d181603fd0902c3eb790440ef6ceee274794708c9412b7365ef5"
+content-hash = "4c102be3b15e118e48724990fee3d1f8df244a0c43f3f8dabf8672ab88383a97"

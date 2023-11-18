@@ -91,7 +91,7 @@ def get_id_from_url(url: str):
     # return
 
 
-def print_failed_urls(urls: list[str]):
+def print_failed_urls(urls: list):
     if len(urls) > 0:
         print("Failed urls were:")
         print(*urls, sep="\n")

@@ -24,6 +24,7 @@ from graver.memorial import Memorial
 live_ids = (1075, 534, 574, 627, 544, 6, 7376621, 95929698, 1347)
 
 
+@pytest.mark.integration_test
 @pytest.mark.parametrize(
     "mem_id",
     [

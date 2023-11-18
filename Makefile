@@ -16,16 +16,16 @@ help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 cov: ## run pytest coverage report
-	. $(VENV)/bin/activate && pytest --cov && coveralls
+	. $(VENV)/bin/activate && pytest --cov=graver && coveralls
 
-test-unit: $(info $$PYTHONPATH is [${PYTHONPATH}])
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/unit
+test-unit:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --without-integration
 
-test-integration: $(info $$PYTHONPATH is [${PYTHONPATH}])
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/integration
+test-integration:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --with-integration
 
 test:
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/unit tests/integration
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
 
 lint: ## run flake8 to check the code
 	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics

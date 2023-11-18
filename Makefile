@@ -24,7 +24,8 @@ test-unit: $(info $$PYTHONPATH is [${PYTHONPATH}])
 test-integration: $(info $$PYTHONPATH is [${PYTHONPATH}])
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/integration
 
-test: test-unit test-integration
+test:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/unit tests/integration
 
 lint: ## run flake8 to check the code
 	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics

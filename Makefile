@@ -1,4 +1,4 @@
-.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all
+.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all commitizen
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
@@ -45,6 +45,9 @@ $(VENV)/init: ## init the virtual environment
 $(VENV)/requirements: requirements.txt $(VENV)/init ## install requirements
 	$(PIP) install -r $<
 	touch $@
+
+commitizen:
+	@cz check --commit-msg-file .git/COMMIT_EDITMSG
 
 clean: ## clean up test outputs and other temporary files
 	rm -f *.csv

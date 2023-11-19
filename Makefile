@@ -1,9 +1,10 @@
-.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all
+.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all commitizen
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
 mkfile_path := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-PYTHONPATH:=$(PYTHONPATH):$(mkfile_path)
+PYTHONPATH:=$(PYTHONPATH):$(mkfile_path):$(mkfile_path)graver
+PACKAGES:=graver
 
 VENV?=.venv
 PIP=$(VENV)/bin/pip
@@ -15,28 +16,27 @@ help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 cov: ## run pytest coverage report
-	. $(VENV)/bin/activate && pytest --cov tests/ && coveralls
+	. $(VENV)/bin/activate && pytest --cov=graver && coveralls
 
-run: ## sample run
-	. $(VENV)/bin/activate && $(PY) graver/app.py -i input.txt
+test-unit:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --without-integration
 
-test-unit: $(info $$PYTHONPATH is [${PYTHONPATH}])
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/unit
+test-integration:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --with-integration
 
-test-integration: $(info $$PYTHONPATH is [${PYTHONPATH}])
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO tests/integration
-
-test: test-unit test-integration
+test:
+	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
 
 lint: ## run flake8 to check the code
-	. $(VENV)/bin/activate && flake8 --max-line-length 88 src tests
+	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
+	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 install-editable:
 	. $(VENV)/bin/activate && pip install -e .
 
 fmt: ## run black to format the code
-	. $(VENV)/bin/activate && isort src tests
-	. $(VENV)/bin/activate && black -q --line-length 88 src tests
+	. $(VENV)/bin/activate && isort $(PACKAGES) tests
+	. $(VENV)/bin/activate && black -q --line-length 88 $(PACKAGES) tests
 
 $(VENV)/init: ## init the virtual environment
 	python3 -m venv $(VENV)
@@ -45,6 +45,9 @@ $(VENV)/init: ## init the virtual environment
 $(VENV)/requirements: requirements.txt $(VENV)/init ## install requirements
 	$(PIP) install -r $<
 	touch $@
+
+commitizen:
+	@cz check --commit-msg-file .git/COMMIT_EDITMSG
 
 clean: ## clean up test outputs and other temporary files
 	rm -f *.csv

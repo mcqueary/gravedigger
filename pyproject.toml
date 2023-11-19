@@ -1,6 +1,6 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["graver"]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "graver"
@@ -16,21 +16,73 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.8.1"
 dependencies = ["beautifulsoup4==4.12.2", "lxml==4.9.3", "tqdm==4.66.1", "typer==0.9.0"]
 
-[project.optional-dependencies]
-dev = ["black", "isort"]
-test = ["coveralls", "flake8", "isort", "pytest", "faker", "coverage", "pytest-cov"]
-deploy = ["python-semantic-release"]
 [project.urls]
 Home = "https://github.com/mcqueary/graver"
 
-[project.scripts]
-graver = "graver.cli:app"
 
 [tool.setuptools.dynamic]
 version = {attr = "package.__version__"}
 
-[tool.setuptools.packages.find]
-where = ["src"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+version_files = [
+    "src/__version__.py",
+    "pyproject.toml:version"
+]
+update_changelog_on_bump = true
+style = [
+    ["qmark", "fg:#ff9d00 bold"],
+    ["question", "bold"],
+    ["answer", "fg:#ff9d00 bold"],
+    ["pointer", "fg:#ff9d00 bold"],
+    ["highlighted", "fg:#ff9d00 bold"],
+    ["selected", "fg:#cc5454"],
+    ["separator", "fg:#cc5454"],
+    ["instruction", ""],
+    ["text", ""],
+    ["disabled", "fg:#858585 italic"]
+]
+
+
+[tool.poetry]
+name = "graver"
+version = "0.1.0"
+description = ""
+authors = ["Larry McQueary <contact@mcqueary.org>"]
+readme = "README.md"
+packages = [{include = "graver"}]
+
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+beautifulsoup4 = "4.12.2"
+lxml = "4.9.3"
+tqdm = "4.66.1"
+typer = "0.9.0"
+
+
+[tool.poetry.group.test.dependencies]
+coverage = ">=4.1,<6.0.dev0 || >6.1,<6.1.1 || >6.1.1,<7.0"
+faker = "^20.0.3"
+flake8 = "^6.1.0"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+pytest-helpers-namespace = "^2021.12.29"
+coveralls = "^3.3.1"
+pytest-integration = "^0.2.3"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+isort = "^5.12.0"
+commitizen = "^3.12.0"
+pre-commit = "^3.5.0"
+
+
+[tool.poetry.scripts]
+graver = "graver.cli:app"

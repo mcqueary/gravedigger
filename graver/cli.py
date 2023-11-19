@@ -91,6 +91,12 @@ def get_id_from_url(url: str):
     # return
 
 
+def print_failed_urls(urls: list):
+    if len(urls) > 0:
+        print("Failed urls were:")
+        print(*urls, sep="\n")
+
+
 @app.command()
 def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] = None):
     """Scrape URLs from a file"""
@@ -131,12 +137,6 @@ def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] =
 
     msg = "Successfully parsed {total} of {expected}"
     print(msg.format(total=parsed, expected=len(urls)))
-    # out = "Successfully parsed " + str(parsed) + " of "
-    # out += str(len(urls))
-    # print(out)
-    if len(failed_urls) > 0:
-        print("Failed urls were:")
-        print(*failed_urls, sep="\n")
 
 
 if __name__ == "__main__":

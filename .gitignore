@@ -16,3 +16,4 @@ __pycache__/
 bandit.yaml
 *.txt
 !require*.txt
+dist/

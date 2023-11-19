@@ -3,11 +3,9 @@ import logging as log
 import os
 import re
 import sys
-from typing import Optional
 
 import typer
 from tqdm import tqdm
-from typing_extensions import Annotated
 
 from graver.memorial import Memorial, MemorialMergedException
 from graver.parsers import MemorialParser
@@ -42,6 +40,7 @@ def common(
     ctx: typer.Context,
     version: bool = typer.Option(
         None,
+        "-v",
         "--version",
         callback=version_callback,
         help="Return version of graver application.",
@@ -98,19 +97,17 @@ def print_failed_urls(urls: list):
 
 
 @app.command()
-def scrape(input_filename: str, db: Annotated[Optional[str], typer.Argument()] = None):
+def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
     """Scrape URLs from a file"""
+
+    os.environ["DATABASE_NAME"] = db
+
     print(f"Input file: {input_filename}")
+    print(f"Database file: {db}")
+
+    Memorial.create_table(db)
 
     urls = []
-
-    if db is None:
-        db = os.getenv("DATABASE_NAME")
-        if db is None:
-            db = DEFAULT_DB_FILE_NAME
-    else:
-        os.environ["DATABASE_NAME"] = db
-    Memorial.create_table(db)
 
     # Main loop
     with open(input_filename) as file:

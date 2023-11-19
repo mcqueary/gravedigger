@@ -31,7 +31,7 @@ version = {attr = "package.__version__"}
 name = "cz_conventional_commits"
 version = "0.1.0"
 version_files = [
-    "src/__version__.py",
+    "graver/__init__.py",
     "pyproject.toml:version"
 ]
 update_changelog_on_bump = true

@@ -45,7 +45,7 @@ jobs:
         poetry run flake8 graver tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest and report coverage
       run: |
-        poetry run pytest --cov tests/unit tests/integration
+        poetry run pytest --cov=graver
     - name: Publish to coveralls.io
       uses: coverallsapp/github-action@v2.2.3
       with:

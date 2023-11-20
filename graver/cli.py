@@ -8,17 +8,12 @@ import typer
 from tqdm import tqdm
 
 from graver.memorial import Memorial, MemorialMergedException
-from graver.parsers import MemorialParser
 
 # Constants
 DEFAULT_DB_FILE_NAME = "graves.db"
 DEFAULT_OUTPUT_FILE = sys.stdout
-DEFAULT_LOG_LINE_FMT = "%(asctime)s %(levelname)s %(message)s"
-DEFAULT_LOG_DATE_FMT = "%m/%d/%Y %I:%M:%S %p"
-DEFAULT_LOG_LEVEL = "INFO"
 
 
-log_level = DEFAULT_LOG_LEVEL
 parsed_args = None
 
 
@@ -51,6 +46,9 @@ def common(
 
 # TODO: Add support for log level DEBUG, INFO, WARNING, ERROR, CRITICAL
 # Configure logging
+# DEFAULT_LOG_LINE_FMT = "%(asctime)s %(levelname)s %(message)s"
+# DEFAULT_LOG_DATE_FMT = "%m/%d/%Y %I:%M:%S %p"
+# DEFAULT_LOG_LEVEL = "INFO"
 # log_level = DEFAULT_LOG_LEVEL
 # if log is not None:
 #     log_level = parsed_args.log
@@ -67,7 +65,7 @@ def common(
 def get_id_from_url(url: str):
     result = None
     old_style = ".*?GRid=([0-9]+)/?$"
-    new_style = MemorialParser.DEFAULT_URL_FORMAT.format("([0-9]+)/?")
+    new_style = Memorial.CANONICAL_URL_FORMAT.format("([0-9]+)/?")
     if re.match(old_style, url):  # oldstyle URL format
         result = int(re.match(old_style, url).group(1))
     elif re.match(new_style, url):
@@ -114,26 +112,28 @@ def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--
         while line := file.readline():
             line = line.strip()
             if re.match("^[0-9]+$", line):  # id only
-                line = MemorialParser.DEFAULT_URL_FORMAT.format(line)
+                line = Memorial.CANONICAL_URL_FORMAT.format(line)
             if line not in urls:
                 urls.append(line)
 
-    parsed = 0
+    scraped = 0
     failed_urls = []
     for url in (pbar := tqdm(urls)):
         try:
             pbar.set_postfix_str(url)
-            MemorialParser().parse(url).save()
-            parsed += 1
+            Memorial(url).save()
+            scraped += 1
         except MemorialMergedException as ex:
             log.warning(ex)
-        except Exception as ex:
-            out = "Unable to parse Memorial []" + url + "]!"
-            log.error(out, ex)
+        except Exception:
+            out = "Unable to scrape Memorial [" + url + "]!"
+            # log.error(out, ex.args)
+            print(out)
             failed_urls.append(url)
 
-    msg = "Successfully parsed {total} of {expected}"
-    print(msg.format(total=parsed, expected=len(urls)))
+    msg = "Successfully scraped {total} of {expected}"
+    print(msg.format(total=scraped, expected=len(urls)))
+    print_failed_urls(failed_urls)
 
 
 if __name__ == "__main__":

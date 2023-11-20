@@ -1,4 +1,4 @@
-.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all commitizen
+.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all commitizen coveralls
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
@@ -16,20 +16,23 @@ help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 cov: ## run pytest coverage report
-	. $(VENV)/bin/activate && pytest --cov=graver && coveralls
+	. $(VENV)/bin/activate && pytest --cov=graver --cov-report term-missing
 
-test-unit:
+coveralls: ## report coverage data to coveralls.io
+	. $(VENV)/bin/activate && coveralls
+
+test-unit: ## run pytest unit tests only
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --without-integration
 
-test-integration:
+test-integration: ## run pytest integration tests
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --with-integration
 
-test:
+test: ## run pytest
 	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
 
 lint: ## run flake8 to check the code
 	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
-	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
 install-editable:
 	. $(VENV)/bin/activate && pip install -e .

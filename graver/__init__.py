@@ -6,4 +6,3 @@ from .cemetery import *  # noqa
 from .cli import app  # noqa
 from .constants import *  # noqa
 from .memorial import *  # noqa
-from .parsers import *  # noqa

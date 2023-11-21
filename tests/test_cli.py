@@ -48,7 +48,7 @@ def test_cli_scrape(mem_id, helpers):
     assert "Successfully scraped" in output
     m = Memorial.get_by_id(mem_id)
     assert m is not None
-    assert m.id == mem_id
+    assert m._id == mem_id
 
 
 @pytest.mark.parametrize(
@@ -93,4 +93,4 @@ def test_cli_scrape_with_single_url_file(mem_id, helpers):
     output = helpers.graver_cli(command)
     print(output)
     m = Memorial.get_by_id(mem_id)
-    assert m.id == mem_id
+    assert m._id == mem_id

@@ -14,7 +14,7 @@ cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/cem-3136.html")
 ritchie_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/ritchie.html")
 
 person_gh: dict = {
-    "id": 1784,
+    "_id": 1784,
     "findagrave_url": "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
     "name": "RADM Grace Brewster Hopper",
     "maiden_name": "Murray",
@@ -28,7 +28,7 @@ person_gh: dict = {
     "more_info": True,
 }
 person_dmr: dict = {
-    "id": 78320781,
+    "_id": 78320781,
     "findagrave_url": ritchie_uri,
     "name": "Dennis MacAlistair Ritchie",
     "maiden_name": None,
@@ -61,7 +61,7 @@ def test_memorial(findagrave_url):
 @pytest.mark.parametrize("expected", people)
 def test_memorial_from_dict(expected: dict):
     result = Memorial.from_dict(expected)
-    assert result.id == expected["id"]
+    assert result._id == expected["_id"]
     assert result.findagrave_url == expected["findagrave_url"]
     assert result.name == expected["name"]
     assert result.maiden_name == expected["maiden_name"]
@@ -79,7 +79,7 @@ def test_memorial_from_dict(expected: dict):
 def test_memorial_to_dict(expected: dict):
     m = Memorial.from_dict(expected)
     result = m.to_dict()
-    assert result["id"] == expected["id"]
+    assert result["_id"] == expected["_id"]
     assert result["findagrave_url"] == expected["findagrave_url"]
     assert result["name"] == expected["name"]
     if "maiden_name" in expected:
@@ -98,7 +98,7 @@ def test_memorial_to_dict(expected: dict):
 @pytest.mark.parametrize("expected", people)
 def test_memorial_save(expected: dict):
     result = Memorial.from_dict(expected).save()
-    assert result.id == expected["id"]
+    assert result._id == expected["_id"]
     assert result.findagrave_url == expected["findagrave_url"]
     assert result.name == expected["name"]
     assert result.birth == expected["birth"]
@@ -113,7 +113,7 @@ def test_memorial_save(expected: dict):
 
 @pytest.mark.parametrize("expected", people)
 def test_memorial_get_by_id(expected: dict):
-    id: int = expected["id"]
+    id: int = expected["_id"]
     expected_memorial = Memorial.from_dict(expected).save()
     result = Memorial.get_by_id(id)
     assert result == expected_memorial
@@ -147,10 +147,10 @@ def test_memorial_with_coords(findagrave_url):
     assert m.coords != ""
 
 
-@pytest.mark.parametrize("id", [99999, -12345])
-def test_memorial_by_id_not_found(id):
+@pytest.mark.parametrize("_id", [99999, -12345])
+def test_memorial_by_id_not_found(_id):
     with pytest.raises(NotFound):
-        Memorial.get_by_id(id)
+        Memorial.get_by_id(_id)
 
 
 @pytest.mark.integration_test
@@ -174,5 +174,5 @@ def test_memorial_driver_raises_http_error(findagrave_url):
 )
 def test_memorial_live(url):
     memorial = Memorial(url)
-    assert memorial.id == 534
+    assert memorial._id == 534
     assert memorial.name == "Andrew Jackson"

@@ -39,7 +39,7 @@ class Memorial:
     """Class for keeping track of a Find A Grave memorial."""
 
     findagrave_url: str
-    id: int
+    _id: int
     name: str
     maiden_name: str
     birth: str
@@ -60,7 +60,7 @@ class Memorial:
 
     # TODO: Use this information
     COLUMNS = [
-        "id",
+        "_id",
         "url",
         "name",
         "maiden_name",
@@ -78,7 +78,7 @@ class Memorial:
         super().__init__()
         # data args
         self.findagrave_url = findagrave_url
-        self.id = kwargs.get("id", None)
+        self._id = kwargs.get("_id", None)
         self.name = kwargs.get("name", None)
         self.maiden_name = kwargs.get("maiden_name", None)
         self.birth = kwargs.get("birth", None)
@@ -215,7 +215,7 @@ class Memorial:
             raise MemorialMergedException(msg)
 
         self.get_canonical_url()
-        self.id = int(re.match(".*/([0-9]+)/.*$", self.url).group(1))
+        self._id = int(re.match(".*/([0-9]+)/.*$", self.url).group(1))
         self.get_name()
         self.get_birth()
         self.get_birth_place()
@@ -231,7 +231,7 @@ class Memorial:
         conn = sqlite3.connect(database_name)
         conn.execute(
             """CREATE TABLE IF NOT EXISTS graves
-            (id INTEGER PRIMARY KEY, findagrave_url TEXT,
+            (_id INTEGER PRIMARY KEY, findagrave_url TEXT,
             name TEXT, maiden_name TEXT, birth TEXT, birthplace TEXT,
             death TEXT, deathplace TEXT, burial TEXT, plot TEXT,
             coords TEXT, more_info BOOL)"""
@@ -241,12 +241,12 @@ class Memorial:
     def save(self) -> "Memorial":
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:
             con.cursor().execute(
-                "INSERT OR REPLACE INTO graves (id,findagrave_url,name,maiden_name,"
+                "INSERT OR REPLACE INTO graves (_id,findagrave_url,name,maiden_name,"
                 + "birth,birthplace,death,"
                 + "deathplace,burial,plot,coords,more_info) VALUES"
                 + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
-                    self.id,
+                    self._id,
                     self.findagrave_url,
                     self.name,
                     self.maiden_name,
@@ -270,7 +270,7 @@ class Memorial:
         con.row_factory = sqlite3.Row
 
         cur = con.cursor()
-        cur.execute("SELECT * FROM graves WHERE id=?", (grave_id,))
+        cur.execute("SELECT * FROM graves WHERE _id=?", (grave_id,))
 
         record = cur.fetchone()
 

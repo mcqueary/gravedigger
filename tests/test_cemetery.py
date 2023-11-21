@@ -24,8 +24,8 @@ list_urls = [
 cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/cem-3136.html")
 
 cem_fake: dict = {
-    "id": 41404,
-    "findagrave_url": "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
+    "_id": 41404,
+    "findagrave_url": "https://www.findagrave.com/cemetery/41404",
     "name": "My Fake Cemetery",
     "location": "Dallas, Dallas, Texas, USA",
     "coords": "38.8775405, -77.0654917",
@@ -35,7 +35,7 @@ cem_fake: dict = {
 @pytest.mark.parametrize("expected", [cem_fake])
 def test_cemetery_from_dict(expected: dict):
     cem = Cemetery.from_dict(expected)
-    assert cem.id == expected["id"]
+    assert cem._id == expected["_id"]
     assert cem.findagrave_url == expected["findagrave_url"]
     assert cem.name == expected["name"]
     assert cem.location == expected["location"]
@@ -46,7 +46,7 @@ def test_cemetery_from_dict(expected: dict):
 def test_cemetery_to_dict(expected: dict):
     c = Cemetery.from_dict(expected)
     result = c.to_dict()
-    assert result["id"] == expected["id"]
+    assert result["_id"] == expected["_id"]
     assert result["findagrave_url"] == expected["findagrave_url"]
     assert result["name"] == expected["name"]
     assert result["location"] == expected["location"]
@@ -59,13 +59,13 @@ def test_cemetery(uri):
     cem2 = Cemetery(uri)
     assert cem == cem2
     cem3 = Cemetery(uri, get=False, scrape=False)
-    cem3.id = 41405
+    cem3._id = 41405
     # test for class inequality
     assert cem3 != 42
     # test for instance inequality
     assert cem3 != cem2
 
-    assert cem.id == 3136
+    assert cem._id == 3136
     assert cem.name == "Crown Hill Memorial Park"
     assert (
         cem.findagrave_url

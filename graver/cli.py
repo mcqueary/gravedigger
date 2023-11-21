@@ -98,23 +98,25 @@ def print_failed_urls(urls: list):
 def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
     """Scrape URLs from a file"""
 
-    os.environ["DATABASE_NAME"] = db
-
     print(f"Input file: {input_filename}")
     print(f"Database file: {db}")
-
-    Memorial.create_table(db)
 
     urls = []
 
     # Main loop
-    with open(input_filename) as file:
-        while line := file.readline():
-            line = line.strip()
-            if re.match("^[0-9]+$", line):  # id only
-                line = Memorial.CANONICAL_URL_FORMAT.format(line)
-            if line not in urls:
-                urls.append(line)
+    try:
+        with open(input_filename) as file:
+            os.environ["DATABASE_NAME"] = db
+            Memorial.create_table(db)
+            while line := file.readline():
+                line = line.strip()
+                if re.match("^[0-9]+$", line):  # id only
+                    line = Memorial.CANONICAL_URL_FORMAT.format(line)
+                if line not in urls:
+                    urls.append(line)
+    except OSError as e:
+        print(str(e))
+        raise typer.Exit(1)
 
     scraped = 0
     failed_urls = []

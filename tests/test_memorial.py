@@ -12,31 +12,32 @@ shoulders_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/shoulders.html")
 maiden_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/dolores-maiden.html")
 cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/cem-3136.html")
 ritchie_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/ritchie.html")
+dolores_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/dolores-maiden.html")
 
 person_gh: dict = {
-    "id": 1784,
+    "_id": 1784,
     "findagrave_url": "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
     "name": "RADM Grace Brewster Hopper",
     "maiden_name": "Murray",
     "birth": "9 Dec 1906",
-    "birthplace": "New York, New York County, New York, USA",
+    "birth_place": "New York, New York County, New York, USA",
     "death": "1 Jan 1992",
-    "deathplace": "Arlington, Arlington County, Virginia, USA",
-    "burial": "Arlington, Arlington County, Virginia, USA",
+    "death_place": "Arlington, Arlington County, Virginia, USA",
+    "burial_type": "Arlington, Arlington County, Virginia, USA",
     "plot": "Section 59, Grave 973, Map grid FF 24.5",
     "coords": "38.8775405, -77.0654917",
     "more_info": True,
 }
 person_dmr: dict = {
-    "id": 78320781,
+    "_id": 78320781,
     "findagrave_url": ritchie_uri,
     "name": "Dennis MacAlistair Ritchie",
     "maiden_name": None,
     "birth": "9 Sep 1941",
-    "birthplace": "Bronxville, Westchester County, New York, USA",
+    "birth_place": "Bronxville, Westchester County, New York, USA",
     "death": "12 Oct 2011",
-    "deathplace": "Berkeley Heights, Union County, New Jersey, USA",
-    "burial": "Burial Details Unknown",
+    "death_place": "Berkeley Heights, Union County, New Jersey, USA",
+    "burial_type": "Burial Details Unknown",
     "plot": None,
     "coords": None,
     "more_info": True,
@@ -46,10 +47,7 @@ people: list = [person_gh, person_dmr]
 
 @pytest.mark.parametrize(
     "findagrave_url",
-    [
-        asimov_uri,
-        shoulders_uri,
-    ],
+    [asimov_uri, hopper_uri, ritchie_uri, shoulders_uri, dolores_uri],
 )
 def test_memorial(findagrave_url):
     memorial = Memorial(findagrave_url)
@@ -61,15 +59,15 @@ def test_memorial(findagrave_url):
 @pytest.mark.parametrize("expected", people)
 def test_memorial_from_dict(expected: dict):
     result = Memorial.from_dict(expected)
-    assert result.id == expected["id"]
+    assert result._id == expected["_id"]
     assert result.findagrave_url == expected["findagrave_url"]
     assert result.name == expected["name"]
     assert result.maiden_name == expected["maiden_name"]
     assert result.birth == expected["birth"]
-    assert result.birthplace == expected["birthplace"]
+    assert result.birth_place == expected["birth_place"]
     assert result.death == expected["death"]
-    assert result.deathplace == expected["deathplace"]
-    assert result.burial == expected["burial"]
+    assert result.death_place == expected["death_place"]
+    assert result.burial_type == expected["burial_type"]
     assert result.plot == expected["plot"]
     assert result.coords == expected["coords"]
     assert result.more_info == expected["more_info"]
@@ -79,17 +77,17 @@ def test_memorial_from_dict(expected: dict):
 def test_memorial_to_dict(expected: dict):
     m = Memorial.from_dict(expected)
     result = m.to_dict()
-    assert result["id"] == expected["id"]
+    assert result["_id"] == expected["_id"]
     assert result["findagrave_url"] == expected["findagrave_url"]
     assert result["name"] == expected["name"]
     if "maiden_name" in expected:
         assert "maiden_name" in result
         assert result["maiden_name"] == expected["maiden_name"]
     assert result["birth"] == expected["birth"]
-    assert result["birthplace"] == expected["birthplace"]
+    assert result["birth_place"] == expected["birth_place"]
     assert result["death"] == expected["death"]
-    assert result["deathplace"] == expected["deathplace"]
-    assert result["burial"] == expected["burial"]
+    assert result["death_place"] == expected["death_place"]
+    assert result["burial_type"] == expected["burial_type"]
     assert result["plot"] == expected["plot"]
     assert result["coords"] == expected["coords"]
     assert result["more_info"] == expected["more_info"]
@@ -98,14 +96,14 @@ def test_memorial_to_dict(expected: dict):
 @pytest.mark.parametrize("expected", people)
 def test_memorial_save(expected: dict):
     result = Memorial.from_dict(expected).save()
-    assert result.id == expected["id"]
+    assert result._id == expected["_id"]
     assert result.findagrave_url == expected["findagrave_url"]
     assert result.name == expected["name"]
     assert result.birth == expected["birth"]
-    assert result.birthplace == expected["birthplace"]
+    assert result.birth_place == expected["birth_place"]
     assert result.death == expected["death"]
-    assert result.deathplace == expected["deathplace"]
-    assert result.burial == expected["burial"]
+    assert result.death_place == expected["death_place"]
+    assert result.burial_type == expected["burial_type"]
     assert result.plot == expected["plot"]
     assert result.coords == expected["coords"]
     assert result.more_info == expected["more_info"]
@@ -113,7 +111,7 @@ def test_memorial_save(expected: dict):
 
 @pytest.mark.parametrize("expected", people)
 def test_memorial_get_by_id(expected: dict):
-    id: int = expected["id"]
+    id: int = expected["_id"]
     expected_memorial = Memorial.from_dict(expected).save()
     result = Memorial.get_by_id(id)
     assert result == expected_memorial
@@ -147,10 +145,10 @@ def test_memorial_with_coords(findagrave_url):
     assert m.coords != ""
 
 
-@pytest.mark.parametrize("id", [99999, -12345])
-def test_memorial_by_id_not_found(id):
+@pytest.mark.parametrize("_id", [99999, -12345])
+def test_memorial_by_id_not_found(_id):
     with pytest.raises(NotFound):
-        Memorial.get_by_id(id)
+        Memorial.get_by_id(_id)
 
 
 @pytest.mark.integration_test
@@ -174,5 +172,5 @@ def test_memorial_driver_raises_http_error(findagrave_url):
 )
 def test_memorial_live(url):
     memorial = Memorial(url)
-    assert memorial.id == 534
+    assert memorial._id == 534
     assert memorial.name == "Andrew Jackson"

@@ -39,14 +39,14 @@ class Memorial:
     """Class for keeping track of a Find A Grave memorial."""
 
     findagrave_url: str
-    id: int
+    _id: int
     name: str
     maiden_name: str
     birth: str
-    birthplace: str
+    birth_place: str
     death: str
-    deathplace: str
-    burial: str
+    death_place: str
+    burial_type: str
     cem_id: int
     plot: str
     coords: str
@@ -60,16 +60,17 @@ class Memorial:
 
     # TODO: Use this information
     COLUMNS = [
-        "id",
+        "_id",
         "url",
         "name",
         "maiden_name",
         "birth",
-        "birthplace",
+        "birth_place",
         "death",
-        "deathplace",
-        "burial",
-        "cem_id" "plot",
+        "death_place",
+        "burial_type",
+        "cem_id",
+        "plot",
         "coords",
         "more_info",
     ]
@@ -78,14 +79,14 @@ class Memorial:
         super().__init__()
         # data args
         self.findagrave_url = findagrave_url
-        self.id = kwargs.get("id", None)
+        self._id = kwargs.get("_id", None)
         self.name = kwargs.get("name", None)
         self.maiden_name = kwargs.get("maiden_name", None)
         self.birth = kwargs.get("birth", None)
-        self.birthplace = kwargs.get("birthplace", None)
+        self.birth_place = kwargs.get("birth_place", None)
         self.death = kwargs.get("death", None)
-        self.deathplace = kwargs.get("deathplace", None)
-        self.burial = kwargs.get("burial", None)
+        self.death_place = kwargs.get("death_place", None)
+        self.burial_type = kwargs.get("burial_type", None)
         self.cem_id = kwargs.get("cem_id", None)
         self.plot = kwargs.get("plot", None)
         self.coords = kwargs.get("coords", None)
@@ -155,10 +156,10 @@ class Memorial:
 
     def get_birth_place(self):
         place = None
-        result = self.soup.find("div", itemprop="birthPlace")
+        result = self.soup.find("div", itemprop="birth_place")
         if result is not None:
             place = result.get_text()
-        self.birthplace = place
+        self.birth_place = place
 
     def get_death(self):
         death_date = None
@@ -169,10 +170,15 @@ class Memorial:
 
     def get_death_place(self):
         place = None
-        result = self.soup.find("div", itemprop="deathPlace")
+        result = self.soup.find("div", itemprop="death_place")
         if result is not None:
             place = result.get_text()
-        self.deathplace = place
+        self.death_place = place
+
+    def get_burial_type(self):
+        """Retrieve burial type, which will be one of "Burial", "Cenotaph" """
+        burial_type = self.soup.find("span", id="cemeteryLabel")
+        self.burial_type = burial_type.get_text()
 
     def get_cemetery_id(self):
         cem_id = None
@@ -181,7 +187,7 @@ class Memorial:
             anchor = div.find("a")
             href = anchor["href"]
             cem_id = int(re.match(".*/([0-9]+)/.*$", href).group(1))
-        self.burial = cem_id
+        self.cem_id = cem_id
 
     def get_coords(self):
         """Returns Google Map coordinates, if any, as a string 'nn.nnnnnnn,nn.nnnnnn'"""
@@ -196,7 +202,7 @@ class Memorial:
             name, latlon = query_args[0]
         self.coords = latlon
 
-    def get_burial_plot(self):
+    def get_plot(self):
         plot = None
         result = self.soup.find("span", id="plotValueLabel")
         if result is not None:
@@ -215,14 +221,15 @@ class Memorial:
             raise MemorialMergedException(msg)
 
         self.get_canonical_url()
-        self.id = int(re.match(".*/([0-9]+)/.*$", self.url).group(1))
+        self._id = int(re.match(".*/([0-9]+)/.*$", self.url).group(1))
         self.get_name()
         self.get_birth()
         self.get_birth_place()
         self.get_death()
         self.get_death_place()
+        self.get_burial_type()
         self.get_cemetery_id()
-        self.get_burial_plot()
+        self.get_plot()
         self.get_coords()
         self.get_more_info()
 
@@ -231,34 +238,42 @@ class Memorial:
         conn = sqlite3.connect(database_name)
         conn.execute(
             """CREATE TABLE IF NOT EXISTS graves
-            (id INTEGER PRIMARY KEY, findagrave_url TEXT,
-            name TEXT, maiden_name TEXT, birth TEXT, birthplace TEXT,
-            death TEXT, deathplace TEXT, burial TEXT, plot TEXT,
-            coords TEXT, more_info BOOL)"""
+            (
+            _id INTEGER PRIMARY KEY,
+            findagrave_url TEXT,
+            name TEXT,
+            maiden_name TEXT,
+            birth TEXT,
+            birth_place TEXT,
+            death TEXT,
+            death_place TEXT,
+            burial_type TEXT,
+            cem_id TEXT,
+            plot TEXT,
+            coords TEXT,
+            more_info BOOL
+            )"""
         )
         conn.close()
 
     def save(self) -> "Memorial":
         with sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db")) as con:
             con.cursor().execute(
-                "INSERT OR REPLACE INTO graves (id,findagrave_url,name,maiden_name,"
-                + "birth,birthplace,death,"
-                + "deathplace,burial,plot,coords,more_info) VALUES"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (
-                    self.id,
-                    self.findagrave_url,
-                    self.name,
-                    self.maiden_name,
-                    self.birth,
-                    self.birthplace,
-                    self.death,
-                    self.deathplace,
-                    self.burial,
-                    self.plot,
-                    self.coords,
-                    self.more_info,
-                ),
+                "INSERT OR REPLACE INTO graves VALUES ("
+                ":_id, "
+                ":findagrave_url, "
+                ":name, "
+                ":maiden_name, "
+                ":birth, "
+                ":birth_place, "
+                ":death, "
+                ":death_place, "
+                ":burial_type, "
+                ":cem_id, "
+                ":plot, "
+                ":coords, "
+                ":more_info)",
+                self.__dict__,
             )
             con.commit()
 
@@ -270,7 +285,7 @@ class Memorial:
         con.row_factory = sqlite3.Row
 
         cur = con.cursor()
-        cur.execute("SELECT * FROM graves WHERE id=?", (grave_id,))
+        cur.execute("SELECT * FROM graves WHERE _id=?", (grave_id,))
 
         record = cur.fetchone()
 

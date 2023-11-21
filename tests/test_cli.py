@@ -17,7 +17,7 @@ cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/cem-3136.html")
 
 
 @pytest.mark.parametrize("arg", ["-v", "--version"])
-def test_version_multiple_ways(helpers, arg):
+def test_cli_version_multiple_ways(helpers, arg):
     assert helpers.graver_cli(arg) == "{} v{}".format(APP_NAME, graver.__version__)
     metadata = importlib.metadata.metadata("graver")
     name_str = metadata["Name"]
@@ -25,6 +25,13 @@ def test_version_multiple_ways(helpers, arg):
     expected_str = "{} v{}".format(name_str, version_str)
     result = helpers.graver_cli(arg)
     assert expected_str in result
+
+
+def test_cli_input_file_does_not_exist(helpers):
+    url_file = "this_file_should_not_exist"
+    command = "scrape {}".format(url_file)
+    output = helpers.graver_cli(command)
+    assert "No such file or directory" in output
 
 
 @pytest.mark.parametrize(
@@ -51,7 +58,7 @@ def test_cli_scrape(mem_id, helpers):
         (544, "https://www.findagrave.com/memorial/544"),
     ],
 )
-def test_get_id_from_url(expected_id: int, url: str):
+def test_cli_get_id_from_url(expected_id: int, url: str):
     id = cli.get_id_from_url(url)
     assert id == expected_id
 
@@ -61,7 +68,7 @@ def test_print_failed_urls(urls):
     cli.print_failed_urls(urls)
 
 
-def test_cli_scrape_with_bad_url_file(helpers):
+def test_cli_scrape_file_with_bad_urls(helpers):
     url_file = os.getenv("BAD_DATA_FILENAME")
     db = os.getenv("DATABASE_NAME")
     command = "scrape {} --db {}".format(url_file, db)

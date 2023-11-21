@@ -25,7 +25,7 @@ class Cemetery:
     """Class for keeping track of a Find A Grave cemetery."""
 
     # data
-    id: int = None
+    _id: int = None
     findagrave_url: str = None
     name: str = None
     location: str = None
@@ -37,7 +37,7 @@ class Cemetery:
     def __init__(self, findagrave_url: str = None, **kwargs):
         super().__init__()
         self.findagrave_url = findagrave_url
-        self.id = kwargs.get("id", None)
+        self._id = kwargs.get("_id", None)
         self.name = kwargs.get("name", None)
         self.location = kwargs.get("location", None)
         self.coords = kwargs.get("coords", None)
@@ -55,7 +55,7 @@ class Cemetery:
 
     def scrape_page(self):
         self.get_canonical_link()
-        self.id = int(
+        self._id = int(
             re.match(
                 "https://www.findagrave.com/cemetery/([0-9]+)/.*", self.findagrave_url
             ).group(1)
@@ -81,7 +81,7 @@ class Cemetery:
         conn = sqlite3.connect(database_name)
         conn.execute(
             """CREATE TABLE IF NOT EXISTS cemeteries
-            (id INTEGER PRIMARY KEY, url TEXT,
+            (_id INTEGER PRIMARY KEY, url TEXT,
             name TEXT, location TEXT, coords TEXT, more_info BOOL)"""
         )
         conn.close()

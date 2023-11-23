@@ -5,6 +5,7 @@ __pycache__/
 *.db
 *.csv
 *.egg-info
+*.json
 .bandit
 .env
 .idea/

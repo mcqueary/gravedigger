@@ -94,3 +94,5 @@ def test_cli_scrape_with_single_url_file(mem_id, helpers):
     print(output)
     m = Memorial.get_by_id(mem_id)
     assert m._id == mem_id
+    # TODO remove this or parametrize it
+    assert m.cemetery_id == 641532

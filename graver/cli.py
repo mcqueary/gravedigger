@@ -124,13 +124,16 @@ def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--
         try:
             pbar.set_postfix_str(url)
             Memorial(url).save()
+            # json_string = json.dumps(m.to_dict(), ensure_ascii=False)
+            # print(json_string)
             scraped += 1
         except MemorialMergedException as ex:
             log.warning(ex)
-        except Exception:
+        except Exception as e:
             out = "Unable to scrape Memorial [" + url + "]!"
             # log.error(out, ex.args)
             print(out)
+            print(str(e))
             failed_urls.append(url)
 
     msg = "Successfully scraped {total} of {expected}"

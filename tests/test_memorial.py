@@ -13,6 +13,7 @@ maiden_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/dolores-maiden.html")
 cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/cem-3136.html")
 ritchie_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/ritchie.html")
 dolores_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/dolores-maiden.html")
+jefferson_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/jefferson.html")
 
 person_gh: dict = {
     "_id": 1784,
@@ -23,7 +24,9 @@ person_gh: dict = {
     "birth_place": "New York, New York County, New York, USA",
     "death": "1 Jan 1992",
     "death_place": "Arlington, Arlington County, Virginia, USA",
-    "burial_type": "Arlington, Arlington County, Virginia, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Arlington National Cemetery, Arlington, "
+    "Arlington County, Virginia, USA",
     "plot": "Section 59, Grave 973, Map grid FF 24.5",
     "coords": "38.8775405, -77.0654917",
     "more_info": True,
@@ -37,7 +40,8 @@ person_dmr: dict = {
     "birth_place": "Bronxville, Westchester County, New York, USA",
     "death": "12 Oct 2011",
     "death_place": "Berkeley Heights, Union County, New Jersey, USA",
-    "burial_type": "Burial Details Unknown",
+    "memorial_type": "Burial",
+    "burial_place": "Burial Details Unknown",
     "plot": None,
     "coords": None,
     "more_info": True,
@@ -47,7 +51,7 @@ people: list = [person_gh, person_dmr]
 
 @pytest.mark.parametrize(
     "findagrave_url",
-    [asimov_uri, hopper_uri, ritchie_uri, shoulders_uri, dolores_uri],
+    [jefferson_uri, asimov_uri, hopper_uri, ritchie_uri, shoulders_uri, dolores_uri],
 )
 def test_memorial(findagrave_url):
     memorial = Memorial(findagrave_url)
@@ -67,7 +71,7 @@ def test_memorial_from_dict(expected: dict):
     assert result.birth_place == expected["birth_place"]
     assert result.death == expected["death"]
     assert result.death_place == expected["death_place"]
-    assert result.burial_type == expected["burial_type"]
+    assert result.memorial_type == expected["memorial_type"]
     assert result.plot == expected["plot"]
     assert result.coords == expected["coords"]
     assert result.more_info == expected["more_info"]
@@ -87,7 +91,7 @@ def test_memorial_to_dict(expected: dict):
     assert result["birth_place"] == expected["birth_place"]
     assert result["death"] == expected["death"]
     assert result["death_place"] == expected["death_place"]
-    assert result["burial_type"] == expected["burial_type"]
+    assert result["memorial_type"] == expected["memorial_type"]
     assert result["plot"] == expected["plot"]
     assert result["coords"] == expected["coords"]
     assert result["more_info"] == expected["more_info"]
@@ -103,7 +107,7 @@ def test_memorial_save(expected: dict):
     assert result.birth_place == expected["birth_place"]
     assert result.death == expected["death"]
     assert result.death_place == expected["death_place"]
-    assert result.burial_type == expected["burial_type"]
+    assert result.memorial_type == expected["memorial_type"]
     assert result.plot == expected["plot"]
     assert result.coords == expected["coords"]
     assert result.more_info == expected["more_info"]
@@ -174,3 +178,28 @@ def test_memorial_live(url):
     memorial = Memorial(url)
     assert memorial._id == 534
     assert memorial.name == "Andrew Jackson"
+    assert memorial.cemetery_id == 641417
+
+
+# def test_memorial_search():
+#     search_url = (
+#         "https://www.findagrave.com/memorial/search?"
+#         "firstname=john"
+#         "&middlename=quincy"
+#         "&lastname=adams"
+#         "&birthyear="
+#         "&birthyearfilter="
+#         "&deathyear="
+#         "&deathyearfilter="
+#         "&location="
+#         "&locationId="
+#         "&memorialid="
+#         "&mcid="
+#         "&linkedToName="
+#         "&datefilter="
+#         "&orderby=r"
+#         "&plot="
+#         "&famous=true"
+#         "&page=1#sr-22633912"
+#     )
+#     parse_qsl(search_url)

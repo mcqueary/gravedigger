@@ -5,6 +5,8 @@ import pytest
 from definitions import ROOT_DIR
 from graver.memorial import Driver, Memorial, MemorialMergedException, NotFound
 
+# from urllib.parse import parse_qsl, urlencode, urlparse
+
 merged_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/merged.html")
 asimov_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/asimov.html")
 hopper_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/hopper.html")
@@ -20,6 +22,9 @@ person_gh: dict = {
     "findagrave_url": "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
     "name": "RADM Grace Brewster Hopper",
     "maiden_name": "Murray",
+    "original_name": None,
+    "famous": True,
+    "veteran": True,
     "birth": "9 Dec 1906",
     "birth_place": "New York, New York County, New York, USA",
     "death": "1 Jan 1992",
@@ -29,13 +34,16 @@ person_gh: dict = {
     "Arlington County, Virginia, USA",
     "plot": "Section 59, Grave 973, Map grid FF 24.5",
     "coords": "38.8775405, -77.0654917",
-    "more_info": True,
+    "has_bio": True,
 }
 person_dmr: dict = {
     "_id": 78320781,
     "findagrave_url": ritchie_uri,
     "name": "Dennis MacAlistair Ritchie",
     "maiden_name": None,
+    "original_name": None,
+    "famous": True,
+    "veteran": False,
     "birth": "9 Sep 1941",
     "birth_place": "Bronxville, Westchester County, New York, USA",
     "death": "12 Oct 2011",
@@ -44,7 +52,7 @@ person_dmr: dict = {
     "burial_place": "Burial Details Unknown",
     "plot": None,
     "coords": None,
-    "more_info": True,
+    "has_bio": True,
 }
 people: list = [person_gh, person_dmr]
 
@@ -67,6 +75,9 @@ def test_memorial_from_dict(expected: dict):
     assert result.findagrave_url == expected["findagrave_url"]
     assert result.name == expected["name"]
     assert result.maiden_name == expected["maiden_name"]
+    assert result.original_name == expected["original_name"]
+    assert result.famous == expected["famous"]
+    assert result.birth == expected["birth"]
     assert result.birth == expected["birth"]
     assert result.birth_place == expected["birth_place"]
     assert result.death == expected["death"]
@@ -74,7 +85,7 @@ def test_memorial_from_dict(expected: dict):
     assert result.memorial_type == expected["memorial_type"]
     assert result.plot == expected["plot"]
     assert result.coords == expected["coords"]
-    assert result.more_info == expected["more_info"]
+    assert result.has_bio == expected["has_bio"]
 
 
 @pytest.mark.parametrize("expected", people)
@@ -87,6 +98,9 @@ def test_memorial_to_dict(expected: dict):
     if "maiden_name" in expected:
         assert "maiden_name" in result
         assert result["maiden_name"] == expected["maiden_name"]
+    assert result["original_name"] == expected["original_name"]
+    assert result["famous"] == expected["famous"]
+    assert result["veteran"] == expected["veteran"]
     assert result["birth"] == expected["birth"]
     assert result["birth_place"] == expected["birth_place"]
     assert result["death"] == expected["death"]
@@ -94,7 +108,7 @@ def test_memorial_to_dict(expected: dict):
     assert result["memorial_type"] == expected["memorial_type"]
     assert result["plot"] == expected["plot"]
     assert result["coords"] == expected["coords"]
-    assert result["more_info"] == expected["more_info"]
+    assert result["has_bio"] == expected["has_bio"]
 
 
 @pytest.mark.parametrize("expected", people)
@@ -103,6 +117,7 @@ def test_memorial_save(expected: dict):
     assert result._id == expected["_id"]
     assert result.findagrave_url == expected["findagrave_url"]
     assert result.name == expected["name"]
+    assert result.original_name == expected["original_name"]
     assert result.birth == expected["birth"]
     assert result.birth_place == expected["birth_place"]
     assert result.death == expected["death"]
@@ -110,7 +125,7 @@ def test_memorial_save(expected: dict):
     assert result.memorial_type == expected["memorial_type"]
     assert result.plot == expected["plot"]
     assert result.coords == expected["coords"]
-    assert result.more_info == expected["more_info"]
+    assert result.has_bio == expected["has_bio"]
 
 
 @pytest.mark.parametrize("expected", people)
@@ -132,8 +147,8 @@ def test_memorial_get_maiden_name(findagrave_url):
 @pytest.mark.parametrize("findagrave_url", [merged_uri])
 def test_memorial_merged(findagrave_url):
     m = Memorial(findagrave_url, scrape=False)
-    merged, new_url = m.check_merged()
-    assert merged is True
+    new_url = m.check_merged()
+    assert new_url != findagrave_url
 
 
 @pytest.mark.parametrize("findagrave_url", [merged_uri])
@@ -181,9 +196,9 @@ def test_memorial_live(url):
     assert memorial.cemetery_id == 641417
 
 
-# def test_memorial_search():
-#     search_url = (
-#         "https://www.findagrave.com/memorial/search?"
+# def test_memorial_search(capsys):
+#     query_root = "https://www.findagrave.com/memorial/search?"
+#     search_qsl = (
 #         "firstname=john"
 #         "&middlename=quincy"
 #         "&lastname=adams"
@@ -202,4 +217,12 @@ def test_memorial_live(url):
 #         "&famous=true"
 #         "&page=1#sr-22633912"
 #     )
-#     parse_qsl(search_url)
+#     query_url = f"{query_root}{search_qsl}"
+#     parsed = urlparse(query_url)
+#     query = parse_qsl(search_qsl)
+#     mew_query
+#     parsed._replace(query=new_query).geturl()
+#     assert query[0]["firstname"] == "John"
+#     new_url = urlencode(query, doseq=True)
+#
+#     assert new_url == search_qsl

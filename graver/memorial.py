@@ -3,7 +3,7 @@ import re
 import sqlite3
 from dataclasses import asdict, dataclass
 from typing import cast
-from urllib.parse import parse_qsl, urlparse
+from urllib.parse import parse_qsl, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup, ResultSet, Tag
@@ -46,6 +46,8 @@ class Memorial:
     name: str
     maiden_name: str
     original_name: str  # for "famous" people
+    famous: bool
+    veteran: bool
     birth: str
     birth_place: str
     death: str
@@ -55,7 +57,7 @@ class Memorial:
     cemetery_id: int
     plot: str
     coords: str
-    more_info: bool
+    has_bio: bool
     # behavior args
     get: bool
     scrape: bool
@@ -69,7 +71,10 @@ class Memorial:
         "url",
         "name",
         "maiden_name",
-        "original_name" "birth",
+        "original_name",
+        "famous",
+        "veteran",
+        "birth",
         "birth_place",
         "death",
         "death_place",
@@ -78,7 +83,7 @@ class Memorial:
         "cemetery_id",
         "plot",
         "coords",
-        "more_info",
+        "has_bio",
     ]
 
     def __init__(self, findagrave_url: str = None, **kwargs):
@@ -89,6 +94,8 @@ class Memorial:
         self.name = kwargs.get("name", None)
         self.maiden_name = kwargs.get("maiden_name", None)
         self.original_name = kwargs.get("original_name", None)
+        self.famous = kwargs.get("famous", False)
+        self.veteran = kwargs.get("veteran", False)
         self.birth = kwargs.get("birth", None)
         self.birth_place = kwargs.get("birth_place", None)
         self.death = kwargs.get("death", None)
@@ -98,7 +105,7 @@ class Memorial:
         self.cemetery_id = kwargs.get("cemetery_id", None)
         self.plot = kwargs.get("plot", None)
         self.coords = kwargs.get("coords", None)
-        self.more_info = kwargs.get("more_info", False)
+        self.has_bio = kwargs.get("has_bio", False)
         # behavior args
         self.get = kwargs.get("get", True)
         self.scrape = kwargs.get("scrape", True)
@@ -127,36 +134,49 @@ class Memorial:
         return d
 
     def check_merged(self):
-        merged = False
         merged_url = None
         popup = self.soup.find("div", class_="cover-page")
         if popup:
-            msg = popup.find("h2").get_text().strip()
-            if msg:
-                if msg == "Memorial has been merged":
-                    merged = True
-                    for p in popup.find_all("p"):
-                        anchor = p.find("a")
-                        if anchor:
-                            merged_url = p.find("a").get("href")
-        return merged, merged_url
+            msg = popup.find("h2").get_text(strip=True)
+            if msg == "Memorial has been merged":
+                for p in popup.find_all("p"):
+                    anchor = p.find("a")
+                    if anchor:
+                        # merged_url = p.find("a").get("href")
+                        new_path: str = p.find("a")["href"]
+                        parsed = urlparse(self.findagrave_url)
+                        merged_url = urlunparse(parsed._replace(path=new_path))
+        return merged_url
 
     def get_canonical_url(self):
-        self.url = self.soup.find("link", rel=re.compile("canonical"))["href"]
+        self.findagrave_url = self.soup.find("link", rel=re.compile("canonical"))[
+            "href"
+        ]
 
-    def get_name(self, bio):
-        name = bio.find("h1", id="bio-name")
-        if name:
-            maiden = name.find("i")
+    def get_headline(self, vitals):
+        h1 = vitals.find("h1", id="bio-name")
+        return h1
+
+    def get_name(self, tag):
+        if tag is not None:
+            maiden = tag.find("i")
             if maiden:
                 self.maiden_name = maiden.get_text()
-            name = name.get_text()
+            name = tag.get_text()
             if maiden:
                 name = name.replace(f" {self.maiden_name} ", " ")
             name = name.replace("Famous memorial", "")
             name = name.replace("VVeteran", "")
             name = name.strip()
             self.name = name
+
+    def get_famous(self, tag):
+        if tag.find("span", title="Famous memorial") is not None:
+            self.famous = True
+
+    def get_veteran(self, tag):
+        if tag.find("span", string=re.compile("Veteran")) is not None:
+            self.veteran = True
 
     def get_birth_info(self, tag: Tag):
         if tag is not None:
@@ -179,19 +199,36 @@ class Memorial:
             if death_place is not None:
                 self.death_place = death_place.get_text()
 
+    def get_coords(self, tag: Tag):
+        """Returns Google Map coordinates, if any, as a string 'nn.nnnnnnn,nn.nnnnnn'"""
+        latlon = None
+        span = tag.find("span", itemtype=re.compile("https://schema.org/Map"))
+        if span is not None:
+            anchor = span.find("a")
+            href = anchor["href"]
+            # just for fun
+            query = urlparse(href).query
+            query_args = parse_qsl(query)
+            name, latlon = query_args[0]
+        self.coords = latlon
+
     def get_burial_info(self, tag: Tag):
-        self.memorial_type = tag.get_text().replace("Read More", "")
+        self.memorial_type = tag.get_text(strip=True).replace("Read More", "")
         dd = tag.find_next("dd")
 
-        place = ""
+        # Coords can exist regardless of burial type (which may be a site bug)
+        self.get_coords(dd)
 
         cemetery: Tag = dd.find("div", itemtype="https://schema.org/Cemetery")
         if cemetery is None:
             if dd.find("span", id="otherPlace") is not None:
-                self.burial_place = dd.find("span", id="otherPlace").get_text().strip()
+                self.burial_place = dd.find("span", id="otherPlace").get_text(
+                    strip=True
+                )
         else:
             self.get_cemetery_id(cemetery)
             cemetery_name = cemetery.find("span", itemprop="name")
+            place = ""
             if cemetery_name is not None:
                 cemetery_name = cemetery_name.get_text()
                 place += f"{cemetery_name}, "
@@ -216,8 +253,6 @@ class Memorial:
                     place += cem_country
                 self.burial_place = place
 
-        self.get_coords(dd)
-
     def get_cemetery_id(self, cem: Tag):
         cemetery_id = None
         if cem is not None:
@@ -225,55 +260,59 @@ class Memorial:
             cemetery_id = int(re.match(".*/([0-9]+)/.*$", href).group(1))
         self.cemetery_id = int(cemetery_id)
 
-    def get_plot_info(self, tag: Tag):
-        if tag is not None:
-            self.plot = tag.find_next("dd").find("span", "plotValueLabel").get_text()
+    def get_plot_info(self, dt: Tag):
+        if dt is not None:
+            self.plot = dt.find_next("dd").get_text(strip=True)
 
-    def get_coords(self, tag: Tag):
-        """Returns Google Map coordinates, if any, as a string 'nn.nnnnnnn,nn.nnnnnn'"""
-        latlon = None
-        span = tag.find("span", itemtype=re.compile("https://schema.org/Map"))
-        if span is not None:
-            anchor = span.find("a")
-            href = anchor["href"]
-            # just for fun
-            query = urlparse(href).query
-            query_args = parse_qsl(query)
-            name, latlon = query_args[0]
-        self.coords = latlon
+    def get_memorial_id(self, dt: Tag):
+        if dt is not None:
+            m_id = dt.find_next("dd").find("span", id="memNumberLabel")
+            self._id = int(m_id.get_text(strip=True))
 
-    def get_more_info(self, bio: BeautifulSoup):
-        self.more_info = False
-
-    def get_bio(self):
+    def get_vitals(self):
         divs: list[BeautifulSoup] = self.soup.find_all("div")
         for div in divs:
             if div.find("h1", id="bio-name"):
                 return div
 
+    def get_has_bio(self):
+        tag = self.soup.find("meta", property="og:description")
+        if tag is not None:
+            self.has_bio = True
+
     def scrape_page(self):
-        merged, new_url = self.check_merged()
-        if merged:
-            msg = "{url} has been merged into {newurl}".format(
-                url=self.findagrave_url, newurl=new_url
-            )
+        self.get_canonical_url()
+
+        new_url = self.check_merged()
+        if new_url is not None:
+            msg = f"{self.findagrave_url} has been merged into {new_url}"
             raise MemorialMergedException(msg)
 
-        self.get_canonical_url()
-        self._id = int(re.match(".*/([0-9]+)/.*$", self.url).group(1))
-        # Get biographical info
-        bio = self.get_bio()
-        self.get_name(bio)
-        dt_list: ResultSet = bio.find("dl").find_all("dt")
-        for dt in dt_list:
-            if dt.find("span", id="birthLabel") is not None:
-                self.get_birth_info(dt)
-            elif dt.find("span", id="deathLabel") is not None:
-                self.get_death_info(dt)
-            elif dt.find("span", id="cemeteryLabel") is not None:
-                self.get_burial_info(dt)
+        self.get_has_bio()
 
-        self.get_more_info(bio)
+        # Get vital statistics and burial info
+        vitals = self.get_vitals()
+        headline = self.get_headline(vitals)
+        self.get_famous(headline)
+        self.get_veteran(headline)
+        self.get_name(headline)
+        dt_list: ResultSet = vitals.find("dl").find_all("dt")
+        for dt in dt_list:
+            text = dt.get_text(strip=True)
+            if text == "Original Name":
+                oname = dt.find_next("dd")
+                self.original_name = oname.get_text()
+            # elif dt.find("span", id="birthLabel") is not None:
+            elif text == "Birth":
+                self.get_birth_info(dt)
+            elif text == "Death":
+                self.get_death_info(dt)
+            elif text == "Burial":
+                self.get_burial_info(dt)
+            elif text == "Plot":
+                self.get_plot_info(dt)
+            elif text == "Memorial ID":
+                self.get_memorial_id(dt)
 
     @classmethod
     def create_table(cls, database_name="graves.db"):
@@ -285,6 +324,9 @@ class Memorial:
                 findagrave_url TEXT,
                 name TEXT,
                 maiden_name TEXT,
+                original_name TEXT,
+                famous BOOL,
+                veteran BOOL,
                 birth TEXT,
                 birth_place TEXT,
                 death TEXT,
@@ -294,7 +336,7 @@ class Memorial:
                 burial_place TEXT,
                 plot TEXT,
                 coords TEXT,
-                more_info BOOL
+                has_bio BOOL
             )"""
         )
         conn.close()
@@ -307,6 +349,9 @@ class Memorial:
                 ":findagrave_url, "
                 ":name, "
                 ":maiden_name, "
+                ":original_name, "
+                ":famous, "
+                ":veteran, "
                 ":birth, "
                 ":birth_place, "
                 ":death, "
@@ -316,7 +361,7 @@ class Memorial:
                 ":burial_place, "
                 ":plot, "
                 ":coords, "
-                ":more_info"
+                ":has_bio"
                 ")",
                 self.__dict__,
             )

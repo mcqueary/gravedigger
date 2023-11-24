@@ -1,8 +1,10 @@
 import importlib.metadata
+import json
 import logging as log
 import os
 import re
 import sys
+from urllib.parse import urlparse
 
 import typer
 from tqdm import tqdm
@@ -14,7 +16,38 @@ DEFAULT_DB_FILE_NAME = "graves.db"
 DEFAULT_OUTPUT_FILE = sys.stdout
 
 
-parsed_args = None
+# TODO: Add support for log level DEBUG, INFO, WARNING, ERROR, CRITICAL
+# Configure logging
+# DEFAULT_LOG_LINE_FMT = "%(asctime)s %(levelname)s %(message)s"
+# DEFAULT_LOG_DATE_FMT = "%m/%d/%Y %I:%M:%S %p"
+# DEFAULT_LOG_LEVEL = "INFO"
+# log_level = DEFAULT_LOG_LEVEL
+# if log is not None:
+#     log_level = parsed_args.log
+# log.basicConfig(
+#     format=DEFAULT_LOG_LINE_FMT, datefmt=DEFAULT_LOG_DATE_FMT, level=log_level
+# )
+# log.debug("Log level is " + str(log_level))
+
+# set up logging to file
+log.basicConfig(
+    filename="graver.log",
+    level=log.INFO,
+    format="[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s",
+    datefmt="%H:%M:%S",
+)
+
+# set up logging to console
+console = log.StreamHandler()
+console.setLevel(log.DEBUG)
+# set a format which is simpler for console use
+formatter = log.Formatter("%(name)-12s: %(levelname)-8s %(message)s")
+console.setFormatter(formatter)
+# add the handler to the root logger
+log.getLogger("").addHandler(console)
+
+log = log.getLogger(__name__)
+######
 
 
 def version_callback(value: bool):
@@ -43,19 +76,6 @@ def common(
 ):
     pass
 
-
-# TODO: Add support for log level DEBUG, INFO, WARNING, ERROR, CRITICAL
-# Configure logging
-# DEFAULT_LOG_LINE_FMT = "%(asctime)s %(levelname)s %(message)s"
-# DEFAULT_LOG_DATE_FMT = "%m/%d/%Y %I:%M:%S %p"
-# DEFAULT_LOG_LEVEL = "INFO"
-# log_level = DEFAULT_LOG_LEVEL
-# if log is not None:
-#     log_level = parsed_args.log
-# log.basicConfig(
-#     format=DEFAULT_LOG_LINE_FMT, datefmt=DEFAULT_LOG_DATE_FMT, level=log_level
-# )
-# log.debug("Log level is " + str(log_level))
 
 # TODO: Add support for output CSV
 # TODO: Add init command
@@ -94,6 +114,21 @@ def print_failed_urls(urls: list):
         print(*urls, sep="\n")
 
 
+def format_url(line):
+    """If this line is only an integer/ID, format it as a URL"""
+    if re.match("^[0-9]+$", line):  # id only
+        line = Memorial.CANONICAL_URL_FORMAT.format(line)
+    return line
+
+
+def uri_validator(uri):
+    try:
+        result = urlparse(uri)
+        return all([result.scheme in ["file", "http", "https"], result.path])
+    except ValueError:
+        return False
+
+
 @app.command()
 def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
     """Scrape URLs from a file"""
@@ -102,25 +137,29 @@ def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--
     print(f"Database file: {db}")
 
     urls = []
+    failed_urls = []
 
     # Main loop
     try:
         with open(input_filename) as file:
             os.environ["DATABASE_NAME"] = db
             Memorial.create_table(db)
-            while line := file.readline():
-                line = line.strip()
-                if re.match("^[0-9]+$", line):  # id only
-                    line = Memorial.CANONICAL_URL_FORMAT.format(line)
-                if line not in urls:
-                    urls.append(line)
+            while line := file.readline().strip():
+                line = format_url(line)
+                if not uri_validator(line):
+                    log.warning(f"{line} is not a valid URL")
+                    failed_urls.append(line)
+                    continue
+                else:
+                    if line not in urls:
+                        urls.append(line)
     except OSError as e:
         print(str(e))
         raise typer.Exit(1)
 
     scraped = 0
-    failed_urls = []
-    for url in (pbar := tqdm(urls)):
+    disable = os.getenv("TQDM_DISABLE")
+    for url in (pbar := tqdm(urls, disable=bool(disable))):
         try:
             pbar.set_postfix_str(url)
             Memorial(url).save()
@@ -136,9 +175,20 @@ def scrape(input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--
             print(str(e))
             failed_urls.append(url)
 
-    msg = "Successfully scraped {total} of {expected}"
-    print(msg.format(total=scraped, expected=len(urls)))
+    print(f"Successfully scraped {scraped} of {len(urls)}")
     print_failed_urls(failed_urls)
+
+
+@app.command()
+def scrape_url(url: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
+    if not uri_validator(url):
+        log.error(f"Invalid URL: [{url}]")
+        raise typer.Exit(1)
+    Memorial.create_table(db)
+    m = Memorial(url).save()
+    json_string = json.dumps(m.to_dict(), ensure_ascii=False)
+    print(json_string)
+    return m
 
 
 if __name__ == "__main__":

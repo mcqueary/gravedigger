@@ -62,6 +62,15 @@ file_urls = [
 
 
 @pytest.fixture(autouse=True)
+def silence_tqdm():
+    os.environ["TQDM_DISABLE"] = "1"
+    os.environ["TQDM_MININTERVAL"] = "5"
+    yield
+    del os.environ["TQDM_DISABLE"]
+    del os.environ["TQDM_MININTERVAL"]
+
+
+@pytest.fixture(autouse=True)
 def text_file_with_bad_url():
     """Creates a text file containing a single memorial URL"""
     _, file_name = tempfile.mkstemp()
@@ -109,7 +118,9 @@ class Helpers:
     @staticmethod
     def graver_cli(command_string):
         command_list = shlex.split(command_string)
-        result = runner.invoke(app, command_list)
+        env = os.environ.copy()
+        env["TQDM_DISABLE"] = "1"
+        result = runner.invoke(app, command_list, env=env)
         output = result.stdout.rstrip()
         return output
 

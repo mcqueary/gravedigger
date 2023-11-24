@@ -52,6 +52,21 @@ def test_cli_scrape(mem_id, helpers):
 
 
 @pytest.mark.parametrize(
+    "url",
+    [
+        "https://www.findagrave.com/memorial/49636099/jacob-wolf",
+    ],
+)
+def test_cli_scrape_url(url, helpers):
+    db = os.getenv("DATABASE_NAME")
+    command = "scrape-url {} --db {}".format(url, db)
+    helpers.graver_cli(command)
+    m = Memorial.get_by_id(49636099)
+    assert m is not None
+    assert m._id == 49636099
+
+
+@pytest.mark.parametrize(
     "expected_id, url",
     [
         (1075, "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1075"),

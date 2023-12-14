@@ -714,87 +714,35 @@ interactions:
         class=\"btn btn-outline-primary send-flowers-button mb-4 mb-md-2\" target=\"_blank\"><span
         class=\"icon-flowers\" aria-hidden=\"true\"></span>Flower Delivery</a>\n    \n
         \   \n        <div class=\"fg-spn-link\"></div>\n    \n\n                                </div>\n\n
-        \                               \n                                    \n\n\n
-        \   <div class=\"native overview-panel col-sm-6 col-lg-12 me-2 me-md-0 d-print-none\">\n
-        \       <h3 class=\"h5 overview-label text-primary\">Records on Ancestry</h3>\n
-        \       <div id=\"nativeAncestrySlot\" class=\"ancestryHints\">\n        <ul
-        class=\"list-group list-unstyled m-0\">\n            \n                <li><a
-        href=\"http://www.ancestry.com/s121023/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D62476%26h%3D4481326161%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Rod Serling</strong></p>\n                            <p class=\"mb-1 lh-sm\">Geneanet
-        Community Trees Index</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"col-sm-1 ms-auto\">\n
-        \                           <span class=\"icon-acom text-success\"></span>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121023/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D60282%26h%3D5395193%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Rod Serling</strong></p>\n                            <p class=\"mb-1 lh-sm\">Indiana,
-        U.S., Marriages, 1810-2001</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"col-sm-1 ms-auto\">\n
-        \                           <span class=\"icon-acom text-success\"></span>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121023/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D2442%26h%3D7606362%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <img
-        src=\"http://mediasvc.ancestry.com/v2/thumbnail/namespaces/2442/media/m-t0627-02499-00753?Client=findagrave-frontend\"
-        itemprop=\"image\" alt=\"\">\n                                \n                            </div>\n
-        \                       </div>\n                        <div class=\"col-sm
-        memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Rod Serling</strong></p>\n                            <p class=\"mb-1 lh-sm\">1940
-        United States Federal Census</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"col-sm-1 ms-auto\">\n
-        \                           <span class=\"icon-acom text-success\"></span>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121023/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D6224%26h%3D29881228%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <img
-        src=\"http://mediasvc.ancestry.com/v2/thumbnail/namespaces/6224/media/4660960_00175?Client=findagrave-frontend\"
-        itemprop=\"image\" alt=\"\">\n                                \n                            </div>\n
-        \                       </div>\n                        <div class=\"col-sm
-        memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Rod Serling</strong></p>\n                            <p class=\"mb-1 lh-sm\">1930
-        United States Federal Census</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"col-sm-1 ms-auto\">\n
-        \                           <span class=\"icon-acom text-success\"></span>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121023/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D61843%26h%3D545842633%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Rod Serling</strong></p>\n                            <p class=\"mb-1 lh-sm\">U.S.,
-        Newspapers.com\u2122 Obituary Index, 1800s-current</p>\n                        </div>\n
-        \                       \n                        \n                        <div
-        class=\"col-sm-1 ms-auto\">\n                            <span class=\"icon-acom
-        text-success\"></span>\n                        </div>\n                        \n
-        \                   </div>\n                </a></li>\n            \n        </ul>\n
-        \       <p class=\"text-center text-muted\"><small>Sponsored by Ancestry</small></p>\n
-        \   </div>\n    </div>\n\n                                \n                            </div>\n
-        \                           \n                                \n\n<input type=\"checkbox\"
-        class=\"closerad\" id=\"closer-cem-mrc-side\">\n<div class=\"fg-prad d-print-none
-        position-relative\">\n    \n    <label for=\"closer-cem-mrc-side\" class=\"btn-close
-        d-sm-none position-absolute top-0 end-0\" aria-label=\"\" tabindex=\"0\"></label>\n
-        \   \n    <div id='cem-mrc-side' class=\"ad-wrapper\"></div>\n    \n    \n
-        \   <p class='ad-text'>Advertisement</p>\n    \n</div>\n\n\n                            \n
+        \                               \n                                    \n<div
+        class=\"native overview-panel col-sm-6 col-lg-12 me-2 me-md-0 d-print-none\">\n
+        \   <h3 class=\"h5 overview-label text-primary\">Explore more</h3>\n    <div
+        id=\"nativeAncestrySlot\">\n        <ul class=\"list-group list-unstyled m-0\">\n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"https://go.newspapers.com/results.php?query=Rod+Serling&xid=1363\">Rod
+        Serling in <b>Newspapers</b></a></li>\n                \n            \n                \n
+        \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
+        ancestry-hint-widget-item\" href=\"https://www.fold3.com/search?docQuery=(keywords:Rod+Serling)&xid=2114\">Rod
+        Serling in <b>Military Records</b></a></li>\n                \n            \n
+        \               \n                    <li class=\"list-group-item\"><a target=\"_blank\"
+        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Serling&gsfn=Rod&msbdy=1924&msddy=1975&gl=allgs\">View
+        <b>more records</b> for Rod Serling at Ancestry.com</a></li>\n                \n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"http://www.ancestry.com/s80153/t13384/rd.ashx\"> Discover more with
+        a simple <b>DNA test</b></a></li>\n                \n            \n                \n
+        \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
+        ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80154/t37359/rd.ashx?surname=Serling\">More
+        about the <b>Serling family name</b></a></li>\n                \n            \n
+        \       </ul>\n        <p class=\"text-center text-muted\"><small>Sponsored
+        by Ancestry</small></p>\n    </div>\n</div>\n\n\n\n                                \n
+        \                           </div>\n                            \n                                \n\n<input
+        type=\"checkbox\" class=\"closerad\" id=\"closer-cem-mrc-side\">\n<div class=\"fg-prad
+        d-print-none position-relative\">\n    \n    <label for=\"closer-cem-mrc-side\"
+        class=\"btn-close d-sm-none position-absolute top-0 end-0\" aria-label=\"\"
+        tabindex=\"0\"></label>\n    \n    <div id='cem-mrc-side' class=\"ad-wrapper\"></div>\n
+        \   \n    \n    <p class='ad-text'>Advertisement</p>\n    \n</div>\n\n\n                            \n
         \                           \n                            \n                            <div
         class=\"overview-panel data-claim2fame\">\n                                <div
         class=\"overview-panel--heading\">\n                                    <h2
@@ -1577,16 +1525,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#790a0c0909160b0d391f10171d181e0b180f1c571a1614460a0c1b131c1a0d44381a1a160c170d5935161a121c1d\"><span
-        class=\"__cf_email__\" data-cfemail=\"790a0c0909160b0d391f10171d181e0b180f1c571a1614\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#87f4f2f7f7e8f5f3c7e1eee9e3e6e0f5e6f1e2a9e4e8eab8f4f2e5ede2e4f3bac6e4e4e8f2e9f3a7cbe8e4ece2e3\"><span
+        class=\"__cf_email__\" data-cfemail=\"52212722223d202612343b3c363335203324377c313d3f\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#fb888e8b8b94898fbb9d92959f9a9c899a8d9ed5989496c4888e99919e988fc6ba9898948e958fdbb79498909e9f\"><span
-        class=\"__cf_email__\" data-cfemail=\"ff8c8a8f8f908d8bbf9996919b9e988d9e899ad19c9092\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#2e5d5b5e5e415c5a6e4847404a4f495c4f584b004d4143115d5b4c444b4d5a136f4d4d415b405a0e62414d454b4a\"><span
+        class=\"__cf_email__\" data-cfemail=\"c1b2b4b1b1aeb3b581a7a8afa5a0a6b3a0b7a4efa2aeac\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#52212722223d202612343b3c363335203324377c313d3f6d212730383731266f1331313d273c26721e3d31393736\"><span
-        class=\"__cf_email__\" data-cfemail=\"7b080e0b0b14090f3b1d12151f1a1c091a0d1e55181416\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#32414742425d404672545b5c565355405344571c515d5f0d414750585751460f7351515d475c46127e5d51595756\"><span
+        class=\"__cf_email__\" data-cfemail=\"b1c2c4c1c1dec3c5f1d7d8dfd5d0d6c3d0c7d49fd2dedc\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -2107,7 +2055,7 @@ interactions:
         \       weRememberURL: \"\",\n        isFamous: \"Y\",\n        intermentHasPhoto:
         \"Y\",\n        newMemorial: false ,\n        related: false,\n        hasPhotoRequest:
         false,\n        claimedBy: null,\n        plantTreesScenario: 0,\n        ancestryHintWidgetTemplate:
-        \"Icon\",\n        translation: {\"flower\":{\"grid\":{\"ReadMore\":\"Read
+        \"Combined\",\n        translation: {\"flower\":{\"grid\":{\"ReadMore\":\"Read
         more\",\"ReadLess\":\"Read less\",\"NoImages\":\"No images for the given category\"}},\"mem\":{\"ovr\":{\"AddCaption\":\"Add
         a caption\",\"SavedText\":\"Saved\",\"fmg\":{\"BirthAndDeathDatesUnknown\":\"Birth
         and death dates unknown\"},\"AreYouACloseRelativeOf\":\"Are you a close relative
@@ -2560,11 +2508,11 @@ interactions:
         agree, transfer the memorial\",\"SuggestRequestFailedTryAgainLater\":\"Suggest
         request failed. Try again later.\",\"TooManyEmails\":\"You have sent several
         suggested edit emails. Please complete the captcha below to prove that you
-        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Year\":\"Year\",\"BirthDate\":\"Birth
-        Date\",\"Birth Location\":\"Birth Location\",\"DeathDate\":\"Death Date\",\"Death
-        Location\":\"Death Location\",\"Prefix\":\"Prefix\",\"Veteran\":\"Veteran\",\"Plot
-        Number\":\"Plot Number\",\"CenotaphOrMonument\":\"Cenotaph or monument\",\"BurialLocation\":\"Burial
-        Location\",\"GPS\":\"GPS\",\"LastName\":\"Last Name\",\"NickName\":\"Nickname\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
+        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Veteran\":\"Veteran\",\"Birth
+        Location\":\"Birth Location\",\"Year\":\"Year\",\"BirthDate\":\"Birth Date\",\"Death
+        Location\":\"Death Location\",\"Prefix\":\"Prefix\",\"DeathDate\":\"Death
+        Date\",\"Plot Number\":\"Plot Number\",\"LastName\":\"Last Name\",\"NickName\":\"Nickname\",\"BurialLocation\":\"Burial
+        Location\",\"GPS\":\"GPS\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
         character remaining\",\"CharactersRemaining_plural\":\"{{nf}} characters remaining\",\"MyScrapbook\":\"**
         My Scrapbook **\",\"LeaveAFlower\":\"Leave a Flower\",\"ChooseACategory\":\"Choose
         a category:\",\"AddtoScrapbook\":\"Add to your scrapbook\",\"SearchbyFlower\":\"Search
@@ -2724,8 +2672,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#c3a5a6a6a7a1a2a0a883a5aaada7a2a4b1a2b5a6eda0acaefcb0b6a1a9a6a0b7fe97b1a2adb0afa2b7aaacade6f1f3a5a6a6a7a1a2a0a8\"><span
-        class=\"__cf_email__\" data-cfemail=\"35535050515754565e75535c5b515452475443501b565a58\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#11777474757370727a5177787f757076637067743f727e7c2e6264737b7472652c4563707f627d7065787e7f342321777474757370727a\"><span
+        class=\"__cf_email__\" data-cfemail=\"d8bebdbdbcbab9bbb398beb1b6bcb9bfaab9aebdf6bbb7b5\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -2800,7 +2748,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 835986364e5f520c-DEN
+      - 8359d6c82c8d7988-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2810,15 +2758,15 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 21:26:17 GMT
+      - Thu, 14 Dec 2023 22:21:17 GMT
       Server:
       - cloudflare
       Set-Cookie:
       - ipLoc=us; Max-Age=86400; Domain=findagrave.com; Path=/; Expires=Fri, 15 Dec
-        2023 21:26:17 GMT; Secure; SameSite=Lax
+        2023 22:21:17 GMT; Secure; SameSite=Lax
       - preferredLanguage=en; Max-Age=31536000; Domain=findagrave.com; Path=/; Expires=Fri,
-        13 Dec 2024 21:26:17 GMT; Secure; SameSite=Lax
-      - __cfruid=6ee6ef925f65705a8c77ba4cfe5c7c6ef0f02f77-1702589177; path=/; domain=.findagrave.com;
+        13 Dec 2024 22:21:17 GMT; Secure; SameSite=Lax
+      - __cfruid=1ed7904cc58720568a3ee167c99aaccf3f27bdf0-1702592477; path=/; domain=.findagrave.com;
         HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains

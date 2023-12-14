@@ -1096,33 +1096,34 @@ interactions:
         class=\"btn btn-outline-primary send-flowers-button mb-4 mb-md-2\" target=\"_blank\"><span
         class=\"icon-flowers\" aria-hidden=\"true\"></span>Flower Delivery</a>\n    \n
         \   \n        <div class=\"fg-spn-link\"></div>\n    \n\n                                </div>\n\n
-        \                               \n                                    \n\n\n
-        \   <div class=\"native overview-panel col-sm-6 col-lg-12 me-2 me-md-0 d-print-none\">\n
-        \       <h3 class=\"h5 overview-label text-primary\">Records on Ancestry</h3>\n
-        \       <div id=\"nativeAncestrySlot\" class=\"ancestryHints\">\n        <ul
-        class=\"list-group list-unstyled m-0\">\n            \n                <li><a
-        href=\"http://www.ancestry.com/s121023/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D62476%26h%3D4636163250%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Thomas Jefferson</strong></p>\n                            <p class=\"mb-1
-        lh-sm\">Geneanet Community Trees Index</p>\n                        </div>\n
-        \                       \n                        \n                        <div
-        class=\"col-sm-1 ms-auto\">\n                            <span class=\"icon-acom
-        text-success\"></span>\n                        </div>\n                        \n
-        \                   </div>\n                </a></li>\n            \n        </ul>\n
-        \       <p class=\"text-center text-muted\"><small>Sponsored by Ancestry</small></p>\n
-        \   </div>\n    </div>\n\n                                \n                            </div>\n
-        \                           \n                                \n\n<input type=\"checkbox\"
-        class=\"closerad\" id=\"closer-cem-mrc-side\">\n<div class=\"fg-prad d-print-none
-        position-relative\">\n    \n    <label for=\"closer-cem-mrc-side\" class=\"btn-close
-        d-sm-none position-absolute top-0 end-0\" aria-label=\"\" tabindex=\"0\"></label>\n
-        \   \n    <div id='cem-mrc-side' class=\"ad-wrapper\"></div>\n    \n    \n
-        \   <p class='ad-text'>Advertisement</p>\n    \n</div>\n\n\n                            \n
+        \                               \n                                    \n<div
+        class=\"native overview-panel col-sm-6 col-lg-12 me-2 me-md-0 d-print-none\">\n
+        \   <h3 class=\"h5 overview-label text-primary\">Explore more</h3>\n    <div
+        id=\"nativeAncestrySlot\">\n        <ul class=\"list-group list-unstyled m-0\">\n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"https://www.archives.com/search/birth/loading?FirstName=Thomas&LastName=Jefferson&BirthYear=1743&DeathYear=1826&Country=United
+        States&Region=Virginia&cert=False&RecordSearchType=Birth&cam=8635\"><i>Birth
+        Records</i><span class=\"float-end\"><button type=\"button\" class=\"btn btn-sm
+        btn-default py-0\">Search</button></span></a></li>\n                \n            \n
+        \               \n                    <li class=\"list-group-item\"><a target=\"_blank\"
+        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"https://www.archives.com/search/marriage/loading?FirstName=Thomas&LastName=Jefferson&BirthYear=1743&DeathYear=1826&Country=United
+        States&Region=Virginia&cert=False&RecordSearchType=Marriage&cam=8637\"><i>Marriage
+        Records</i><span class=\"float-end\"><button type=\"button\" class=\"btn btn-sm
+        btn-default py-0\">Search</button></span></a></li>\n                \n            \n
+        \               \n                    <li class=\"list-group-item\"><a target=\"_blank\"
+        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"https://www.archives.com/search/death/loading?FirstName=Thomas&LastName=Jefferson&BirthYear=1743&DeathYear=1826&Country=United
+        States&Region=Virginia&cert=False&RecordSearchType=Death&cam=8638\"><i>Death
+        Records</i><span class=\"float-end\"><button type=\"button\" class=\"btn btn-sm
+        btn-default py-0\">Search</button></span></a></li>\n                \n            \n
+        \       </ul>\n        <p class=\"text-center text-muted\"><small>Sponsored
+        by Ancestry</small></p>\n    </div>\n</div>\n\n\n\n                                \n
+        \                           </div>\n                            \n                                \n\n<input
+        type=\"checkbox\" class=\"closerad\" id=\"closer-cem-mrc-side\">\n<div class=\"fg-prad
+        d-print-none position-relative\">\n    \n    <label for=\"closer-cem-mrc-side\"
+        class=\"btn-close d-sm-none position-absolute top-0 end-0\" aria-label=\"\"
+        tabindex=\"0\"></label>\n    \n    <div id='cem-mrc-side' class=\"ad-wrapper\"></div>\n
+        \   \n    \n    <p class='ad-text'>Advertisement</p>\n    \n</div>\n\n\n                            \n
         \                           \n                            \n                            <div
         class=\"overview-panel data-claim2fame\">\n                                <div
         class=\"overview-panel--heading\">\n                                    <h2
@@ -2005,16 +2006,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#f98a8c8989968b8db99f90979d989e8b988f9cd79a9694c68a8c9b939c9a8dc4b89a9a968c978dd9b5969a929c9d\"><span
-        class=\"__cf_email__\" data-cfemail=\"a8dbddd8d8c7dadce8cec1c6ccc9cfdac9decd86cbc7c5\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#65161015150a171125030c0b010402170413004b060a085a1610070f000611582406060a100b1145290a060e0001\"><span
+        class=\"__cf_email__\" data-cfemail=\"24575154544b565064424d4a404543564552410a474b49\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#64171114140b161024020d0a000503160512014a070b095b1711060e010710592507070b110a1044280b070f0100\"><span
-        class=\"__cf_email__\" data-cfemail=\"cab9bfbabaa5b8be8aaca3a4aeabadb8abbcafe4a9a5a7\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#3c4f494c4c534e487c5a5552585d5b4e5d4a59125f5351034f495e56595f48017d5f5f534952481c70535f575958\"><span
+        class=\"__cf_email__\" data-cfemail=\"02717772726d707642646b6c666365706374672c616d6f\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#bbc8cecbcbd4c9cffbddd2d5dfdadcc9dacdde95d8d4d684c8ced9d1ded8cf86fad8d8d4ced5cf9bf7d4d8d0dedf\"><span
-        class=\"__cf_email__\" data-cfemail=\"2a595f5a5a45585e6a4c43444e4b4d584b5c4f04494547\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#f685838686998482b6909f9892979184978093d895999bc98583949c939582cbb7959599839882d6ba99959d9392\"><span
+        class=\"__cf_email__\" data-cfemail=\"ee9d9b9e9e819c9aae8887808a8f899c8f988bc08d8183\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -2535,7 +2536,7 @@ interactions:
         \       weRememberURL: \"\",\n        isFamous: \"Y\",\n        intermentHasPhoto:
         \"Y\",\n        newMemorial: false ,\n        related: false,\n        hasPhotoRequest:
         false,\n        claimedBy: null,\n        plantTreesScenario: 0,\n        ancestryHintWidgetTemplate:
-        \"Icon\",\n        translation: {\"flower\":{\"grid\":{\"ReadMore\":\"Read
+        \"Archives\",\n        translation: {\"flower\":{\"grid\":{\"ReadMore\":\"Read
         more\",\"ReadLess\":\"Read less\",\"NoImages\":\"No images for the given category\"}},\"mem\":{\"ovr\":{\"AddCaption\":\"Add
         a caption\",\"SavedText\":\"Saved\",\"fmg\":{\"BirthAndDeathDatesUnknown\":\"Birth
         and death dates unknown\"},\"AreYouACloseRelativeOf\":\"Are you a close relative
@@ -2988,10 +2989,11 @@ interactions:
         agree, transfer the memorial\",\"SuggestRequestFailedTryAgainLater\":\"Suggest
         request failed. Try again later.\",\"TooManyEmails\":\"You have sent several
         suggested edit emails. Please complete the captcha below to prove that you
-        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Year\":\"Year\",\"BirthDate\":\"Birth
-        Date\",\"Birth Location\":\"Birth Location\",\"Death Location\":\"Death Location\",\"DeathDate\":\"Death
-        Date\",\"Plot Number\":\"Plot Number\",\"Veteran\":\"Veteran\",\"BurialLocation\":\"Burial
-        Location\",\"NickName\":\"Nickname\",\"LastName\":\"Last Name\",\"GPS\":\"GPS\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
+        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Death Location\":\"Death
+        Location\",\"NickName\":\"Nickname\",\"Year\":\"Year\",\"BirthDate\":\"Birth
+        Date\",\"Birth Location\":\"Birth Location\",\"DeathDate\":\"Death Date\",\"LastName\":\"Last
+        Name\",\"Veteran\":\"Veteran\",\"BurialLocation\":\"Burial Location\",\"Plot
+        Number\":\"Plot Number\",\"Prefix\":\"Prefix\",\"GPS\":\"GPS\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
         character remaining\",\"CharactersRemaining_plural\":\"{{nf}} characters remaining\",\"MyScrapbook\":\"**
         My Scrapbook **\",\"LeaveAFlower\":\"Leave a Flower\",\"ChooseACategory\":\"Choose
         a category:\",\"AddtoScrapbook\":\"Add to your scrapbook\",\"SearchbyFlower\":\"Search
@@ -3151,8 +3153,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#15737070717774767e55737c7b717472677463703b767a782a6660777f707661284167747b667974617c7a7b302725737070717774767e\"><span
-        class=\"__cf_email__\" data-cfemail=\"b1d7d4d4d5d3d0d2daf1d7d8dfd5d0d6c3d0c7d49fd2dedc\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#55333030313734363e15333c3b313432273423307b363a386a2620373f303621680127343b263934213c3a3b706765333030313734363e\"><span
+        class=\"__cf_email__\" data-cfemail=\"d3b5b6b6b7b1b2b0b893b5babdb7b2b4a1b2a5b6fdb0bcbe\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -3227,7 +3229,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 835986384e751f38-DEN
+      - 8359d6c9ef975176-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3237,15 +3239,15 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 21:26:17 GMT
+      - Thu, 14 Dec 2023 22:21:17 GMT
       Server:
       - cloudflare
       Set-Cookie:
       - ipLoc=us; Max-Age=86400; Domain=findagrave.com; Path=/; Expires=Fri, 15 Dec
-        2023 21:26:17 GMT; Secure; SameSite=Lax
+        2023 22:21:17 GMT; Secure; SameSite=Lax
       - preferredLanguage=en; Max-Age=31536000; Domain=findagrave.com; Path=/; Expires=Fri,
-        13 Dec 2024 21:26:17 GMT; Secure; SameSite=Lax
-      - __cfruid=6ee6ef925f65705a8c77ba4cfe5c7c6ef0f02f77-1702589177; path=/; domain=.findagrave.com;
+        13 Dec 2024 22:21:17 GMT; Secure; SameSite=Lax
+      - __cfruid=1ed7904cc58720568a3ee167c99aaccf3f27bdf0-1702592477; path=/; domain=.findagrave.com;
         HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains

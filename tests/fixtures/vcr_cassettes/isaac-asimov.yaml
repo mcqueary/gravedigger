@@ -620,87 +620,27 @@ interactions:
         \                                        \n                                    </div>\n\n
         \                               \n                                \n                                \n
         \   \n    \n        <div class=\"fg-spn-link\"></div>\n    \n\n                                </div>\n\n
-        \                               \n                                    \n\n\n
-        \   <div class=\"native overview-panel col-sm-6 col-lg-12 me-2 me-md-0 d-print-none\">\n
-        \       <h3 class=\"h5 overview-label text-primary\">Records on Ancestry</h3>\n
-        \       <div id=\"nativeAncestrySlot\" class=\"ancestryHints\">\n        <ul
-        class=\"list-group list-unstyled m-0\">\n            \n                <li><a
-        href=\"http://www.ancestry.com/s121022/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D62476%26h%3D6823348351%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Isaac Asimov</strong></p>\n                            <p class=\"mb-1 lh-sm\">Geneanet
-        Community Trees Index</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"text-center
-        ms-auto pb-1 col-auto\">\n                            <button class=\"btn
-        btn-sm btn-dark text-uppercase\"><span class=\"icon-acom text-success\" aria-hidden=\"true\"></span>Review</button>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121022/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D61843%26h%3D599847985%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Isaac Asimov</strong></p>\n                            <p class=\"mb-1 lh-sm\">U.S.,
-        Newspapers.com\u2122 Obituary Index, 1800s-current</p>\n                        </div>\n
-        \                       \n                        \n                        <div
-        class=\"text-center ms-auto pb-1 col-auto\">\n                            <button
-        class=\"btn btn-sm btn-dark text-uppercase\"><span class=\"icon-acom text-success\"
-        aria-hidden=\"true\"></span>Review</button>\n                        </div>\n
-        \                       \n                    </div>\n                </a></li>\n
-        \           \n                <li><a href=\"http://www.ancestry.com/s121022/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D6224%26h%3D1105571487%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <img
-        src=\"http://mediasvc.ancestry.com/v2/thumbnail/namespaces/6224/media/4638827_00712?Client=findagrave-frontend\"
-        itemprop=\"image\" alt=\"\">\n                                \n                            </div>\n
-        \                       </div>\n                        <div class=\"col-sm
-        memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Isaac Asimov</strong></p>\n                            <p class=\"mb-1 lh-sm\">1930
-        United States Federal Census</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"text-center
-        ms-auto pb-1 col-auto\">\n                            <button class=\"btn
-        btn-sm btn-dark text-uppercase\"><span class=\"icon-acom text-success\" aria-hidden=\"true\"></span>Review</button>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121022/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D2442%26h%3D7222262%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <img
-        src=\"http://mediasvc.ancestry.com/v2/thumbnail/namespaces/2442/media/m-t0627-02582-00463?Client=findagrave-frontend\"
-        itemprop=\"image\" alt=\"\">\n                                \n                            </div>\n
-        \                       </div>\n                        <div class=\"col-sm
-        memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Isaac Asimov</strong></p>\n                            <p class=\"mb-1 lh-sm\">1940
-        United States Federal Census</p>\n                        </div>\n                        \n
-        \                       \n                        <div class=\"text-center
-        ms-auto pb-1 col-auto\">\n                            <button class=\"btn
-        btn-sm btn-dark text-uppercase\"><span class=\"icon-acom text-success\" aria-hidden=\"true\"></span>Review</button>\n
-        \                       </div>\n                        \n                    </div>\n
-        \               </a></li>\n            \n                <li><a href=\"http://www.ancestry.com/s121022/key/rd.ashx?key=Uhttps%3A%2F%2Fsearch.ancestry.com%2Fcgi-bin%2Fsse.dll%3Fdbid%3D60901%26h%3D16046405%26indiv%3Dtry\"
-        target=\"blank\" class=\"ancestry-hint-widget-item text-decoration-none\">\n
-        \                   <div class=\"memorial-item d-flex g-0\">\n                        <div
-        class=\"memorial-item-pic col-auto\">\n                            <div class=\"pic-wrapper\">\n
-        \                               \n                                    <span
-        class=\"icon-image text-center m-0\" aria-hidden=\"true\"></span>\n                                \n
-        \                           </div>\n                        </div>\n                        <div
-        class=\"col-sm memorial-item--info\">\n                            <p class=\"mb-0\"><strong>
-        Isaac Asimov</strong></p>\n                            <p class=\"mb-1 lh-sm\">U.S.,
-        Social Security Applications and Claims Index, 1936-2007</p>\n                        </div>\n
-        \                       \n                        \n                        <div
-        class=\"text-center ms-auto pb-1 col-auto\">\n                            <button
-        class=\"btn btn-sm btn-dark text-uppercase\"><span class=\"icon-acom text-success\"
-        aria-hidden=\"true\"></span>Review</button>\n                        </div>\n
-        \                       \n                    </div>\n                </a></li>\n
+        \                               \n                                    \n<div
+        class=\"native overview-panel col-sm-6 col-lg-12 me-2 me-md-0 d-print-none\">\n
+        \   <h3 class=\"h5 overview-label text-primary\">Explore more</h3>\n    <div
+        id=\"nativeAncestrySlot\">\n        <ul class=\"list-group list-unstyled m-0\">\n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Asimov&gsfn=Isaac&msbdy=1920&msddy=1992&gl=BMD_BIRTH\"><i>Birth,
+        Baptism & Christening</i><span class=\"float-end\"><button type=\"button\"
+        class=\"btn btn-sm btn-default py-0\">Search</button></span></a></li>\n                \n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Asimov&gsfn=Isaac&msbdy=1920&msddy=1992&gl=BMD_MARRIAGE\"><i>Marriage
+        & Divorce</i><span class=\"float-end\"><button type=\"button\" class=\"btn
+        btn-sm btn-default py-0\">Search</button></span></a></li>\n                \n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Asimov&gsfn=Isaac&msbdy=1920&msddy=1992&gl=BMD_DEATH\"><i>Death,
+        Burial, Cemetery & Obituaries</i><span class=\"float-end\"><button type=\"button\"
+        class=\"btn btn-sm btn-default py-0\">Search</button></span></a></li>\n                \n
         \           \n        </ul>\n        <p class=\"text-center text-muted\"><small>Sponsored
-        by Ancestry</small></p>\n    </div>\n    </div>\n\n                                \n
+        by Ancestry</small></p>\n    </div>\n</div>\n\n\n\n                                \n
         \                           </div>\n                            \n                                \n\n<input
         type=\"checkbox\" class=\"closerad\" id=\"closer-cem-mrc-side\">\n<div class=\"fg-prad
         d-print-none position-relative\">\n    \n    <label for=\"closer-cem-mrc-side\"
@@ -1555,16 +1495,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#5d2e282d2d322f291d3b3433393c3a2f3c2b38733e3230622e283f37383e29601c3e3e322833297d11323e363839\"><span
-        class=\"__cf_email__\" data-cfemail=\"8af9fffafae5f8fecaece3e4eeebedf8ebfcefa4e9e5e7\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#d1a2a4a1a1bea3a591b7b8bfb5b0b6a3b0a7b4ffb2bebceea2a4b3bbb4b2a5ec90b2b2bea4bfa5f19dbeb2bab4b5\"><span
+        class=\"__cf_email__\" data-cfemail=\"8dfef8fdfde2fff9cdebe4e3e9eceaffecfbe8a3eee2e0\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#86f5f3f6f6e9f4f2c6e0efe8e2e7e1f4e7f0e3a8e5e9ebb9f5f3e4ece3e5f2bbc7e5e5e9f3e8f2a6cae9e5ede3e2\"><span
-        class=\"__cf_email__\" data-cfemail=\"74070104041b060034121d1a101513061502115a171b19\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#bfcccacfcfd0cdcbffd9d6d1dbded8cddec9da91dcd0d280cccaddd5dadccb82fedcdcd0cad1cb9ff3d0dcd4dadb\"><span
+        class=\"__cf_email__\" data-cfemail=\"6c1f191c1c031e182c0a0502080d0b1e0d1a09420f0301\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#2b585e5b5b44595f6b4d42454f4a4c594a5d4e0548444614585e49414e485f166a4848445e455f0b674448404e4f\"><span
-        class=\"__cf_email__\" data-cfemail=\"3d4e484d4d524f497d5b5453595c5a4f5c4b58135e5250\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#384b4d4848574a4c785e51565c595f4a594e5d165b5755074b4d5a525d5b4c05795b5b574d564c1874575b535d5c\"><span
+        class=\"__cf_email__\" data-cfemail=\"34474144445b464074525d5a505553465542511a575b59\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -2082,7 +2022,7 @@ interactions:
         \       weRememberURL: \"\",\n        isFamous: \"Y\",\n        intermentHasPhoto:
         \"Y\",\n        newMemorial: false ,\n        related: false,\n        hasPhotoRequest:
         false,\n        claimedBy: null,\n        plantTreesScenario: 0,\n        ancestryHintWidgetTemplate:
-        \"Button\",\n        translation: {\"flower\":{\"grid\":{\"ReadMore\":\"Read
+        \"Ancestry\",\n        translation: {\"flower\":{\"grid\":{\"ReadMore\":\"Read
         more\",\"ReadLess\":\"Read less\",\"NoImages\":\"No images for the given category\"}},\"mem\":{\"ovr\":{\"AddCaption\":\"Add
         a caption\",\"SavedText\":\"Saved\",\"fmg\":{\"BirthAndDeathDatesUnknown\":\"Birth
         and death dates unknown\"},\"AreYouACloseRelativeOf\":\"Are you a close relative
@@ -2535,15 +2475,16 @@ interactions:
         agree, transfer the memorial\",\"SuggestRequestFailedTryAgainLater\":\"Suggest
         request failed. Try again later.\",\"TooManyEmails\":\"You have sent several
         suggested edit emails. Please complete the captcha below to prove that you
-        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Year\":\"Year\",\"DeathDate\":\"Death
-        Date\",\"Birth Location\":\"Birth Location\",\"Death Location\":\"Death Location\",\"Plot
-        Number\":\"Plot Number\",\"NickName\":\"Nickname\",\"LastName\":\"Last Name\",\"BirthDate\":\"Birth
-        Date\",\"Veteran\":\"Veteran\",\"GPS\":\"GPS\",\"Prefix\":\"Prefix\",\"BurialLocation\":\"Burial
-        Location\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}} character remaining\",\"CharactersRemaining_plural\":\"{{nf}}
-        characters remaining\",\"MyScrapbook\":\"** My Scrapbook **\",\"LeaveAFlower\":\"Leave
-        a Flower\",\"ChooseACategory\":\"Choose a category:\",\"AddtoScrapbook\":\"Add
-        to your scrapbook\",\"SearchbyFlower\":\"Search by flower name\",\"YourScrapbookIsCurrentlyEmpty\":\"Your
-        Scrapbook is currently empty. <a class='btn btn-default icon-add' href='/user/manage-scrapbook'>Add
+        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Veteran\":\"Veteran\",\"Prefix\":\"Prefix\",\"LastName\":\"Last
+        Name\",\"NickName\":\"Nickname\",\"Year\":\"Year\",\"BirthDate\":\"Birth Date\",\"DeathDate\":\"Death
+        Date\",\"Plot Number\":\"Plot Number\",\"Birth Location\":\"Birth Location\",\"Death
+        Location\":\"Death Location\",\"CenotaphOrMonument\":\"Cenotaph or monument\",\"BurialLocation\":\"Burial
+        Location\",\"GPS\":\"GPS\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
+        character remaining\",\"CharactersRemaining_plural\":\"{{nf}} characters remaining\",\"MyScrapbook\":\"**
+        My Scrapbook **\",\"LeaveAFlower\":\"Leave a Flower\",\"ChooseACategory\":\"Choose
+        a category:\",\"AddtoScrapbook\":\"Add to your scrapbook\",\"SearchbyFlower\":\"Search
+        by flower name\",\"YourScrapbookIsCurrentlyEmpty\":\"Your Scrapbook is currently
+        empty. <a class='btn btn-default icon-add' href='/user/manage-scrapbook'>Add
         to your scrapbook</a>\",\"ChangeFlower\":\"Change flower\",\"LeaveANote\":\"Leave
         a note (Optional)\",\"publicNote\":\"This note will accompany your flower.\",\"displaySource\":\"Flower
         left by\",\"DisplayMyName\":\"Display my name\",\"DisplayAltName\":\"Display
@@ -2698,8 +2639,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#a0c6c5c5c4c2c1c3cbe0c6c9cec4c1c7d2c1d6c58ec3cfcd9fd3d5c2cac5c3d49df4d2c1ced3ccc1d4c9cfce859290c6c5c5c4c2c1c3cb\"><span
-        class=\"__cf_email__\" data-cfemail=\"a8cecdcdcccac9cbc3e8cec1c6ccc9cfdac9decd86cbc7c5\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#d7b1b2b2b3b5b6b4bc97b1beb9b3b6b0a5b6a1b2f9b4b8bae8a4a2b5bdb2b4a3ea83a5b6b9a4bbb6a3beb8b9f2e5e7b1b2b2b3b5b6b4bc\"><span
+        class=\"__cf_email__\" data-cfemail=\"3c5a5959585e5d5f577c5a5552585d5b4e5d4a59125f5351\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -2774,7 +2715,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 8359862e0a185387-DEN
+      - 8359d6c05e071f4d-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2784,15 +2725,15 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 21:26:16 GMT
+      - Thu, 14 Dec 2023 22:21:16 GMT
       Server:
       - cloudflare
       Set-Cookie:
       - ipLoc=us; Max-Age=86400; Domain=findagrave.com; Path=/; Expires=Fri, 15 Dec
-        2023 21:26:16 GMT; Secure; SameSite=Lax
+        2023 22:21:16 GMT; Secure; SameSite=Lax
       - preferredLanguage=en; Max-Age=31536000; Domain=findagrave.com; Path=/; Expires=Fri,
-        13 Dec 2024 21:26:16 GMT; Secure; SameSite=Lax
-      - __cfruid=f2ce73bfc810ab128cc7efb7ed07e92eca9b37b0-1702589176; path=/; domain=.findagrave.com;
+        13 Dec 2024 22:21:16 GMT; Secure; SameSite=Lax
+      - __cfruid=2c7959638f535c87409f24c93c920ba1a00dfdda-1702592476; path=/; domain=.findagrave.com;
         HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains

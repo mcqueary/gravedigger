@@ -696,16 +696,16 @@ interactions:
         \   \n    <div id='memsrch-mrc-topr' class=\"ad-wrapper\"></div>\n    \n    \n
         \   <p class='ad-text'>Advertisement</p>\n    \n</div>\n\n\n                \n<div
         class=\"honor-widget pt-3 border-top mt-md-5 mx-md-4 d-print-none mb-4\" itemscope
-        itemtype=\"http://schema.org/Person\">\n    <a href=\"/memorial/10844980/florence-wells\"
-        itemprop=\"url\" class=\"clearfix\">\n        <img src=\"https://images.findagrave.com/photoThumbnails/photos/2005/128/10844980_111569389800.jpg\"
+        itemtype=\"http://schema.org/Person\">\n    <a href=\"/memorial/17642866/myrtle-partridge\"
+        itemprop=\"url\" class=\"clearfix\">\n        <img src=\"https://images.findagrave.com/photoThumbnails/photos/2007/22/17642866_116959158834.jpg\"
         alt=\"\" itemprop=\"image\" class=\"honor-img float-start me-3\">\n        <div
         class=\"honor-caption ms-2\">\n            <strong class=\"fw-bold text-uppercase
         text-body\">Honoring</strong>\n            <ul class=\"list-unstyled\">\n
-        \               <li itemprop=\"name\"><b class=\"text-primary fw-light fs-4\">Florence
-        Wells</b></li>\n                <li><small class=\"text-muted text-uppercase\">Birth</small>
-        <span itemprop=\"birthDate\" class=\"text-body\">1912</span></li>\n                <li><small
+        \               <li itemprop=\"name\"><b class=\"text-primary fw-light fs-4\">Myrtle
+        Partridge</b></li>\n                <li><small class=\"text-muted text-uppercase\">Birth</small>
+        <span itemprop=\"birthDate\" class=\"text-body\">1922</span></li>\n                <li><small
         class=\"text-muted text-uppercase\">Death</small> <span itemprop=\"deathDate\"
-        class=\"text-body\">1944</span></li>\n\n            </ul>\n        </div>\n
+        class=\"text-body\">2007</span></li>\n\n            </ul>\n        </div>\n
         \   </a>\n    <a href=\"/cemetery/online\" class=\"mt-2 d-block text-muted\"><span
         class=\"icon-globe\" aria-hidden=\"true\"></span>Explore featured memorials</a>\n</div>\n\n\n
         \               \n                    \n<div class=\"native overview-panel
@@ -713,17 +713,21 @@ interactions:
         text-primary\">Explore more</h3>\n    <div id=\"nativeAncestrySlot\">\n        <ul
         class=\"list-group list-unstyled m-0\">\n            \n                \n
         \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
-        ancestry-hint-widget-item\" href=\"https://www.archives.com/search/birth/loading?FirstName=James&LastName=Cooper&BirthYear=1789&DeathYear=1851&Country=&Region=&cert=False&RecordSearchType=Birth&cam=8635\"><i>Birth
-        Records</i><span class=\"float-end\"><button type=\"button\" class=\"btn btn-sm
-        btn-default py-0\">Search</button></span></a></li>\n                \n            \n
+        ancestry-hint-widget-item\" href=\"https://go.newspapers.com/results.php?query=James+Cooper&xid=1363\">James
+        Cooper in <b>Newspapers</b></a></li>\n                \n            \n                \n
+        \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
+        ancestry-hint-widget-item\" href=\"https://www.fold3.com/search?docQuery=(keywords:James+Cooper)&xid=2114\">James
+        Cooper in <b>Military Records</b></a></li>\n                \n            \n
         \               \n                    <li class=\"list-group-item\"><a target=\"_blank\"
-        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"https://www.archives.com/search/marriage/loading?FirstName=James&LastName=Cooper&BirthYear=1789&DeathYear=1851&Country=&Region=&cert=False&RecordSearchType=Marriage&cam=8637\"><i>Marriage
-        Records</i><span class=\"float-end\"><button type=\"button\" class=\"btn btn-sm
-        btn-default py-0\">Search</button></span></a></li>\n                \n            \n
-        \               \n                    <li class=\"list-group-item\"><a target=\"_blank\"
-        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"https://www.archives.com/search/death/loading?FirstName=James&LastName=Cooper&BirthYear=1789&DeathYear=1851&Country=&Region=&cert=False&RecordSearchType=Death&cam=8638\"><i>Death
-        Records</i><span class=\"float-end\"><button type=\"button\" class=\"btn btn-sm
-        btn-default py-0\">Search</button></span></a></li>\n                \n            \n
+        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Cooper&gsfn=James&msbdy=1789&msddy=1851&gl=allgs\">View
+        <b>more records</b> for James Cooper at Ancestry.com</a></li>\n                \n
+        \           \n                \n                    <li class=\"list-group-item\"><a
+        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
+        href=\"http://www.ancestry.com/s80153/t13384/rd.ashx\"> Discover more with
+        a simple <b>DNA test</b></a></li>\n                \n            \n                \n
+        \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
+        ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80154/t37359/rd.ashx?surname=Cooper\">More
+        about the <b>Cooper family name</b></a></li>\n                \n            \n
         \       </ul>\n        <p class=\"text-center text-muted\"><small>Sponsored
         by Ancestry</small></p>\n    </div>\n</div>\n\n\n\n                \n                \n
         \               \n                \n            </div>\n\n        </div>\n
@@ -961,16 +965,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#95e6e0e5e5fae7e1d5f3fcfbf1f4f2e7f4e3f0bbf6faf8aae6e0f7fff0f6e1a8d4f6f6fae0fbe1b5d9faf6fef0f1\"><span
-        class=\"__cf_email__\" data-cfemail=\"760503060619040236101f18121711041700135815191b\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#f3808683839c8187b3959a9d97929481928596dd909c9ecc80869199969087ceb290909c869d87d3bf9c90989697\"><span
+        class=\"__cf_email__\" data-cfemail=\"63101613130c111723050a0d070204110215064d000c0e\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#ef9c9a9f9f809d9baf8986818b8e889d8e998ac18c8082d09c9a8d858a8c9bd2ae8c8c809a819bcfa3808c848a8b\"><span
-        class=\"__cf_email__\" data-cfemail=\"c9babcb9b9a6bbbd89afa0a7ada8aebba8bface7aaa6a4\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#d0a3a5a0a0bfa2a490b6b9beb4b1b7a2b1a6b5feb3bfbdefa3a5b2bab5b3a4ed91b3b3bfa5bea4f09cbfb3bbb5b4\"><span
+        class=\"__cf_email__\" data-cfemail=\"a8dbddd8d8c7dadce8cec1c6ccc9cfdac9decd86cbc7c5\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#4c3f393c3c233e380c2a2522282d2b3e2d3a29622f2321733f392e26292f38710d2f2f233922386c00232f272928\"><span
-        class=\"__cf_email__\" data-cfemail=\"0a797f7a7a65787e4a6c63646e6b6d786b7c6f24696567\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#0e7d7b7e7e617c7a4e6867606a6f697c6f786b206d6163317d7b6c646b6d7a334f6d6d617b607a2e42616d656b6a\"><span
+        class=\"__cf_email__\" data-cfemail=\"cdbeb8bdbda2bfb98daba4a3a9acaabfacbba8e3aea2a0\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -1904,8 +1908,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#0f696a6a6b6d6e6c644f6966616b6e687d6e796a216c6062307c7a6d656a6c7b325b7d6e617c636e7b6660612a3d3f696a6a6b6d6e6c64\"><span
-        class=\"__cf_email__\" data-cfemail=\"4f292a2a2b2d2e2c240f2926212b2e283d2e392a612c2022\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#b1d7d4d4d5d3d0d2daf1d7d8dfd5d0d6c3d0c7d49fd2dedc8ec2c4d3dbd4d2c58ce5c3d0dfc2ddd0c5d8dedf948381d7d4d4d5d3d0d2da\"><span
+        class=\"__cf_email__\" data-cfemail=\"6f090a0a0b0d0e0c042f0906010b0e081d0e190a410c0002\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -1980,7 +1984,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 8359ca17cb5a1f44-DEN
+      - 8359d6d68c9351dc-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1990,15 +1994,15 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 22:12:37 GMT
+      - Thu, 14 Dec 2023 22:21:19 GMT
       Server:
       - cloudflare
       Set-Cookie:
       - ipLoc=us; Max-Age=86400; Domain=findagrave.com; Path=/; Expires=Fri, 15 Dec
-        2023 22:12:37 GMT; Secure; SameSite=Lax
+        2023 22:21:19 GMT; Secure; SameSite=Lax
       - preferredLanguage=en; Max-Age=31536000; Domain=findagrave.com; Path=/; Expires=Fri,
-        13 Dec 2024 22:12:37 GMT; Secure; SameSite=Lax
-      - __cfruid=db41bcac752c77dcd2980ef7c42c21fe4aaf41a3-1702591957; path=/; domain=.findagrave.com;
+        13 Dec 2024 22:21:19 GMT; Secure; SameSite=Lax
+      - __cfruid=baf514808293d80283387545d4271a5232f167ed-1702592479; path=/; domain=.findagrave.com;
         HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains

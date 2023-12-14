@@ -6,6 +6,7 @@ import re
 import sqlite3
 from collections import namedtuple
 from dataclasses import asdict, dataclass
+from re import Match
 from time import sleep
 from typing import List, Optional, cast
 from urllib.parse import parse_qs, parse_qsl, urlencode, urlparse, urlunparse
@@ -578,9 +579,8 @@ class _MemorialParser:
 
     def scrape_cemetery_id(self, cem: Tag):
         if (href := cast(str, cast(Tag, cem.find("a"))["href"])) is not None:
-            match: re.Match[str] = cast(
-                re.Match[str], re.match(".*/([0-9]+)/.*$", href)
-            )
+            match: Optional[Match[str]] = re.search("/([0-9]+)/", href)
+            assert match is not None
             self.cemetery_id = int(match.group(1))
 
     def scrape_plot_info(self, dt: Tag):
@@ -880,7 +880,8 @@ class _SearchWorker:
             tag := soup.find("h1", string=re.compile("[0-9,]+ matching records? found"))
         ) is not None:
             line = tag.get_text(strip=True)
-            match = cast(re.Match[str], re.match("[0-9,]+", line))
+            match: Optional[Match[str]] = re.match("[0-9,]+", line)
+            assert match is not None
             num_str = match.group(0)
             num_str = num_str.replace(",", "")
             count = int(num_str)
@@ -892,7 +893,8 @@ class _SearchWorker:
             path = cast(str, anchor["href"])
             path = f"{FINDAGRAVE_BASE_URL}{path}"
         mem["findagrave_url"] = path
-        match = cast(re.Match[str], re.match(".*/([0-9]+)/.*", path))
+        match: Optional[Match[str]] = re.match(".*/([0-9]+)/.*", path)
+        assert match is not None
         mid = match.group(1)
         mem["memorial_id"] = int(mid)
         return path

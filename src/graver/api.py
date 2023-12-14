@@ -7,7 +7,7 @@ import sqlite3
 from collections import namedtuple
 from dataclasses import asdict, dataclass
 from time import sleep
-from typing import cast
+from typing import cast, List
 from urllib.parse import parse_qs, parse_qsl, urlencode, urlparse, urlunparse
 
 import requests
@@ -43,7 +43,7 @@ class NotFound(MemorialException):
 
 
 class Driver(object):
-    recoverable: list[int] = [500, 502, 503, 504, 599]
+    recoverable: List[int] = [500, 502, 503, 504, 599]
 
     # TODO implement backoff/retry on "502 Bad Gateway"
     # soup: BeautifulSoup | None = None
@@ -900,10 +900,11 @@ class _SearchWorker:
 
     def scrape_memorial_type(self, tag: Tag, mem: dict):
         if (h2 := tag.find("h2")) is not None:
-            if h2.find("button", title="Cenotaph") is not None:
-                mem["memorial_type"] = "Cenotaph"
-            elif h2.find("button", title="Monument") is not None:
-                mem["memorial_type"] = "Monument"
+            if (button := h2.find("button")) is not None:
+                if button.get_text() == "Cenotaph":
+                    mem["memorial_type"] = "Cenotaph"
+                elif button.get_text() == "Monument":
+                    mem["memorial_type"] = "Monument"
             else:
                 mem["memorial_type"] = "Burial"
 
@@ -941,7 +942,6 @@ class _SearchWorker:
     def scrape_memorial_cemetery_info(self, tag, mem):
         # Cemetery info and optional plot info
         if (form := tag.form) is not None:
-            mem["memorial_type"] = "Burial"
             # Get the cemetery path e.g. '/cemetery/12345/the-cemetery-name'
             path = form.get("action")
             cem_name = form.get_text(strip=True)
@@ -953,21 +953,19 @@ class _SearchWorker:
                     mem["burial_place"] = f"{cem_name}, {cem_location}"
                 if (p := p.find_next_sibling("p")) is not None:
                     mem["plot"] = p.get_text(strip=True).replace("Plot info:", "")
-        # elif (p := tag.find_next("p")) is not None:
         elif tag.p is not None:
             mem["plot"] = tag.p.get_text(strip=True).replace("Plot info: ", "")
 
     def scrape_results_page(
         self, page_soup: BeautifulSoup, cemetery=None, max_results=0
-    ) -> list[Memorial]:
+    ) -> List[Memorial]:
         divs = page_soup.find_all("div", role="group")
-        results: list[Memorial] = []
+        results: List[Memorial] = []
 
         for div in divs:
             mem = {}
             if self.cemetery is not None:
                 mem = {
-                    "memorial_type": "Burial",
                     "cemetery_id": self.cemetery.cemetery_id,
                     "burial_place": f"{self.cemetery.name}, {self.cemetery.location}",
                 }

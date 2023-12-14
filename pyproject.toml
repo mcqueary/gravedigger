@@ -31,7 +31,7 @@ version = {attr = "package.__version__"}
 name = "cz_conventional_commits"
 version = "0.1.0"
 version_files = [
-    "graver/__init__.py",
+    "src/graver/__init__.py",
     "pyproject.toml:version"
 ]
 update_changelog_on_bump = true
@@ -55,7 +55,6 @@ version = "0.1.0"
 description = ""
 authors = ["Larry McQueary <contact@mcqueary.org>"]
 readme = "README.md"
-packages = [{include = "graver"}]
 
 
 [tool.poetry.dependencies]
@@ -82,7 +81,16 @@ black = "^23.11.0"
 isort = "^5.12.0"
 commitizen = "^3.12.0"
 pre-commit = "^3.5.0"
+mypy = "^1.7.1"
+types-beautifulsoup4 = "^4.12.0.7"
+types-tqdm = "^4.66.0.5"
+vcrpy = "^5.1.0"
 
 
 [tool.poetry.scripts]
 graver = "graver.cli:app"
+
+[tool.deadcode]
+exclude = [".venv", ".tox", ".trunk", "tests"]
+ignore-names = ["BaseTestCase", "*Mixin"]
+ignore-names-in-files = ["migrations"]

@@ -1,0 +1,117 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.31.0
+    method: GET
+    uri: http://www.iana.org/domains/reserved
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Age:
+      - '19178'
+      Cache-Control:
+      - public, max-age=21603
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '3191'
+      Content-Security-Policy:
+      - upgrade-insecure-requests; default-src 'self' https://*.iana.org; script-src
+        'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://cse.google.com
+        https://clients1.google.com; style-src 'self' 'unsafe-inline' https://www.google.com;
+        child-src 'self' https://www.youtube.com https://clients1.google.com https://cse.google.com
+        https://www.google.com/; img-src 'self' https://data.iana.org https://www.iana.org
+        https://www.google.com https://www.googleapis.com https://clients1.google.com
+        https://*.gstatic.com;
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Thu, 14 Dec 2023 02:15:07 GMT
+      Expires:
+      - Thu, 14 Dec 2023 03:48:00 GMT
+      Keep-Alive:
+      - timeout=2, max=358
+      Last-Modified:
+      - Sun, 18 Jul 2021 22:53:53 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - Apache
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

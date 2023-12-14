@@ -1,86 +1,91 @@
-from urllib.error import HTTPError
+import logging
 
 import pytest
+import vcr
 
-from definitions import ROOT_DIR
-from graver.cemetery import Cemetery, Driver
+from graver import Cemetery
 
-mixed_urls = [
-    "https://www.findagrave.com/cemetery/53514",
-    "https://www.findagrave.com/memorial/12345",
-    "https://www.findagrave.com/cemetery/55276/memorial-search",
-]
-
-cemetery_urls = [
-    "https://www.findagrave.com/cemetery/55276",
-    "https://www.findagrave.com/cemetery/153/",
-]
-
-list_urls = [
-    "https://www.findagrave.com/cemetery/55276/memorial-search",
-    "https://www.findagrave.com/cemetery/153/memorial-search?",
-]
-
-cem_3136_uri = pytest.helpers.to_uri(ROOT_DIR + "/tests/data/cem-3136.html")
-
-cem_fake: dict = {
-    "_id": 41404,
-    "findagrave_url": "https://www.findagrave.com/cemetery/41404",
-    "name": "My Fake Cemetery",
-    "location": "Dallas, Dallas, Texas, USA",
-    "coords": "38.8775405, -77.0654917",
-}
+logging.basicConfig()
+vcr_log = logging.getLogger("vcr")
+vcr_log.setLevel(logging.WARN)
 
 
-@pytest.mark.parametrize("expected", [cem_fake])
+@pytest.mark.parametrize(
+    "expected",
+    [
+        pytest.helpers.load_cemetery_from_json("arlington-national-cemetery"),
+        pytest.helpers.load_cemetery_from_json("crown-hill-memorial-park"),
+        pytest.helpers.load_cemetery_from_json("monticello-graveyard"),
+    ],
+)
 def test_cemetery_from_dict(expected: dict):
     cem = Cemetery.from_dict(expected)
-    assert cem._id == expected["_id"]
+    assert isinstance(cem, Cemetery)
+    assert cem.cemetery_id == expected["cemetery_id"]
     assert cem.findagrave_url == expected["findagrave_url"]
     assert cem.name == expected["name"]
     assert cem.location == expected["location"]
     assert cem.coords == expected["coords"]
 
 
-@pytest.mark.parametrize("expected", [cem_fake])
+@pytest.mark.parametrize(
+    "expected",
+    [
+        pytest.helpers.load_cemetery_from_json("arlington-national-cemetery"),
+        pytest.helpers.load_cemetery_from_json("crown-hill-memorial-park"),
+        pytest.helpers.load_cemetery_from_json("monticello-graveyard"),
+    ],
+)
 def test_cemetery_to_dict(expected: dict):
-    c = Cemetery.from_dict(expected)
+    c: Cemetery = Cemetery.from_dict(expected)
+    assert isinstance(c, Cemetery)
     result = c.to_dict()
-    assert result["_id"] == expected["_id"]
+    assert result["cemetery_id"] == expected["cemetery_id"]
     assert result["findagrave_url"] == expected["findagrave_url"]
     assert result["name"] == expected["name"]
     assert result["location"] == expected["location"]
     assert result["coords"] == expected["coords"]
 
 
-@pytest.mark.parametrize("uri", [cem_3136_uri])
-def test_cemetery(uri):
-    cem = Cemetery(uri)
-    cem2 = Cemetery(uri)
-    assert cem == cem2
-    cem3 = Cemetery(uri, get=False, scrape=False)
-    cem3._id = 41405
-    # test for class inequality
-    assert cem3 != 42
-    # test for instance inequality
-    assert cem3 != cem2
-
-    assert cem._id == 3136
-    assert cem.name == "Crown Hill Memorial Park"
-    assert (
-        cem.findagrave_url
-        == "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park"
-    )
-    assert cem.location == "Dallas, Dallas County, Texas, USA"
-    assert cem.coords == "32.86780,-96.86220"
-
-
-@pytest.mark.integration_test
 @pytest.mark.parametrize(
-    "findagrave_url", ["https://www.findagrave.com/should-produce-404"]
+    "expected, cassette",
+    [
+        (
+            pytest.helpers.load_cemetery_from_json("crown-hill-memorial-park"),
+            pytest.vcr_cassettes + "crown-hill-memorial-park.yaml",
+        )
+    ],
 )
-def test_memorial_driver_raises_http_error(findagrave_url):
-    with pytest.raises(Exception) as e:
-        Driver.get(findagrave_url)
-    assert e.errisinstance(HTTPError)
-    assert e.value.code == 404
+def test_cemetery(expected, cassette):
+    with vcr.use_cassette(cassette):
+        url = expected["findagrave_url"]
+        cem = Cemetery(url)
+        assert cem.cemetery_id == expected["cemetery_id"]
+        assert cem.name == expected["name"]
+        assert cem.findagrave_url == expected["findagrave_url"]
+        assert cem.location == expected["location"]
+        assert cem.coords == expected["coords"]
+
+        # Test equality
+        cem2 = Cemetery(url)
+        assert cem == cem2
+        cem3 = Cemetery(url)
+
+        # test for class inequality
+        assert cem3 != 42
+        # test for instance inequality
+        cem3.cemetery_id = 41405
+        assert cem3 != cem2
+
+
+@vcr.use_cassette(pytest.vcr_cassettes + "cemetery-monticello-graveyard.yaml")
+@pytest.mark.parametrize(
+    (
+        "url",
+        "num_expected",
+    ),
+    [("https://www.findagrave.com/cemetery/641519/monticello-graveyard", 270)],
+)
+def test_cemetery_get_num_memorials(url: str, num_expected: int):
+    count = Cemetery(url).get_num_memorials()
+    assert count == num_expected

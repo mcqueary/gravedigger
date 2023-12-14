@@ -7,7 +7,7 @@ import sqlite3
 from collections import namedtuple
 from dataclasses import asdict, dataclass
 from time import sleep
-from typing import cast, List
+from typing import cast, List, Optional
 from urllib.parse import parse_qs, parse_qsl, urlencode, urlparse, urlunparse
 
 import requests
@@ -45,7 +45,7 @@ class NotFound(MemorialException):
 class Driver(object):
     recoverable: List[int] = [500, 502, 503, 504, 599]
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self.max_retries: int = int(kwargs.get("max_retries", 3))
         self.retry_ms: int = int(kwargs.get("retry_ms", 500))
         self.session = requests.Session()
@@ -70,26 +70,27 @@ class Driver(object):
 class Cemetery:
     """Class for keeping track of a Find A Grave cemetery."""
 
-    # data
     cemetery_id: int
     findagrave_url: str
     name: str
     location: str
     coords: str
+    num_memorials: int
 
-    def __init__(self, findagrave_url: str, **kwargs):
+    def __init__(self, findagrave_url: str, **kwargs) -> None:
         super().__init__()
         self.findagrave_url = findagrave_url
         self.cemetery_id = kwargs.get("cemetery_id", None)
         self.name = kwargs.get("name", None)
         self.location = kwargs.get("location", None)
         self.coords = kwargs.get("coords", None)
+        self.num_memorials = kwargs.get("num_memorials", None)
         # behavior args
         self.driver = kwargs.get("driver", Driver())
         self.get = kwargs.get("get", True)
         self.scrape = kwargs.get("scrape", True)
         self.search_url = None
-        self.soup = None
+        # self.soup: BeautifulSoup
         self.params: dict = {}
 
         if "page" in kwargs:
@@ -103,18 +104,19 @@ class Cemetery:
             self.scrape_cemetery_info()
 
     def scrape_cemetery_info(self):
-        self.get_canonical_url()
+        self.scrape_canonical_url()
         self.cemetery_id = int(
             re.match(
                 "https://www.findagrave.com/cemetery/([0-9]+)/.*", self.findagrave_url
             ).group(1)
         )
-        self.get_name()
-        self.get_location()
-        self.get_coords()
-        self.get_search_url()
+        self.scrape_name()
+        self.scrape_location()
+        self.scrape_coords()
+        self.scrape_search_url()
+        self.scrape_num_memorials()
 
-    def get_search_url(self):
+    def scrape_search_url(self):
         if self.search_url is None:
             self.search_url = (
                 f"{FINDAGRAVE_BASE_URL}"
@@ -152,16 +154,16 @@ class Cemetery:
         )
         conn.close()
 
-    def get_canonical_url(self):
-        link = self.soup.find("link", rel=re.compile("canonical"))["href"]
-        if link:
-            self.findagrave_url = link
+    def scrape_canonical_url(self):
+        link = self.soup.find("link", rel=re.compile("canonical"))
+        if link is not None:
+            self.findagrave_url = link["href"]
 
-    def get_name(self):
+    def scrape_name(self):
         if (result := self.soup.find("h1", itemprop="name")) is not None:
             self.name = result.get_text().strip()
 
-    def get_location(self):
+    def scrape_location(self):
         location = None
         if (result := self.soup.find("span", itemprop="addressLocality")) is not None:
             locality = result.get_text().strip()
@@ -174,7 +176,7 @@ class Cemetery:
                     location = locality + ", " + region + ", " + country
         self.location = location
 
-    def get_coords(self):
+    def scrape_coords(self):
         lat = None
         lon = None
         result = self.soup.find("span", title="Latitude:")
@@ -186,14 +188,14 @@ class Cemetery:
         if lat and lon:
             self.coords = lat + "," + lon
 
-    def get_num_memorials(self):
-        num = -1
+    def scrape_num_memorials(self):
+        count = 0
         if (div := self.soup.find("div", id="MemorialsAll")) is not None:
             if (ul := div.find("ul")) is not None:
                 if (a := ul.find("a")) is not None:
                     count = re.match("View Memorials ([0-9,]+)", a.get_text()).group(1)
-                    num = int(count.replace(",", ""))
-        return num
+                    count = int(count.replace(",", ""))
+        self.num_memorials = count
 
 
 @dataclass(frozen=True)
@@ -348,7 +350,7 @@ class Memorial:
 
 
 class _MemorialParser:
-    def __init__(self, findagrave_url: str, **kwargs):
+    def __init__(self, findagrave_url: str, **kwargs) -> None:
         self.memorial_id = kwargs.get("memorial_id", None)
         self.findagrave_url = findagrave_url
         self.prefix = kwargs.get("prefix", None)
@@ -373,6 +375,7 @@ class _MemorialParser:
         self.driver = kwargs.get("driver", Driver())
         self.get = kwargs.get("get", True)
         self.scrape = kwargs.get("scrape", True)
+        # self.soup: Optional[Tag] = None
         self.soup = None
         self.m: dict = {}
 
@@ -432,8 +435,8 @@ class _MemorialParser:
                 return True
         return False
 
-    def check_merged(self):
-        merged_url = None
+    def check_merged(self) -> Optional[str]:
+        merged_url: Optional[str] = None
         popup = self.soup.find("div", class_="jumbotron text-center")
         if popup is not None:
             if "Memorial has been merged" in popup.get_text(strip=True):
@@ -636,12 +639,14 @@ class _MemorialParser:
 class _SearchWorker:
     def __init__(  # noqa: max-complexity=23
         self, cemetery: Cemetery = cast(Cemetery, None), **kwargs
-    ):
+    ) -> None:
         self.cemetery: Cemetery = cemetery
         self.params: dict = {}
 
-        self.max_results = kwargs.pop("max_results", 0)
-        self.page = kwargs.get("page", None)
+        self.max_results: int = kwargs.pop("max_results", 0)
+        self.page: int = kwargs.get("page", None)
+        self.driver: Driver
+        self.search_url: str
 
         if self.cemetery is None:
             self.driver = kwargs.pop("driver", Driver())
@@ -672,7 +677,7 @@ class _SearchWorker:
             self.process_veteran(**kwargs)
         else:
             self.driver = cemetery.driver
-            self.search_url = cemetery.get_search_url()
+            self.search_url = cemetery.search_url
             # query params
             self.params["firstname"] = kwargs.get("firstname", "")
             self.params["middlename"] = kwargs.get("middlename", "")
@@ -843,7 +848,7 @@ class _SearchWorker:
         # Load the first page to learn how many results there may be
         log.debug(f"Search params={self.params}")
         response = self.driver.get(self.search_url, params=self.params)
-        soup = BeautifulSoup(response.content, "lxml")
+        soup: Tag = BeautifulSoup(response.content, "lxml")
 
         # If this query isn't for a specific page, calculate how many
         # pages the results will span
@@ -885,7 +890,7 @@ class _SearchWorker:
             count = int(num_str)
         return count
 
-    def scrape_memorial_url(self, tag: Tag, mem: dict) -> str | None:
+    def scrape_memorial_url(self, tag: Tag, mem: dict) -> Optional[str]:
         path = None
         if (anchor := cast(Tag, tag.find("a"))) is not None:
             path = cast(str, anchor["href"])
@@ -898,7 +903,7 @@ class _SearchWorker:
 
     def scrape_memorial_type(self, tag: Tag, mem: dict):
         if (h2 := tag.find("h2")) is not None:
-            if (button := h2.find("button")) is not None:
+            if (button := cast(Tag, h2.find("button"))) is not None:
                 if button.get_text() == "Cenotaph":
                     mem["memorial_type"] = "Cenotaph"
                 elif button.get_text() == "Monument":
@@ -1006,7 +1011,7 @@ class _SearchWorker:
         return results
 
     @staticmethod
-    def get_page_url(url, page):
+    def get_page_url(url, page) -> Optional[str]:
         parsed = urlparse(url)
         qs: dict = parse_qs(parsed.query)
         qs["page"] = int(page)
@@ -1018,6 +1023,6 @@ class ResultSet(list):
     """A ResultSet is just a list that keeps track of the object
     that created it."""
 
-    def __init__(self, source, result=()):
+    def __init__(self, source, result=()) -> None:
         super(ResultSet, self).__init__(result)
         self.source = source

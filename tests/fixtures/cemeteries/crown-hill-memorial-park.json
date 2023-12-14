@@ -3,5 +3,6 @@
   "findagrave_url": "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park",
   "name": "Crown Hill Memorial Park",
   "location": "Dallas, Dallas County, Texas, USA",
-  "coords": "32.86780,-96.86220"
+  "coords": "32.86780,-96.86220",
+  "num_memorials": 4899
 }

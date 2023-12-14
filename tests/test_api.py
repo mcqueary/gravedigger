@@ -62,6 +62,27 @@ def test_vcr():
         assert b"Example domains" in response.content
 
 
+@pytest.mark.parametrize(
+    "url, cassette",
+    [
+        (
+            "https://www.findagrave.com/memorial/should-produce-404",
+            pytest.vcr_cassettes + "404-memorial.yaml",
+        ),
+        (
+            "https://www.findagrave.com/cemetery/should-produce-404",
+            pytest.vcr_cassettes + "404-cemetery.yaml",
+        ),
+    ],
+)
+def test_driver_raises_http_error(url, cassette):
+    # FIXME
+    with vcr.use_cassette(cassette):
+        with pytest.raises(HTTPError) as excinfo:
+            Memorial.parse(url)
+        assert "404 Client Error: Not Found" in excinfo.value.args[0]
+
+
 @pytest.mark.parametrize("name", memorials)
 def test_memorial_parse(
     name: str,
@@ -194,59 +215,46 @@ def test_memorial_parser_removed_raises_exception(findagrave_url):
 
 
 @pytest.mark.parametrize(
-    "name, nickname, death, cassette",
+    "person, cassette",
     [
         (
-            "James Fenimore Cooper",
-            None,
-            1851,
+            pytest.helpers.load_memorial_from_json("james-fenimore-cooper"),
             pytest.vcr_cassettes + "james-fenimore-cooper-search-results.yaml",
         ),
         (
-            "John J. Pershing",
-            "Black Jack",
-            1948,
+            pytest.helpers.load_memorial_from_json("john-j-pershing"),
             pytest.vcr_cassettes + "john-j-pershing-search-results.yaml",
         ),
     ],
 )
-def test_search(name, nickname, death, cassette):
+def test_search(person: dict, cassette):
     with vcr.use_cassette(cassette):
-        names = name.split(" ")
+        names = person["name"].split(" ")
+        first_name = names[0]
+        middle_name = ""
+        last_name = names[len(names) - 1]
+        if len(names) > 2:
+            middle_name = names[1]
+
+        birth_year: str = person["birth"][-4:]
+        death_year: str = person["death"][-4:]
         results = Memorial.search(
-            firstname=names[0],
-            middlename=names[1],
-            lastname=names[2],
-            deathyear=death,
+            firstname=first_name,
+            middlename=middle_name,
+            lastname=last_name,
+            birthyear=birth_year,
+            deathyear=death_year,
             max_results=1,
         )
         assert results is not None
         assert len(results) == 1
         for result in results:
-            assert result.name == name
-            assert str(death) in result.death
-            assert result.nickname == nickname
-
-
-@pytest.mark.parametrize(
-    "url, cassette",
-    [
-        (
-            "https://www.findagrave.com/memorial/should-produce-404",
-            pytest.vcr_cassettes + "404-memorial.yaml",
-        ),
-        (
-            "https://www.findagrave.com/cemetery/should-produce-404",
-            pytest.vcr_cassettes + "404-cemetery.yaml",
-        ),
-    ],
-)
-def test_driver_raises_http_error(url, cassette):
-    # FIXME
-    with vcr.use_cassette(cassette):
-        with pytest.raises(HTTPError) as excinfo:
-            Memorial.parse(url)
-        assert "404 Client Error: Not Found" in excinfo.value.args[0]
+            assert first_name in result.name
+            assert middle_name in result.name
+            assert last_name in result.name
+            assert birth_year == result.birth[-4:]
+            assert death_year == result.death[-4:]
+            assert result.nickname == person["nickname"]
 
 
 @pytest.mark.parametrize("name", famous_memorials)
@@ -397,9 +405,9 @@ def test_cemetery_search_multi_page(cem_url, cassette):
 def test_cemetery_search_all(url, expected_name, expected_id, cassette):
     with vcr.use_cassette(cassette):
         cem = Cemetery(url)
-        assert cem.get_num_memorials() > 0
+        assert cem.num_memorials > 0
         results = Memorial.search(cem)
-        assert len(results) == cem.get_num_memorials()
+        assert len(results) == cem.num_memorials
         m: Memorial = results[0]
         assert m.name == expected_name
         assert m.memorial_id == expected_id

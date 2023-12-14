@@ -45,6 +45,7 @@ def test_cemetery_to_dict(expected: dict):
     assert result["name"] == expected["name"]
     assert result["location"] == expected["location"]
     assert result["coords"] == expected["coords"]
+    assert result["num_memorials"] == expected["num_memorials"]
 
 
 @pytest.mark.parametrize(
@@ -76,16 +77,3 @@ def test_cemetery(expected, cassette):
         # test for instance inequality
         cem3.cemetery_id = 41405
         assert cem3 != cem2
-
-
-@vcr.use_cassette(pytest.vcr_cassettes + "cemetery-monticello-graveyard.yaml")
-@pytest.mark.parametrize(
-    (
-        "url",
-        "num_expected",
-    ),
-    [("https://www.findagrave.com/cemetery/641519/monticello-graveyard", 270)],
-)
-def test_cemetery_get_num_memorials(url: str, num_expected: int):
-    count = Cemetery(url).get_num_memorials()
-    assert count == num_expected

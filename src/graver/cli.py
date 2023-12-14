@@ -9,7 +9,6 @@ import typer
 from tqdm import tqdm
 
 from graver import APP_NAME, FINDAGRAVE_BASE_URL, MEMORIAL_CANONICAL_URL_FORMAT
-
 from .api import Cemetery, Driver, Memorial, MemorialMergedException
 
 # Constants
@@ -72,7 +71,6 @@ def version_callback(value: bool):
 def logging_callback(log_level: str):
     """Set log level for graver application"""
     if log_level:
-        print(f"in logging_callback, setting log_level={log_level}")
         logging.getLogger().setLevel(log_level.upper())
         log.debug("Log level is " + str(log_level.upper()))
 
@@ -81,7 +79,6 @@ def verbose_callback(verbose: bool = False):
     """Set log level to DEBUG application"""
     if verbose:
         log_level = "INFO"
-        print(f"in verbose_callback, setting log_level={log_level}")
         logging_callback(log_level)
 
 

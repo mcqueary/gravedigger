@@ -16,7 +16,7 @@ help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 cov: ## run pytest coverage report
-	. $(VENV)/bin/activate && pytest --cov=graver --cov-report term-missing
+	poetry run pytest --cov=graver --cov-report term-missing
 
 coveralls: ## report coverage data to coveralls.io
 	. $(VENV)/bin/activate && coveralls

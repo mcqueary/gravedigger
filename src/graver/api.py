@@ -45,8 +45,6 @@ class NotFound(MemorialException):
 class Driver(object):
     recoverable: List[int] = [500, 502, 503, 504, 599]
 
-    # TODO implement backoff/retry on "502 Bad Gateway"
-    # soup: BeautifulSoup | None = None
     def __init__(self, **kwargs):
         self.max_retries: int = int(kwargs.get("max_retries", 3))
         self.retry_ms: int = int(kwargs.get("retry_ms", 500))
@@ -73,11 +71,11 @@ class Cemetery:
     """Class for keeping track of a Find A Grave cemetery."""
 
     # data
-    cemetery_id: int | None = None
-    findagrave_url: str | None = None
-    name: str | None = None
-    location: str | None = None
-    coords: str | None = None
+    cemetery_id: int
+    findagrave_url: str
+    name: str
+    location: str
+    coords: str
 
     def __init__(self, findagrave_url: str, **kwargs):
         super().__init__()
@@ -202,26 +200,26 @@ class Cemetery:
 class Memorial:
     """Class for keeping track of a Find A Grave memorial."""
 
-    memorial_id: int | None = None
-    findagrave_url: str | None = None
-    prefix: str | None = None
-    name: str | None = None
-    suffix: str | None = None
-    nickname: str | None = None
-    maiden_name: str | None = None
-    original_name: str | None = None  # for "famous" people
-    famous: bool | None = None
-    veteran: bool | None = None
-    birth: str | None = None
-    birth_place: str | None = None
-    death: str | None = None
-    death_place: str | None = None
-    memorial_type: str | None = None
-    burial_place: str | None = None
-    cemetery_id: int | None = None
-    plot: str | None = None
-    coords: str | None = None
-    has_bio: bool | None = None
+    memorial_id: int
+    findagrave_url: str
+    prefix: str
+    name: str
+    suffix: str
+    nickname: str
+    maiden_name: str
+    original_name: str
+    famous: bool
+    veteran: bool
+    birth: str
+    birth_place: str
+    death: str
+    death_place: str
+    memorial_type: str
+    burial_place: str
+    cemetery_id: int
+    plot: str
+    coords: str
+    has_bio: bool
 
     def __eq__(self, other):
         if self.__class__ != other.__class__:
@@ -940,6 +938,10 @@ class _SearchWorker:
                 mem["veteran"] = True
 
     def scrape_memorial_cemetery_info(self, tag, mem):
+        if self.cemetery is not None:
+            mem["cemetery_id"] = self.cemetery.cemetery_id
+            mem["burial_place"] = f"{self.cemetery.name}, {self.cemetery.location}"
+
         # Cemetery info and optional plot info
         if (form := tag.form) is not None:
             # Get the cemetery path e.g. '/cemetery/12345/the-cemetery-name'
@@ -963,12 +965,30 @@ class _SearchWorker:
         results: List[Memorial] = []
 
         for div in divs:
-            mem = {}
-            if self.cemetery is not None:
-                mem = {
-                    "cemetery_id": self.cemetery.cemetery_id,
-                    "burial_place": f"{self.cemetery.name}, {self.cemetery.location}",
-                }
+            # mem = {}
+            mem = {
+                "memorial_id": None,
+                "findagrave_url": None,
+                "prefix": None,
+                "name": None,
+                "suffix": None,
+                "nickname": None,
+                "maiden_name": None,
+                "original_name": None,
+                "famous": None,
+                "veteran": None,
+                "birth": None,
+                "birth_place": None,
+                "death": None,
+                "death_place": None,
+                "memorial_type": None,
+                "burial_place": None,
+                "cemetery_id": None,
+                "plot": None,
+                "coords": None,
+                "has_bio": None,
+            }
+
             self.scrape_memorial_url(div, mem)
             mem_item_info = div.find("div", {"class": "memorial-item--info"})
             mem_item_grave = div.find("div", {"class": "memorial-item---grave"})

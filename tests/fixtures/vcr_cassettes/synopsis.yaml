@@ -137,7 +137,7 @@ interactions:
         {\n\t$(\"#nav_dom_special\").addClass(\"selected\")\n\t$(\"#nav_dom_int_sub\").hide()\n\t$(\"#nav_dom_idn_sub\").hide()\n\t$(\"#nav_dom_dnssec_sub\").hide()\n\t$(\"#nav_dom_tools_sub\").hide()\n\t$(\"#nav_dom_root_sub\").hide()\n});\n</script>\n\n\n</body>\n\n</html>\n"
     headers:
       Age:
-      - '11697'
+      - '12154'
       Cache-Control:
       - public, max-age=21603
       Connection:
@@ -157,9 +157,9 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Thu, 14 Dec 2023 20:03:23 GMT
+      - Thu, 14 Dec 2023 19:50:03 GMT
       Expires:
-      - Thu, 14 Dec 2023 20:11:15 GMT
+      - Thu, 14 Dec 2023 20:58:38 GMT
       Keep-Alive:
       - timeout=2, max=358
       Last-Modified:

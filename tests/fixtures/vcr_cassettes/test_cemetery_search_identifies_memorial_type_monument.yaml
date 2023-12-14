@@ -1451,16 +1451,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#d3a0a6a3a3bca1a793b5babdb7b2b4a1b2a5b6fdb0bcbeeca0a6b1b9b6b0a7ee92b0b0bca6bda7f39fbcb0b8b6b7\"><span
-        class=\"__cf_email__\" data-cfemail=\"c8bbbdb8b8a7babc88aea1a6aca9afbaa9beade6aba7a5\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#077472777768757347616e69636660756671622964686a387472656d6264733a46646468726973274b68646c6263\"><span
+        class=\"__cf_email__\" data-cfemail=\"5f2c2a2f2f302d2b1f3936313b3e382d3e293a713c3032\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#a8dbddd8d8c7dadce8cec1c6ccc9cfdac9decd86cbc7c597dbddcac2cdcbdc95e9cbcbc7ddc6dc88e4c7cbc3cdcc\"><span
-        class=\"__cf_email__\" data-cfemail=\"f1828481819e8385b197989f95909683908794df929e9c\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#99eaece9e9f6ebedd9fff0f7fdf8feebf8effcb7faf6f4a6eaecfbf3fcfaeda4d8fafaf6ecf7edb9d5f6faf2fcfd\"><span
+        class=\"__cf_email__\" data-cfemail=\"e5969095958a9791a5838c8b81848297849380cb868a88\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#e0939590908f9294a086898e84818792819685ce838f8ddf9395828a858394dda183838f958e94c0ac8f838b8584\"><span
-        class=\"__cf_email__\" data-cfemail=\"691a1c1919061b1d290f00070d080e1b081f0c470a0604\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#9eedebeeeef1eceadef8f7f0fafff9ecffe8fbb0fdf1f3a1edebfcf4fbfdeaa3dffdfdf1ebf0eabed2f1fdf5fbfa\"><span
+        class=\"__cf_email__\" data-cfemail=\"84f7f1f4f4ebf6f0c4e2edeae0e5e3f6e5f2e1aae7ebe9\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -2491,8 +2491,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#6c0a0909080e0d0f072c0a0502080d0b1e0d1a09420f0301531f190e06090f1851381e0d021f000d18050302495e5c0a0909080e0d0f07\"><span
-        class=\"__cf_email__\" data-cfemail=\"22444747464043414962444b4c464345504354470c414d4f\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#8ee8ebebeaecefede5cee8e7e0eaefe9fceff8eba0ede1e3b1fdfbece4ebedfab3dafcefe0fde2effae7e1e0abbcbee8ebebeaecefede5\"><span
+        class=\"__cf_email__\" data-cfemail=\"c9afacacadaba8aaa289afa0a7ada8aebba8bface7aaa6a4\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -2567,7 +2567,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 835986745d2a1f36-DEN
+      - 8359d70b1d595203-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2577,14 +2577,14 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 21:26:27 GMT
+      - Thu, 14 Dec 2023 22:21:28 GMT
       Server:
       - cloudflare
       Set-Cookie:
       - ipLoc=us; Max-Age=86400; Domain=findagrave.com; Path=/; Expires=Fri, 15 Dec
-        2023 21:26:27 GMT; Secure; SameSite=Lax
+        2023 22:21:28 GMT; Secure; SameSite=Lax
       - preferredLanguage=en; Max-Age=31536000; Domain=findagrave.com; Path=/; Expires=Fri,
-        13 Dec 2024 21:26:27 GMT; Secure; SameSite=Lax
+        13 Dec 2024 22:21:28 GMT; Secure; SameSite=Lax
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains
       Transfer-Encoding:
@@ -3250,20 +3250,22 @@ interactions:
         text-primary\">Explore more</h3>\n    <div id=\"nativeAncestrySlot\">\n        <ul
         class=\"list-group list-unstyled m-0\">\n            \n                \n
         \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
-        ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Williams&gsfn=Adrian&gl=BMD_BIRTH\"><i>Birth,
-        Baptism & Christening</i><span class=\"float-end\"><button type=\"button\"
-        class=\"btn btn-sm btn-default py-0\">Search</button></span></a></li>\n                \n
+        ancestry-hint-widget-item\" href=\"https://go.newspapers.com/results.php?query=Adrian+Williams&xid=1363\">Adrian
+        Williams in <b>Newspapers</b></a></li>\n                \n            \n                \n
+        \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
+        ancestry-hint-widget-item\" href=\"https://www.fold3.com/search?docQuery=(keywords:Adrian+Williams)&xid=2114\">Adrian
+        Williams in <b>Military Records</b></a></li>\n                \n            \n
+        \               \n                    <li class=\"list-group-item\"><a target=\"_blank\"
+        class=\"list-group-item-action ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Williams&gsfn=Adrian&gl=allgs\">View
+        <b>more records</b> for Adrian Williams at Ancestry.com</a></li>\n                \n
         \           \n                \n                    <li class=\"list-group-item\"><a
         target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
-        href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Williams&gsfn=Adrian&gl=BMD_MARRIAGE\"><i>Marriage
-        & Divorce</i><span class=\"float-end\"><button type=\"button\" class=\"btn
-        btn-sm btn-default py-0\">Search</button></span></a></li>\n                \n
-        \           \n                \n                    <li class=\"list-group-item\"><a
-        target=\"_blank\" class=\"list-group-item-action ancestry-hint-widget-item\"
-        href=\"http://www.ancestry.com/s80137/t37477/rd.ashx?gsln=Williams&gsfn=Adrian&gl=BMD_DEATH\"><i>Death,
-        Burial, Cemetery & Obituaries</i><span class=\"float-end\"><button type=\"button\"
-        class=\"btn btn-sm btn-default py-0\">Search</button></span></a></li>\n                \n
-        \           \n        </ul>\n        <p class=\"text-center text-muted\"><small>Sponsored
+        href=\"http://www.ancestry.com/s80153/t13384/rd.ashx\"> Discover more with
+        a simple <b>DNA test</b></a></li>\n                \n            \n                \n
+        \                   <li class=\"list-group-item\"><a target=\"_blank\" class=\"list-group-item-action
+        ancestry-hint-widget-item\" href=\"http://www.ancestry.com/s80154/t37359/rd.ashx?surname=Williams\">More
+        about the <b>Williams family name</b></a></li>\n                \n            \n
+        \       </ul>\n        <p class=\"text-center text-muted\"><small>Sponsored
         by Ancestry</small></p>\n    </div>\n</div>\n\n\n\n                \n                \n
         \               \n                \n            </div>\n            \n        </div>\n
         \   </div>\n</div>\n<div class=\"modal fade cemetery-browse\" tabindex=\"-1\"
@@ -3500,16 +3502,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#5c2f292c2c332e281c3a3532383d3b2e3d2a39723f3331632f293e36393f28611d3f3f332932287c10333f373938\"><span
-        class=\"__cf_email__\" data-cfemail=\"e5969095958a9791a5838c8b81848297849380cb868a88\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#b2c1c7c2c2ddc0c6f2d4dbdcd6d3d5c0d3c4d79cd1dddf8dc1c7d0d8d7d1c68ff3d1d1ddc7dcc692feddd1d9d7d6\"><span
+        class=\"__cf_email__\" data-cfemail=\"c9babcb9b9a6bbbd89afa0a7ada8aebba8bface7aaa6a4\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#0a797f7a7a65787e4a6c63646e6b6d786b7c6f2469656735797f68606f697e374b6969657f647e2a466569616f6e\"><span
-        class=\"__cf_email__\" data-cfemail=\"b6c5c3c6c6d9c4c2f6d0dfd8d2d7d1c4d7c0d398d5d9db\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#2d5e585d5d425f596d4b4443494c4a5f4c5b48034e4240125e584f47484e59106c4e4e425843590d61424e464849\"><span
+        class=\"__cf_email__\" data-cfemail=\"483b3d3838273a3c082e21262c292f3a293e2d662b2725\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#45363035352a373105232c2b212422372433206b262a287a3630272f202631780426262a302b3165092a262e2021\"><span
-        class=\"__cf_email__\" data-cfemail=\"cebdbbbebea1bcba8ea8a7a0aaafa9bcafb8abe0ada1a3\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#e4979194948b9690a4828d8a80858396859281ca878b89db9791868e818790d9a587878b918a90c4a88b878f8180\"><span
+        class=\"__cf_email__\" data-cfemail=\"54272124243b262014323d3a303533263522317a373b39\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -4488,8 +4490,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#27414242434546444c67414e49434640554651420944484a185452454d4244531a73554649544b46534e4849021517414242434546444c\"><span
-        class=\"__cf_email__\" data-cfemail=\"593f3c3c3d3b383a32193f30373d383e2b382f3c773a3634\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#88eeededeceae9ebe3c8eee1e6ece9effae9feeda6ebe7e5b7fbfdeae2edebfcb5dcfae9e6fbe4e9fce1e7e6adbab8eeededeceae9ebe3\"><span
+        class=\"__cf_email__\" data-cfemail=\"16707373727477757d56707f78727771647760733875797b\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -4564,7 +4566,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 8359867768555381-DEN
+      - 8359d70ff9ac5381-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -4574,7 +4576,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 21:26:28 GMT
+      - Thu, 14 Dec 2023 22:21:29 GMT
       Server:
       - cloudflare
       Strict-Transport-Security:

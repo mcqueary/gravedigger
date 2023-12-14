@@ -1676,16 +1676,16 @@ interactions:
         security on the site. Please reset your password.</p>\n    <p class=\"alert
         alert-danger icon-warning text-center hidden\" id=\"error-205\" role=\"alert\">Your
         account has been locked for <b>30 minutes</b> due to too many failed sign
-        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#73000603031c010733151a1d171214011205165d101c1e4c000611191610074e3210101c061d07533f1c10181617\"><span
-        class=\"__cf_email__\" data-cfemail=\"f2818782829d8086b2949b9c96939580938497dc919d9f\">[email&#160;protected]</span></a>
+        in attempts. Please contact Find a Grave at <a href=\"/cdn-cgi/l/email-protection#2f5c5a5f5f405d5b6f4946414b4e485d4e594a014c4042105c5a4d454a4c5b126e4c4c405a415b0f63404c444a4b\"><span
+        class=\"__cf_email__\" data-cfemail=\"73000603031c010733151a1d171214011205165d101c1e\">[email&#160;protected]</span></a>
         if you need help resetting your password.</p>\n    <p class=\"alert alert-danger
         icon-warning text-center hidden\" id=\"error-206\" role=\"alert\">This account
-        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#52212722223d202612343b3c363335203324377c313d3f6d212730383731266f1331313d273c26721e3d31393736\"><span
-        class=\"__cf_email__\" data-cfemail=\"592a2c2929362b2d193f30373d383e2b382f3c773a3634\">[email&#160;protected]</span></a></p>\n
+        has been disabled. If you have questions, please contact <a href=\"/cdn-cgi/l/email-protection#2d5e585d5d425f596d4b4443494c4a5f4c5b48034e4240125e584f47484e59106c4e4e425843590d61424e464849\"><span
+        class=\"__cf_email__\" data-cfemail=\"e89b9d9898879a9ca88e81868c898f9a899e8dc68b8785\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"error-403\"
         role=\"alert\">This account has been disabled. If you have questions, please
-        contact <a href=\"/cdn-cgi/l/email-protection#a0d3d5d0d0cfd2d4e0c6c9cec4c1c7d2c1d6c58ec3cfcd9fd3d5c2cac5c3d49de1c3c3cfd5ced480eccfc3cbc5c4\"><span
-        class=\"__cf_email__\" data-cfemail=\"4b383e3b3b24393f0b2d22252f2a2c392a3d2e65282426\">[email&#160;protected]</span></a></p>\n
+        contact <a href=\"/cdn-cgi/l/email-protection#6d1e181d1d021f192d0b0403090c0a1f0c1b08430e0200521e180f07080e19502c0e0e021803194d21020e060809\"><span
+        class=\"__cf_email__\" data-cfemail=\"a9dadcd9d9c6dbdde9cfc0c7cdc8cedbc8dfcc87cac6c4\">[email&#160;protected]</span></a></p>\n
         \   <p class=\"alert alert-danger icon-warning text-center hidden\" id=\"emailNotFound\"
         role=\"alert\">Email not found</p>\n    <p class=\"alert alert-danger icon-warning
         text-center hidden\" id=\"error-1002\" role=\"alert\">Please complete the
@@ -2660,11 +2660,11 @@ interactions:
         agree, transfer the memorial\",\"SuggestRequestFailedTryAgainLater\":\"Suggest
         request failed. Try again later.\",\"TooManyEmails\":\"You have sent several
         suggested edit emails. Please complete the captcha below to prove that you
-        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Prefix\":\"Prefix\",\"Veteran\":\"Veteran\",\"Birth
-        Location\":\"Birth Location\",\"Year\":\"Year\",\"Death Location\":\"Death
-        Location\",\"DeathDate\":\"Death Date\",\"BirthDate\":\"Birth Date\",\"Plot
-        Number\":\"Plot Number\",\"CenotaphOrMonument\":\"Cenotaph or monument\",\"NickName\":\"Nickname\",\"LastName\":\"Last
-        Name\",\"BurialLocation\":\"Burial Location\",\"GPS\":\"GPS\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
+        are not a bot.\",\"EmailSubject\":\"Greetings,\",\"Veteran\":\"Veteran\",\"Birth
+        Location\":\"Birth Location\",\"Death Location\":\"Death Location\",\"Year\":\"Year\",\"BirthDate\":\"Birth
+        Date\",\"Prefix\":\"Prefix\",\"NickName\":\"Nickname\",\"LastName\":\"Last
+        Name\",\"DeathDate\":\"Death Date\",\"Plot Number\":\"Plot Number\",\"BurialLocation\":\"Burial
+        Location\",\"GPS\":\"GPS\"}},\"ovr\":{\"lf\":{\"CharactersRemaining\":\"{{nf}}
         character remaining\",\"CharactersRemaining_plural\":\"{{nf}} characters remaining\",\"MyScrapbook\":\"**
         My Scrapbook **\",\"LeaveAFlower\":\"Leave a Flower\",\"ChooseACategory\":\"Choose
         a category:\",\"AddtoScrapbook\":\"Add to your scrapbook\",\"SearchbyFlower\":\"Search
@@ -2824,8 +2824,8 @@ interactions:
         h4\">Default Language\n                    </h1>\n            </div>\n            <div
         class=\"modal-body p-3\">\n                \n                    <p class=\"text-muted\"><strong>Translation
         on Find a Grave</strong> is an ongoing project. If you notice a problem with
-        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#187e7d7d7c7a797b73587e71767c797f6a796e7d367b7775276b6d7a727d7b6c254c6a79766b74796c7177763d2a287e7d7d7c7a797b73\"><span
-        class=\"__cf_email__\" data-cfemail=\"2f494a4a4b4d4e4c446f4946414b4e485d4e594a014c4042\">[email&#160;protected]</span></a>
+        the translation, please send a message to <a href=\"/cdn-cgi/l/email-protection#55333030313734363e15333c3b313432273423307b363a386a2620373f303621680127343b263934213c3a3b706765333030313734363e\"><span
+        class=\"__cf_email__\" data-cfemail=\"53353636373132303813353a3d373234213225367d303c3e\">[email&#160;protected]</span></a>
         and include a link to the page and details about the problem. Thanks for your
         help!</p>\n                \n\n            </div>\n            <div class=\"modal-footer\">\n
         \               \n                <button type=\"button\" class=\"btn btn-default
@@ -2900,7 +2900,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 83598634581451e5-DEN
+      - 8359d6c61c3d69db-DEN
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2910,15 +2910,15 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 14 Dec 2023 21:26:17 GMT
+      - Thu, 14 Dec 2023 22:21:17 GMT
       Server:
       - cloudflare
       Set-Cookie:
       - ipLoc=us; Max-Age=86400; Domain=findagrave.com; Path=/; Expires=Fri, 15 Dec
-        2023 21:26:17 GMT; Secure; SameSite=Lax
+        2023 22:21:17 GMT; Secure; SameSite=Lax
       - preferredLanguage=en; Max-Age=31536000; Domain=findagrave.com; Path=/; Expires=Fri,
-        13 Dec 2024 21:26:17 GMT; Secure; SameSite=Lax
-      - __cfruid=6ee6ef925f65705a8c77ba4cfe5c7c6ef0f02f77-1702589177; path=/; domain=.findagrave.com;
+        13 Dec 2024 22:21:17 GMT; Secure; SameSite=Lax
+      - __cfruid=1ed7904cc58720568a3ee167c99aaccf3f27bdf0-1702592477; path=/; domain=.findagrave.com;
         HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains

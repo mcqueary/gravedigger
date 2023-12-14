@@ -22,24 +22,26 @@ coveralls: ## report coverage data to coveralls.io
 	. $(VENV)/bin/activate && coveralls
 
 test-unit: ## run pytest unit tests only
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --without-integration
+	poetry run pytest -rA -vvs --log-level INFO --without-integration
 
 test-integration: ## run pytest integration tests
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO --with-integration
+	poetry run pytest -rA -vvs --log-level INFO --with-integration
 
 test: ## run pytest
-	. $(VENV)/bin/activate && pytest -rA -vvs --log-level INFO
+	poetry run pytest -rA -vvs --log-level INFO
 
 lint: ## run flake8 to check the code
-	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
-	. $(VENV)/bin/activate && flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+	poetry run flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
+	poetry run flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
-install-editable:
-	. $(VENV)/bin/activate && pip install -e .
+# install-editable:
+# 	. $(VENV)/bin/activate && pip install -e .
+install:
+	. $(VENV)/bin/activate && poetry install
 
 fmt: ## run black to format the code
-	. $(VENV)/bin/activate && isort $(PACKAGES) tests
-	. $(VENV)/bin/activate && black -q --line-length 88 $(PACKAGES) tests
+	poetry run isort $(PACKAGES) tests
+	poetry run black -q --line-length 88 $(PACKAGES) tests
 
 $(VENV)/init: ## init the virtual environment
 	python3 -m venv $(VENV)

@@ -9,6 +9,7 @@ import typer
 from tqdm import tqdm
 
 from graver import APP_NAME, FINDAGRAVE_BASE_URL, MEMORIAL_CANONICAL_URL_FORMAT
+
 from .api import Cemetery, Driver, Memorial, MemorialMergedException
 
 # Constants

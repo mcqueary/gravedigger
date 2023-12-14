@@ -7,7 +7,7 @@ import sqlite3
 from collections import namedtuple
 from dataclasses import asdict, dataclass
 from time import sleep
-from typing import cast, List, Optional
+from typing import List, Optional, cast
 from urllib.parse import parse_qs, parse_qsl, urlencode, urlparse, urlunparse
 
 import requests
@@ -89,7 +89,7 @@ class Cemetery:
         self.driver = kwargs.get("driver", Driver())
         self.get = kwargs.get("get", True)
         self.scrape = kwargs.get("scrape", True)
-        self.search_url = None
+        # self.search_url: Optional[str] = None
         # self.soup: BeautifulSoup
         self.params: dict = {}
 
@@ -110,20 +110,15 @@ class Cemetery:
                 "https://www.findagrave.com/cemetery/([0-9]+)/.*", self.findagrave_url
             ).group(1)
         )
+        self.search_url = (
+            f"{FINDAGRAVE_BASE_URL}"
+            f"/cemetery/{self.cemetery_id}"
+            f"/memorial-search?"
+        )
         self.scrape_name()
         self.scrape_location()
         self.scrape_coords()
-        self.scrape_search_url()
         self.scrape_num_memorials()
-
-    def scrape_search_url(self):
-        if self.search_url is None:
-            self.search_url = (
-                f"{FINDAGRAVE_BASE_URL}"
-                f"/cemetery/{self.cemetery_id}"
-                f"/memorial-search?"
-            )
-        return self.search_url
 
     def __eq__(self, other):
         if self.__class__ != other.__class__:
@@ -437,15 +432,16 @@ class _MemorialParser:
 
     def check_merged(self) -> Optional[str]:
         merged_url: Optional[str] = None
-        popup = self.soup.find("div", class_="jumbotron text-center")
-        if popup is not None:
-            if "Memorial has been merged" in popup.get_text(strip=True):
-                for p in popup.find_all("p"):
-                    anchor = p.find("a")
-                    if anchor is not None:
-                        new_path: str = p.find("a")["href"]
-                        parsed = urlparse(self.findagrave_url)
-                        merged_url = urlunparse(parsed._replace(path=new_path))
+        if self.soup is not None:
+            popup = cast(Tag, self.soup.find("div", class_="jumbotron text-center"))
+            if popup is not None:
+                if "Memorial has been merged" in popup.get_text(strip=True):
+                    for p in popup.find_all("p"):
+                        anchor = p.find("a")
+                        if anchor is not None:
+                            new_path: str = p.find("a")["href"]
+                            parsed = urlparse(self.findagrave_url)
+                            merged_url = urlunparse(parsed._replace(path=new_path))
         return merged_url
 
     def scrape_canonical_url(self):
@@ -848,7 +844,7 @@ class _SearchWorker:
         # Load the first page to learn how many results there may be
         log.debug(f"Search params={self.params}")
         response = self.driver.get(self.search_url, params=self.params)
-        soup: Tag = BeautifulSoup(response.content, "lxml")
+        soup = BeautifulSoup(response.content, "lxml")
 
         # If this query isn't for a specific page, calculate how many
         # pages the results will span

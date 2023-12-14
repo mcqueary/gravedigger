@@ -1,0 +1,22 @@
+{
+    "memorial_id": 544,
+    "findagrave_url": "https://www.findagrave.com/memorial/544/thomas-jefferson",
+    "prefix": null,
+    "name": "Thomas Jefferson",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": null,
+    "famous": true,
+    "veteran": true,
+    "birth": "13 Apr 1743",
+    "birth_place": "Shadwell, Albemarle County, Virginia, USA",
+    "death": "4 Jul 1826",
+    "death_place": "Albemarle County, Virginia, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Monticello Graveyard, Albemarle County, Virginia, USA",
+    "cemetery_id": 641519,
+    "plot": null,
+    "coords": "38.0084850,-78.4557950",
+    "has_bio": true
+}

@@ -1,0 +1,22 @@
+{
+    "memorial_id": 534,
+    "findagrave_url": "https://www.findagrave.com/memorial/534/andrew-jackson",
+    "prefix": null,
+    "name": "Andrew Jackson",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": null,
+    "famous": true,
+    "veteran": true,
+    "birth": "15 Mar 1767",
+    "birth_place": "Waxhaw, Union County, North Carolina, USA",
+    "death": "8 Jun 1845",
+    "death_place": "Hermitage, Davidson County, Tennessee, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Jackson Family Cemetery, Hermitage, Davidson County, Tennessee, USA",
+    "cemetery_id": 641417,
+    "plot": null,
+    "coords": "36.2147625,-86.6119361",
+    "has_bio": true
+}

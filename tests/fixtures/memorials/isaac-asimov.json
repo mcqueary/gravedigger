@@ -1,0 +1,22 @@
+{
+    "memorial_id": 10325,
+    "findagrave_url": "https://www.findagrave.com/memorial/10325/isaac-asimov",
+    "prefix": null,
+    "name": "Isaac Asimov",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": null,
+    "famous": true,
+    "veteran": true,
+    "birth": "2 Jan 1920",
+    "birth_place": "Smolensk Oblast, Russia",
+    "death": "6 Apr 1992",
+    "death_place": "New York, New York County, New York, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Cremated, Ashes scattered",
+    "cemetery_id": null,
+    "plot": null,
+    "coords": null,
+    "has_bio": true
+}

@@ -1,0 +1,22 @@
+{
+    "memorial_id": 1669,
+    "findagrave_url": "https://www.findagrave.com/memorial/1669/rod-serling",
+    "prefix": null,
+    "name": "Rod Serling",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": "Rodman Edward Serling",
+    "famous": true,
+    "veteran": true,
+    "birth": "25 Dec 1924",
+    "birth_place": "Syracuse, Onondaga County, New York, USA",
+    "death": "28 Jun 1975",
+    "death_place": "Rochester, Monroe County, New York, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Lake View Cemetery, Interlaken, Seneca County, New York, USA",
+    "cemetery_id": 65052,
+    "plot": "Lot G, Plot 1044",
+    "coords": "42.6277888,-76.7194884",
+    "has_bio": true
+}

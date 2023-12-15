@@ -40,12 +40,13 @@ def load_cemetery_from_json(filename: str):
 @pytest.fixture
 def database():
     """Creates an empty graver database as a tempfile"""
-    _, file_name = tempfile.mkstemp()
-    os.environ["DATABASE_NAME"] = file_name
-    Memorial.create_table(database_name=file_name)
-    Cemetery.create_table(database_name=file_name)
-    yield
-    os.unlink(file_name)
+    tf = tempfile.NamedTemporaryFile(delete=False)
+    os.environ["DATABASE_NAME"] = tf.name
+    Memorial.create_table(database_name=tf.name)
+    Cemetery.create_table(database_name=tf.name)
+    yield tf
+    tf.close()
+    os.unlink(tf.name)
 
 
 def pytest_configure():

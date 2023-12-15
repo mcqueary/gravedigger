@@ -31,7 +31,7 @@ def silence_tqdm():
     del os.environ["TQDM_MININTERVAL"]
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def text_file_with_bad_url():
     """Creates a text file containing a single memorial URL"""
     with tempfile.NamedTemporaryFile(delete=False) as tf:
@@ -41,7 +41,7 @@ def text_file_with_bad_url():
         yield
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture
 def single_line_text_file():
     """Creates a text file containing a single memorial URL"""
     with tempfile.NamedTemporaryFile(delete=False) as tf:
@@ -51,7 +51,7 @@ def single_line_text_file():
         yield
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture
 def multi_line_with_file_urls():
     """Creates a text file containing several memorial URLs, one per line"""
     file_urls = [
@@ -88,7 +88,7 @@ def test_cli_scrape_file_does_not_exist(helpers, database):
     "name, cassette",
     [("grace-brewster-hopper", pytest.vcr_cassettes + "test-cli-scrape-file.yaml")],
 )
-def test_cli_scrape_file(name, cassette, helpers, database):
+def test_cli_scrape_file(name, cassette, helpers, database, multi_line_with_file_urls):
     with vcr.use_cassette(cassette):
         person = pytest.helpers.load_memorial_from_json(name)
         url_file = os.getenv("MULTI_LINE_TEST_FILE")
@@ -102,7 +102,9 @@ def test_cli_scrape_file(name, cassette, helpers, database):
         assert m.memorial_id == mem_id
 
 
-def test_cli_scrape_file_with_invalid_url(helpers, caplog, database):
+def test_cli_scrape_file_with_invalid_url(
+    helpers, caplog, database, text_file_with_bad_url
+):
     url_file = os.getenv("BAD_DATA_FILENAME")
     command = "scrape-file {}".format(url_file)
     helpers.graver_cli(command)
@@ -125,7 +127,7 @@ def test_cli_scrape_url(url, helpers, database):
     assert m.memorial_id == 49636099
 
 
-def test_cli_scrape_file_with_bad_urls(helpers, database):
+def test_cli_scrape_file_with_bad_urls(helpers, database, text_file_with_bad_url):
     url_file = os.getenv("BAD_DATA_FILENAME")
     db = os.getenv("DATABASE_NAME")
     command = "scrape-file {} --db {}".format(url_file, db)
@@ -155,7 +157,9 @@ live_ids = (1075, 534, 574, 627, 544, 6, 7376621, 95929698, 1347)
         "george-washington",
     ],
 )
-def test_cli_scrape_file_with_single_url_file(name, helpers, database):
+def test_cli_scrape_file_with_single_url_file(
+    name, helpers, database, single_line_text_file
+):
     expected = pytest.helpers.load_memorial_from_json(name)
     cassette = f"{pytest.vcr_cassettes}{name}.yaml"
     with vcr.use_cassette(cassette):

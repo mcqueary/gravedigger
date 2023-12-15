@@ -1,0 +1,22 @@
+{
+    "memorial_id": 1347,
+    "findagrave_url": "https://www.findagrave.com/memorial/1347/carl-sagan",
+    "prefix": null,
+    "name": "Carl Sagan",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": null,
+    "famous": true,
+    "veteran": null,
+    "birth": "9 Nov 1934",
+    "birth_place": "Brooklyn, Kings County, New York, USA",
+    "death": "20 Dec 1996",
+    "death_place": "Seattle, King County, Washington, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Lake View Cemetery, Ithaca, Tompkins County, New York, USA",
+    "cemetery_id": 65039,
+    "plot": "F-322",
+    "coords": "42.4563980,-76.4930115",
+    "has_bio": true
+}

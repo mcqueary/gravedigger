@@ -1,0 +1,22 @@
+{
+    "memorial_id": 582,
+    "findagrave_url": "https://www.findagrave.com/memorial/582/martin-luther-king",
+    "prefix": "Rev Dr",
+    "name": "Martin Luther King",
+    "suffix": "Jr.",
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": null,
+    "famous": true,
+    "veteran": null,
+    "birth": "15 Jan 1929",
+    "birth_place": "Atlanta, Fulton County, Georgia, USA",
+    "death": "4 Apr 1968",
+    "death_place": "Memphis, Shelby County, Tennessee, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Martin Luther King, Jr. Center, Atlanta, Fulton County, Georgia, USA",
+    "cemetery_id": 570083,
+    "plot": null,
+    "coords": "33.7550360,-84.3734170",
+    "has_bio": true
+}

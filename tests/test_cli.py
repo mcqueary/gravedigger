@@ -1,6 +1,5 @@
 import importlib.metadata
 import os
-import tempfile
 
 import pytest
 import vcr
@@ -9,6 +8,7 @@ from graver import Memorial, __version__
 from graver.constants import APP_NAME
 
 live_urls = [
+    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1784",
     "https://www.findagrave.com/memorial/1075/george-washington",
     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=534",
     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=574",
@@ -29,41 +29,6 @@ def silence_tqdm():
     yield
     del os.environ["TQDM_DISABLE"]
     del os.environ["TQDM_MININTERVAL"]
-
-
-@pytest.fixture
-def text_file_with_bad_url():
-    """Creates a text file containing a single memorial URL"""
-    with tempfile.NamedTemporaryFile(delete=False) as tf:
-        os.environ["BAD_DATA_FILENAME"] = tf.name
-        with open(tf.name, "w") as f:
-            f.write("this-does-not-exist")
-        yield tf
-
-
-@pytest.fixture
-def single_line_text_file():
-    """Creates a text file containing a single memorial URL"""
-    with tempfile.NamedTemporaryFile(delete=False) as tf:
-        os.environ["SINGLE_LINE_FILENAME"] = tf.name
-        with open(tf.name, "w") as f:
-            f.write(live_urls[0])
-        yield
-
-
-@pytest.fixture
-def multi_line_with_file_urls():
-    """Creates a text file containing several memorial URLs, one per line"""
-    file_urls = [
-        "https://www.findagrave.com/memorial/22633912/john-quincy-adams",
-        "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
-        "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park",
-    ]
-    with tempfile.NamedTemporaryFile(delete=False) as tf:
-        os.environ["MULTI_LINE_TEST_FILE"] = tf.name
-        with open(tf.name, "w") as f:
-            f.write("\n".join(file_urls))
-        yield
 
 
 @pytest.mark.parametrize("arg", ["-V", "--version"])
@@ -88,10 +53,20 @@ def test_cli_scrape_file_does_not_exist(helpers, database):
     "name, cassette",
     [("grace-brewster-hopper", pytest.vcr_cassettes + "test-cli-scrape-file.yaml")],
 )
-def test_cli_scrape_file(name, cassette, helpers, database, multi_line_with_file_urls):
+def test_cli_scrape_file(name, cassette, helpers, database, tmp_path):
+    urls = [
+        "https://www.findagrave.com/memorial/22633912/john-quincy-adams",
+        "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
+        "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park",
+    ]
     with vcr.use_cassette(cassette):
         person = pytest.helpers.load_memorial_from_json(name)
-        url_file = os.getenv("MULTI_LINE_TEST_FILE")
+
+        d = tmp_path / "test_cli_scrape_file"
+        d.mkdir()
+        url_file = d / "input_urls.txt"
+        url_file.write_text("\n".join(urls))
+
         db = os.getenv("DATABASE_NAME")
         command = "scrape-file {} --db {}".format(url_file, db)
         output = helpers.graver_cli(command)
@@ -102,10 +77,12 @@ def test_cli_scrape_file(name, cassette, helpers, database, multi_line_with_file
         assert m.memorial_id == mem_id
 
 
-def test_cli_scrape_file_with_invalid_url(
-    helpers, caplog, database, text_file_with_bad_url
-):
-    url_file = os.getenv("BAD_DATA_FILENAME")
+def test_cli_scrape_file_with_invalid_url(helpers, caplog, database, tmp_path):
+    d = tmp_path / "test_cli_scrape_file_with_invalid_url"
+    d.mkdir()
+    url_file = d / "invalid_url.txt"
+    url_file.write_text("this-doesn't-exist\n")
+
     command = "scrape-file {}".format(url_file)
     helpers.graver_cli(command)
     assert "is not a valid URL" in caplog.text
@@ -127,8 +104,12 @@ def test_cli_scrape_url(url, helpers, database):
     assert m.memorial_id == 49636099
 
 
-def test_cli_scrape_file_with_bad_urls(helpers, database, text_file_with_bad_url):
-    url_file = os.getenv("BAD_DATA_FILENAME")
+def test_cli_scrape_file_with_bad_urls(helpers, database, tmp_path):
+    d = tmp_path / "test_cli_scrape_file_with_bad_urls"
+    d.mkdir()
+    url_file = d / "invalid_urls.txt"
+    url_file.write_text("this-does-not-exist\n")
+
     db = os.getenv("DATABASE_NAME")
     command = "scrape-file {} --db {}".format(url_file, db)
     output = helpers.graver_cli(command)
@@ -157,13 +138,16 @@ live_ids = (1075, 534, 574, 627, 544, 6, 7376621, 95929698, 1347)
         "george-washington",
     ],
 )
-def test_cli_scrape_file_with_single_url_file(
-    name, helpers, database, single_line_text_file
-):
+def test_cli_scrape_file_with_single_url_file(name, helpers, database, tmp_path):
     expected = pytest.helpers.load_memorial_from_json(name)
     cassette = f"{pytest.vcr_cassettes}{name}.yaml"
+
+    d = tmp_path / "test_cli_scrape_file_with_single_url_file"
+    d.mkdir()
+    url_file = d / "single_url.txt"
+    url_file.write_text("https://www.findagrave.com/memorial/1075/george-washington\n")
+
     with vcr.use_cassette(cassette):
-        url_file = os.getenv("SINGLE_LINE_FILENAME")
         db = os.getenv("DATABASE_NAME")
         command = "scrape-file {} --db {}".format(url_file, db)
         output = helpers.graver_cli(command)

@@ -257,6 +257,7 @@ def test_search(person: dict, cassette):
             assert result.nickname == person["nickname"]
 
 
+@vcr.use_cassette(pytest.vcr_cassettes + "test_search_max_results.yaml")
 @pytest.mark.parametrize(
     "args, expected", [({"lastname": "Jackson", "max_results": 37}, 37)]
 )

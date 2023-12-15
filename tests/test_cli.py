@@ -38,7 +38,7 @@ def text_file_with_bad_url():
         os.environ["BAD_DATA_FILENAME"] = tf.name
         with open(tf.name, "w") as f:
             f.write("this-does-not-exist")
-        yield
+        yield tf
 
 
 @pytest.fixture

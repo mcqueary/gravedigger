@@ -1,0 +1,22 @@
+{
+    "memorial_id": 1075,
+    "findagrave_url": "https://www.findagrave.com/memorial/1075/george-washington",
+    "prefix": null,
+    "name": "George Washington",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": null,
+    "original_name": null,
+    "famous": true,
+    "veteran": true,
+    "birth": "22 Feb 1732",
+    "birth_place": "Westmoreland County, Virginia, USA",
+    "death": "14 Dec 1799",
+    "death_place": "Mount Vernon, Fairfax County, Virginia, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Mount Vernon Estate, Mount Vernon, Fairfax County, Virginia, USA",
+    "cemetery_id": 641532,
+    "plot": "Mount Vernon, New Tomb",
+    "coords": "38.7067944,-77.0887676",
+    "has_bio": true
+}

@@ -1,0 +1,22 @@
+{
+  "memorial_id": 228,
+  "findagrave_url": "https://www.findagrave.com/memorial/228/james-fenimore-cooper",
+  "prefix": null,
+  "name": "James Fenimore Cooper",
+  "suffix": null,
+  "nickname": null,
+  "maiden_name": null,
+  "original_name": null,
+  "famous": true,
+  "veteran": true,
+  "birth": "15 Sep 1789",
+  "birth_place": "Burlington, Burlington County, New Jersey, USA",
+  "death": "14 Sep 1851",
+  "death_place": "Cooperstown, Otsego County, New York, USA",
+  "memorial_type": "Burial",
+  "burial_place": "Christ Churchyard, Cooperstown, Otsego County, New York, USA",
+  "cemetery_id": 644089,
+  "plot": null,
+  "coords": "42.6983000,-74.9224700",
+  "has_bio": true
+}

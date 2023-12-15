@@ -1,5 +1,5 @@
 #!/bin/sh
-sqlite3 graves.db <<EOF
+sqlite3 $1 <<EOF
 .headers on
 .mode json
 .output data.json

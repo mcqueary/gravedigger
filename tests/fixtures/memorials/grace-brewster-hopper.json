@@ -1,0 +1,22 @@
+{
+    "memorial_id": 1784,
+    "findagrave_url": "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
+    "prefix": "RADM",
+    "name": "Grace Brewster Hopper",
+    "suffix": null,
+    "nickname": null,
+    "maiden_name": "Murray",
+    "original_name": null,
+    "famous": true,
+    "veteran": true,
+    "birth": "9 Dec 1906",
+    "birth_place": "New York, New York County, New York, USA",
+    "death": "1 Jan 1992",
+    "death_place": "Arlington, Arlington County, Virginia, USA",
+    "memorial_type": "Burial",
+    "burial_place": "Arlington National Cemetery, Arlington, Arlington County, Virginia, USA",
+    "cemetery_id": 49269,
+    "plot": "Section 59, Grave 973, Map grid FF 24.5",
+    "coords": "38.8775405,-77.0654917",
+    "has_bio": true
+}

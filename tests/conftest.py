@@ -45,8 +45,8 @@ def database():
         Memorial.create_table(database_name=tf.name)
         Cemetery.create_table(database_name=tf.name)
         yield tf
-        tf.close()
-        os.unlink(tf.name)
+        # tf.close()
+        # os.unlink(tf.name)
 
 
 def pytest_configure():

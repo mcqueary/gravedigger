@@ -37,7 +37,7 @@ def load_cemetery_from_json(filename: str):
         return json.load(f)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def database():
     """Creates an empty graver database as a tempfile"""
     _, file_name = tempfile.mkstemp()

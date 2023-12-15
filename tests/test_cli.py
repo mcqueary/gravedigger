@@ -80,7 +80,7 @@ def test_cli_version_multiple_ways(helpers, arg):
     assert expected_str in result
 
 
-def test_cli_scrape_file_does_not_exist(helpers):
+def test_cli_scrape_file_does_not_exist(helpers, database):
     url_file = "this_file_should_not_exist"
     command = "scrape-file {}".format(url_file)
     output = helpers.graver_cli(command)
@@ -91,7 +91,7 @@ def test_cli_scrape_file_does_not_exist(helpers):
     "name, cassette",
     [("grace-brewster-hopper", pytest.vcr_cassettes + "test-cli-scrape-file.yaml")],
 )
-def test_cli_scrape_file(name, cassette, helpers):
+def test_cli_scrape_file(name, cassette, helpers, database):
     with vcr.use_cassette(cassette):
         person = pytest.helpers.load_memorial_from_json(name)
         url_file = os.getenv("MULTI_LINE_TEST_FILE")
@@ -105,7 +105,7 @@ def test_cli_scrape_file(name, cassette, helpers):
         assert m.memorial_id == mem_id
 
 
-def test_cli_scrape_file_with_invalid_url(helpers, caplog):
+def test_cli_scrape_file_with_invalid_url(helpers, caplog, database):
     url_file = os.getenv("BAD_DATA_FILENAME")
     command = "scrape-file {}".format(url_file)
     helpers.graver_cli(command)
@@ -119,7 +119,7 @@ def test_cli_scrape_file_with_invalid_url(helpers, caplog):
         "https://www.findagrave.com/memorial/49636099/jacob-wolf",
     ],
 )
-def test_cli_scrape_url(url, helpers):
+def test_cli_scrape_url(url, helpers, database):
     db = os.getenv("DATABASE_NAME")
     command = "scrape-url {} --db {}".format(url, db)
     helpers.graver_cli(command)
@@ -128,7 +128,7 @@ def test_cli_scrape_url(url, helpers):
     assert m.memorial_id == 49636099
 
 
-def test_cli_scrape_file_with_bad_urls(helpers):
+def test_cli_scrape_file_with_bad_urls(helpers, database):
     url_file = os.getenv("BAD_DATA_FILENAME")
     db = os.getenv("DATABASE_NAME")
     command = "scrape-file {} --db {}".format(url_file, db)
@@ -142,7 +142,7 @@ def test_cli_scrape_file_with_bad_urls(helpers):
         "this-is-not-a-valid-url",
     ],
 )
-def test_cli_scrape_url_with_bad_url(url, helpers, caplog):
+def test_cli_scrape_url_with_bad_url(url, helpers, caplog, database):
     db = os.getenv("DATABASE_NAME")
     command = "scrape-url {} --db {}".format(url, db)
     helpers.graver_cli(command)
@@ -158,7 +158,7 @@ live_ids = (1075, 534, 574, 627, 544, 6, 7376621, 95929698, 1347)
         "george-washington",
     ],
 )
-def test_cli_scrape_file_with_single_url_file(name, helpers):
+def test_cli_scrape_file_with_single_url_file(name, helpers, database):
     expected = pytest.helpers.load_memorial_from_json(name)
     cassette = f"{pytest.vcr_cassettes}{name}.yaml"
     with vcr.use_cassette(cassette):

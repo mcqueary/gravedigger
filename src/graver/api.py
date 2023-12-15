@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass
 from re import Match
 from time import sleep
 from typing import List, Optional, cast
-from urllib.parse import parse_qs, parse_qsl, urlencode, urlparse, urlunparse
+from urllib.parse import parse_qsl, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -99,7 +99,7 @@ class Cemetery:
 
         if self.get:
             response = self.driver.get(findagrave_url, params=self.params)
-            self.soup = BeautifulSoup(response.content, "lxml")
+            self.soup = BeautifulSoup(response.content, "html.parser")
 
         if self.scrape:
             self.scrape_cemetery_info()
@@ -377,7 +377,7 @@ class _MemorialParser:
 
         if self.get:
             response = self.driver.get(self.findagrave_url)
-            self.soup = BeautifulSoup(response.content, "lxml")
+            self.soup = BeautifulSoup(response.content, "html.parser")
 
             if not response.ok:
                 if self.check_removed():
@@ -612,7 +612,7 @@ class _MemorialParser:
         dt_list = vitals.find("dl").find_all("dt")
         for dt in dt_list:
             text = dt.get_text(strip=True)
-            if text == "Original Name":
+            if text.startswith("Original Name"):
                 oname = dt.find_next("dd")
                 self.original_name = oname.get_text()
             # elif dt.find("span", id="birthLabel") is not None:
@@ -844,7 +844,7 @@ class _SearchWorker:
         # Load the first page to learn how many results there may be
         log.debug(f"Search params={self.params}")
         response = self.driver.get(self.search_url, params=self.params)
-        soup = BeautifulSoup(response.content, "lxml")
+        soup = BeautifulSoup(response.content, "html.parser")
 
         # If this query isn't for a specific page, calculate how many
         # pages the results will span
@@ -865,9 +865,9 @@ class _SearchWorker:
 
         # scrape additional pages, if there are any left to get
         for i in range(2, num_pages + 1):
-            url = self.get_page_url(self.search_url, page=i)
-            response = self.driver.get(url)
-            soup = BeautifulSoup(response.content, "lxml")
+            self.params["page"] = i
+            response = self.driver.get(self.search_url, params=self.params)
+            soup = BeautifulSoup(response.content, "html.parser")
 
             results = self.scrape_results_page(soup, max_results=(count - len(rs)))
             rs.extend(results)
@@ -1007,14 +1007,6 @@ class _SearchWorker:
                 break
 
         return results
-
-    @staticmethod
-    def get_page_url(url, page) -> Optional[str]:
-        parsed = urlparse(url)
-        qs: dict = parse_qs(parsed.query)
-        qs["page"] = int(page)
-        new_url = parsed._replace(query=urlencode(qs)).geturl()
-        return new_url
 
 
 class ResultSet(list):

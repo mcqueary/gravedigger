@@ -257,6 +257,16 @@ def test_search(person: dict, cassette):
             assert result.nickname == person["nickname"]
 
 
+@pytest.mark.parametrize(
+    "args, expected", [({"lastname": "Jackson", "max_results": 37}, 37)]
+)
+def test_search_max_results(args, expected):
+    logging.getLogger().setLevel(logging.DEBUG)
+    rs = Memorial.search(**args)
+    assert 0 < len(rs) <= expected
+    pass
+
+
 @pytest.mark.parametrize("name", famous_memorials)
 def test_search_famous_people(name: str):
     person = pytest.helpers.load_memorial_from_json(name)

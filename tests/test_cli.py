@@ -44,7 +44,7 @@ def test_cli_version_multiple_ways(helpers, arg):
 
 def test_cli_scrape_file_does_not_exist(helpers, database):
     url_file = "this_file_should_not_exist"
-    command = "scrape-file {}".format(url_file)
+    command = f"scrape-file '{url_file}'"
     output = helpers.graver_cli(command)
     assert "No such file or directory" in output
 
@@ -68,7 +68,7 @@ def test_cli_scrape_file(name, cassette, helpers, database, tmp_path):
         url_file.write_text("\n".join(urls))
 
         db = os.getenv("DATABASE_NAME")
-        command = "scrape-file {} --db {}".format(url_file, db)
+        command = f"scrape-file '{url_file}' --db '{db}'"
         output = helpers.graver_cli(command)
         assert "Successfully scraped" in output
         mem_id = person["memorial_id"]
@@ -83,7 +83,7 @@ def test_cli_scrape_file_with_invalid_url(helpers, caplog, database, tmp_path):
     url_file = d / "invalid_url.txt"
     url_file.write_text("this-doesn't-exist\n")
 
-    command = "scrape-file {}".format(url_file)
+    command = f"scrape-file '{url_file}'"
     helpers.graver_cli(command)
     assert "is not a valid URL" in caplog.text
 
@@ -97,7 +97,7 @@ def test_cli_scrape_file_with_invalid_url(helpers, caplog, database, tmp_path):
 )
 def test_cli_scrape_url(url, helpers, database):
     db = os.getenv("DATABASE_NAME")
-    command = "scrape-url {} --db {}".format(url, db)
+    command = f"scrape-url '{url}' --db '{db}'"
     helpers.graver_cli(command)
     m = Memorial.get_by_id(49636099)
     assert m is not None
@@ -111,7 +111,7 @@ def test_cli_scrape_file_with_bad_urls(helpers, database, tmp_path):
     url_file.write_text("this-does-not-exist\n")
 
     db = os.getenv("DATABASE_NAME")
-    command = "scrape-file {} --db {}".format(url_file, db)
+    command = f"scrape-file '{url_file}' --db '{db}'"
     output = helpers.graver_cli(command)
     assert "Failed urls were:\nthis-does-not-exist" in output
 
@@ -124,7 +124,7 @@ def test_cli_scrape_file_with_bad_urls(helpers, database, tmp_path):
 )
 def test_cli_scrape_url_with_bad_url(url, helpers, caplog, database):
     db = os.getenv("DATABASE_NAME")
-    command = "scrape-url {} --db {}".format(url, db)
+    command = f"scrape-url '{url}' --db '{db}'"
     helpers.graver_cli(command)
     assert "Invalid URL" in caplog.text
 
@@ -149,7 +149,7 @@ def test_cli_scrape_file_with_single_url_file(name, helpers, database, tmp_path)
 
     with vcr.use_cassette(cassette):
         db = os.getenv("DATABASE_NAME")
-        command = "scrape-file {} --db {}".format(url_file, db)
+        command = f"scrape-file '{url_file}' --db '{db}'"
         output = helpers.graver_cli(command)
         print(output)
         m = Memorial.get_by_id(expected["memorial_id"])
@@ -162,9 +162,11 @@ def test_cli_scrape_file_with_single_url_file(name, helpers, database, tmp_path)
 )
 def test_cli_search_no_cemetery(firstname, lastname, deathyear, helpers):
     with vcr.use_cassette(pytest.vcr_cassettes + "test_cli_search_no_cemetery.yaml"):
-        command = "search --firstname={} --lastname={} --deathyear={}".format(
-            firstname, lastname, deathyear
+        command = (
+            f"search --firstname='{firstname}' --lastname='{lastname}' "
+            f"--deathyear={deathyear}"
         )
+
         output = helpers.graver_cli(command)
         assert "Error" not in output
         assert "Advertisement" not in output
@@ -174,8 +176,9 @@ def test_cli_search_no_cemetery(firstname, lastname, deathyear, helpers):
 def test_cli_search_in_cemetery(cemetery_id, lastname, helpers):
     with vcr.use_cassette(pytest.vcr_cassettes + "test_cli_search_in_cemetery.yaml"):
         max_results = 20
-        command = "search --cemetery-id={} --lastname={} --max-results={}".format(
-            cemetery_id, lastname, max_results
+        command = (
+            f"search --cemetery-id={cemetery_id} --lastname='{lastname}' "
+            f"--max-results={max_results}"
         )
         output = helpers.graver_cli(command)
         assert "Error" not in output

@@ -150,7 +150,7 @@ def test_memorial_to_dict(name: str):
 
 
 @pytest.mark.parametrize("name", memorials)
-def test_memorial_save(name: str):
+def test_memorial_save(name: str, database):
     expected = pytest.helpers.load_memorial_from_json(name)
     result = Memorial.from_dict(expected).save()
     assert result.memorial_id == expected["memorial_id"]
@@ -168,7 +168,7 @@ def test_memorial_save(name: str):
 
 
 @pytest.mark.parametrize("name", memorials)
-def test_memorial_get_by_id(name: str):
+def test_memorial_get_by_id(name: str, database):
     expected = pytest.helpers.load_memorial_from_json(name)
     mid: int = expected["memorial_id"]
     expected_memorial = Memorial.from_dict(expected).save()
@@ -177,7 +177,7 @@ def test_memorial_get_by_id(name: str):
 
 
 @pytest.mark.parametrize("memorial_id", [99999, -12345])
-def test_memorial_by_id_not_found(memorial_id):
+def test_memorial_by_id_not_found(memorial_id, database):
     with pytest.raises(graver.api.NotFound):
         Memorial.get_by_id(memorial_id)
 

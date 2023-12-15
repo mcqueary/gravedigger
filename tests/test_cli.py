@@ -34,23 +34,21 @@ def silence_tqdm():
 @pytest.fixture(autouse=True)
 def text_file_with_bad_url():
     """Creates a text file containing a single memorial URL"""
-    _, file_name = tempfile.mkstemp()
-    os.environ["BAD_DATA_FILENAME"] = file_name
-    with open(file_name, "w") as f:
-        f.write("this-does-not-exist")
-    yield
-    os.unlink(file_name)
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        os.environ["BAD_DATA_FILENAME"] = tf.name
+        with open(tf.name, "w") as f:
+            f.write("this-does-not-exist")
+        yield
 
 
 @pytest.fixture(autouse=True, scope="module")
 def single_line_text_file():
     """Creates a text file containing a single memorial URL"""
-    _, file_name = tempfile.mkstemp()
-    os.environ["SINGLE_LINE_FILENAME"] = file_name
-    with open(file_name, "w") as f:
-        f.write(live_urls[0])
-    yield
-    os.unlink(file_name)
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        os.environ["SINGLE_LINE_FILENAME"] = tf.name
+        with open(tf.name, "w") as f:
+            f.write(live_urls[0])
+        yield
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -61,12 +59,11 @@ def multi_line_with_file_urls():
         "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
         "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park",
     ]
-    _, file_name = tempfile.mkstemp()
-    os.environ["MULTI_LINE_TEST_FILE"] = file_name
-    with open(file_name, "w") as f:
-        f.write("\n".join(file_urls))
-    yield
-    os.unlink(file_name)
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+        os.environ["MULTI_LINE_TEST_FILE"] = tf.name
+        with open(tf.name, "w") as f:
+            f.write("\n".join(file_urls))
+        yield
 
 
 @pytest.mark.parametrize("arg", ["-V", "--version"])

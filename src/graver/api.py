@@ -381,17 +381,16 @@ class _MemorialParser:
         self.soup = None
         self.m: dict = {}
 
+        # Valid URL but not a Memorial
+        # if "/memorial/" not in self.findagrave_url:
+        #     raise MemorialException(f"Invalid memorial URL: {self.findagrave_url}")
+
         if self.get:
             response = self.driver.get(self.findagrave_url)
             self.soup = BeautifulSoup(response.content, "html.parser")
 
             if response.ok:
                 self.scrape_canonical_url()
-                # Valid URL but not a Memorial
-                if "/memorial/" not in self.findagrave_url:
-                    raise MemorialException(
-                        f"Invalid memorial URL: {self.findagrave_url}"
-                    )
             else:
                 if response.status_code == 404:
                     if self.check_removed():

@@ -3,6 +3,7 @@ import logging
 import os
 import re
 import sys
+from typing import List, Optional, Tuple
 from urllib.parse import urlparse
 
 import typer
@@ -76,41 +77,13 @@ def logging_callback(log_level: str):
         log.debug("Log level is " + str(log_level.upper()))
 
 
-def verbose_callback(verbose: bool = False):
-    """Set log level to DEBUG application"""
-    if verbose:
-        log_level = "INFO"
-        logging_callback(log_level)
-
-
 app = typer.Typer(
     add_completion=False, context_settings={"help_option_names": ["-h", "--help"]}
 )
 
 
 @app.callback()
-def main(verbose: bool = False):
-    print("Print FOO")
-    lvl = logging.INFO
-    fmt = "%(message)s"
-    if verbose:
-        lvl = logging.DEBUG
-    logging.basicConfig(level=lvl, format=fmt)
-    log.warning("FOO")
-    print("Print FOO")
-
-
-@app.callback()
 def common(
-    ctx: typer.Context,
-    verbose: bool = typer.Option(
-        False,
-        "-v",
-        "--verbose",
-        case_sensitive=True,
-        callback=verbose_callback,
-        help="Increase verbosity.",
-    ),
     version: bool = typer.Option(
         None,
         "-V",
@@ -156,16 +129,54 @@ def print_failed_urls(urls: list):
         print(*urls, sep="\n")
 
 
-def format_url(line):
-    """If this line is only an integer/ID, format it as a URL"""
-    if re.match("^[0-9]+$", line):  # id only
+def format_url(line: str):
+    """
+    Creates a properly formed FindAGrave URL from a memorial id (e.g. 1784) or an
+    old-style FindAGrave URL (e.g.
+    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1784")
+
+    @param line: the input string
+    @return: a URL in the form "https://www.findagrave.com/memorial/<id>"
+    """
+    if re.search("^[0-9]+$", line) is not None:  # id only
         line = MEMORIAL_CANONICAL_URL_FORMAT.format(line)
+    elif (match := re.search("GRid=([0-9]+)$", line)) is not None:  # id only
+        line = MEMORIAL_CANONICAL_URL_FORMAT.format(match.group(1))
     return line
 
 
 def uri_validator(uri):
     result = urlparse(uri)
     return all([result.scheme in ["file", "http", "https"], result.path])
+
+
+def collect_and_validate_urls(input_filename) -> Tuple[List[str], List[str]]:
+    good = []
+    bad = []
+    with open(input_filename) as file:
+        while line := file.readline().strip():
+            line = format_url(line)
+            if not uri_validator(line):
+                log.warning(f"{line} is not a valid URL")
+                bad.append(line)
+                continue
+            else:
+                if line not in good:
+                    good.append(line)
+    return good, bad
+
+
+def parse_and_save_memorial(url, driver=None) -> Memorial:
+    driver = driver if driver is not None else Driver()
+    try:
+        m = Memorial.parse(url, driver=driver).save()
+    except MemorialMergedException as ex:
+        log.warning(ex)
+        m = Memorial.parse(ex.new_url, driver=driver).save()
+        pass
+    except Exception:
+        raise
+    return m
 
 
 @app.command()
@@ -177,23 +188,12 @@ def scrape_file(
     log.info(f"Input file: {input_filename}")
     log.info(f"Database file: {db}")
 
-    urls = []
-    failed_urls = []
+    urls: List[str]
+    failed_urls: List[str]
 
     # Collect and validate URLs
     try:
-        with open(input_filename) as file:
-            os.environ["DATABASE_NAME"] = db
-            Memorial.create_table(db)
-            while line := file.readline().strip():
-                line = format_url(line)
-                if not uri_validator(line):
-                    log.warning(f"{line} is not a valid URL")
-                    failed_urls.append(line)
-                    continue
-                else:
-                    if line not in urls:
-                        urls.append(line)
+        urls, failed_urls = collect_and_validate_urls(input_filename)
     except OSError as e:
         print(str(e))
         raise typer.Exit(1)
@@ -201,15 +201,15 @@ def scrape_file(
     # Process URLs
     scraped = 0
     disable = os.getenv("TQDM_DISABLE")
+    os.environ["DATABASE_NAME"] = db
+    Memorial.create_table(db)
     # Pass in driver to ensure we reuse the same session
     driver: Driver = Driver()
     for url in (pbar := tqdm(urls, disable=bool(disable))):
+        pbar.set_postfix_str(url)
         try:
-            pbar.set_postfix_str(url)
-            Memorial.parse(url, driver=driver).save()
+            parse_and_save_memorial(url, driver)
             scraped += 1
-        except MemorialMergedException as ex:
-            log.warning(ex)
         except Exception as e:
             out = "Unable to scrape Memorial [" + url + "]!"
             # log.error(out, ex.args)
@@ -228,9 +228,8 @@ def scrape_url(url: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
         log.error(f"Invalid URL: [{url}]")
         raise typer.Exit(1)
     Memorial.create_table(db)
-    m = Memorial.parse(url).save()
+    m: Memorial = parse_and_save_memorial(url)
     print(m.to_json())
-    return m
 
 
 def gpsfilter_callback(value: str):

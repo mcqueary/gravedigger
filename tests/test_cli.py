@@ -1,4 +1,5 @@
 import importlib.metadata
+import logging
 import os
 
 import pytest
@@ -7,19 +8,19 @@ import vcr
 from graver import Memorial, __version__
 from graver.constants import APP_NAME
 
-live_urls = [
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1784",
-    "https://www.findagrave.com/memorial/1075/george-washington",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=534",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=574",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=627",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=544",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=6",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=7376621",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=95929698",
-    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1347",
-    "1075",
-]
+# live_urls = [
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1784",
+#     "https://www.findagrave.com/memorial/1075/george-washington",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=534",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=574",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=627",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=544",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=6",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=7376621",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=95929698",
+#     "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1347",
+#     "1075",
+# ]
 
 
 @pytest.fixture(autouse=True)
@@ -49,15 +50,26 @@ def test_cli_scrape_file_does_not_exist(helpers, database):
     assert "No such file or directory" in output
 
 
+def test_cli_scrape_file_with_invalid_url(helpers, caplog, database, tmp_path):
+    d = tmp_path / "test_cli_scrape_file_with_invalid_url"
+    d.mkdir()
+    url_file = d / "invalid_url.txt"
+    url_file.write_text("this-doesn't-exist\n")
+
+    command = f"scrape-file '{url_file}'"
+    helpers.graver_cli(command)
+    assert "is not a valid URL" in caplog.text
+
+
 @pytest.mark.parametrize(
     "name, cassette",
     [("grace-brewster-hopper", pytest.vcr_cassettes + "test-cli-scrape-file.yaml")],
 )
-def test_cli_scrape_file(name, cassette, helpers, database, tmp_path):
+def test_cli_scrape_file(name, cassette, helpers, database, tmp_path, caplog):
     urls = [
-        "https://www.findagrave.com/memorial/22633912/john-quincy-adams",
-        "https://www.findagrave.com/memorial/1784/grace-brewster-hopper",
-        "https://www.findagrave.com/cemetery/3136/crown-hill-memorial-park",
+        "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1784",
+        "https://www.findagrave.com/memorial/1075/george-washington",
+        "1075",
     ]
     with vcr.use_cassette(cassette):
         person = pytest.helpers.load_memorial_from_json(name)
@@ -70,38 +82,56 @@ def test_cli_scrape_file(name, cassette, helpers, database, tmp_path):
         db = os.getenv("DATABASE_NAME")
         command = f"scrape-file '{url_file}' --db '{db}'"
         output = helpers.graver_cli(command)
-        assert "Successfully scraped" in output
+        assert f"Successfully scraped {len(urls)} of {len(urls)}" in output
         mem_id = person["memorial_id"]
         m = Memorial.get_by_id(mem_id)
         assert m is not None
         assert m.memorial_id == mem_id
 
 
-def test_cli_scrape_file_with_invalid_url(helpers, caplog, database, tmp_path):
-    d = tmp_path / "test_cli_scrape_file_with_invalid_url"
-    d.mkdir()
-    url_file = d / "invalid_url.txt"
-    url_file.write_text("this-doesn't-exist\n")
-
-    command = f"scrape-file '{url_file}'"
-    helpers.graver_cli(command)
-    assert "is not a valid URL" in caplog.text
-
-
-@vcr.use_cassette(pytest.vcr_cassettes + "jacob-wolf.yaml")
+@vcr.use_cassette(
+    pytest.vcr_cassettes + "test_cli_scrape_file_logs_merged_memorial_exception.yaml"
+)
 @pytest.mark.parametrize(
-    "url",
+    "url, new_url",
     [
-        "https://www.findagrave.com/memorial/49636099/jacob-wolf",
+        (
+            "https://www.findagrave.com/memorial/244781332/william-h-boekholder",
+            "https://www.findagrave.com/memorial/260829715/wiliam-henry-boekholder",
+        )
     ],
 )
-def test_cli_scrape_url(url, helpers, database):
+def test_cli_scrape_file_logs_merged_memorial_exception(
+    url, new_url, helpers, tmp_path, caplog
+):
+    url = "https://www.findagrave.com/memorial/244781332/william-h-boekholder"
+    d = tmp_path / "test_cli_scrape_file"
+    d.mkdir()
+    url_file = d / "input_urls.txt"
+    url_file.write_text(url + "\n")
+
     db = os.getenv("DATABASE_NAME")
-    command = f"scrape-url '{url}' --db '{db}'"
-    helpers.graver_cli(command)
-    m = Memorial.get_by_id(49636099)
-    assert m is not None
-    assert m.memorial_id == 49636099
+    command = f"scrape-file '{url_file}' --db '{db}'"
+    output = helpers.graver_cli(command)
+    assert f"{url} has been merged into {new_url}" in caplog.text
+    assert "Successfully scraped 1 of 1" in output
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["george-washington", "grace-brewster-hopper"],
+)
+def test_cli_scrape_url(name, helpers, database):
+    expected = pytest.helpers.load_memorial_from_json(name)
+    cassette = f"{pytest.vcr_cassettes}{name}.yaml"
+    with vcr.use_cassette(cassette):
+        db = os.getenv("DATABASE_NAME")
+        url = expected["findagrave_url"]
+        expected_id = expected["memorial_id"]
+        command = f"scrape-url '{url}' --db '{db}'"
+        helpers.graver_cli(command)
+        m = Memorial.get_by_id(expected_id)
+        assert m is not None and m.memorial_id == expected_id
 
 
 def test_cli_scrape_file_with_bad_urls(helpers, database, tmp_path):
@@ -129,9 +159,6 @@ def test_cli_scrape_url_with_bad_url(url, helpers, caplog, database):
     assert "Invalid URL" in caplog.text
 
 
-live_ids = (1075, 534, 574, 627, 544, 6, 7376621, 95929698, 1347)
-
-
 @pytest.mark.parametrize(
     "name",
     [
@@ -153,8 +180,8 @@ def test_cli_scrape_file_with_single_url_file(name, helpers, database, tmp_path)
         output = helpers.graver_cli(command)
         print(output)
         m = Memorial.get_by_id(expected["memorial_id"])
-        expected_mem = Memorial.from_dict(expected)
-        assert m == expected_mem
+        expected = Memorial.from_dict(expected)
+        assert m == expected
 
 
 @pytest.mark.parametrize(

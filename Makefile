@@ -1,4 +1,4 @@
-.PHONY: test test-unit test-integration run help fmt install-editable lint git-setup clean all commitizen coveralls
+.PHONY: test run help fmt install-editable lint git-setup clean testclean all commitizen coveralls
 
 # same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
 # see also https://stackoverflow.com/a/18137056
@@ -51,3 +51,6 @@ commitizen:
 clean: ## clean up test outputs and other temporary files
 	rm -f *.csv
 	rm -f *.db
+
+testclean:
+	rm -f tests/fixtures/vcr_cassettes/

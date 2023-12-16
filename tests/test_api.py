@@ -103,6 +103,13 @@ def test_driver_raises_http_error(url, cassette):
         assert "404 Client Error: Not Found" in excinfo.value.args[0]
 
 
+def test_memorial_eq():
+    m = Memorial.from_dict(
+        pytest.helpers.load_memorial_from_json("james-fenimore-cooper")
+    )
+    assert m != str("A string object")
+
+
 @pytest.mark.parametrize("name", memorials)
 def test_memorial_parse(
     name: str,

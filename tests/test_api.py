@@ -7,7 +7,13 @@ import vcr
 from requests import HTTPError
 
 import graver.api
-from graver import Cemetery, Memorial, MemorialMergedException, MemorialRemovedException
+from graver import (
+    Cemetery,
+    Driver,
+    Memorial,
+    MemorialMergedException,
+    MemorialRemovedException,
+)
 
 logging.basicConfig()
 vcr_log = logging.getLogger("vcr")
@@ -45,21 +51,35 @@ famous_memorials = [
 ]
 
 
-# @pytest.fixture()
-# def memorials():
-#     m_list = []
-#     path = f"{PROJECT_ROOT}/tests/fixtures/memorials/*.json"
-#     file_list = glob.glob(path, recursive=False)
-#     for file in file_list:
-#         with open(file) as f:
-#             m_list.append(json.load(f))
-#     return m_list
-
-
 def test_vcr():
     with vcr.use_cassette(pytest.vcr_cassettes + "synopsis.yaml"):
         response = requests.get("http://www.iana.org/domains/reserved")
         assert b"Example domains" in response.content
+
+
+@pytest.mark.parametrize("url", ["https://www.findagrave.com/memorial/544"])
+@pytest.mark.parametrize(
+    "status_code, reason",
+    [
+        (500, "Internal Server Error"),
+        (502, "Bad Gateway"),
+        (503, "Service Unavailable"),
+        (504, "Gateway Timeout"),
+        (599, "Network Connect Timeout Error"),
+    ],
+)
+def test_driver_retries_recoverable_errors(url, status_code, reason, requests_mock):
+    requests_mock.get(
+        url,
+        [
+            {"status_code": status_code, "reason": reason},
+            {"status_code": 200, "reason": "None"},
+        ],
+    )
+    driver = Driver(retry_ms=10, max_retries=1)
+    response = driver.get(url)
+    assert response.ok and response.status_code == 200
+    assert driver.num_retries == 1
 
 
 @pytest.mark.parametrize(

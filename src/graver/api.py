@@ -8,7 +8,7 @@ from collections import namedtuple
 from dataclasses import asdict, dataclass
 from re import Match
 from time import sleep
-from typing import List, Optional, cast
+from typing import Dict, List, Optional, cast
 from urllib.parse import parse_qsl, urlparse, urlunparse
 
 import requests
@@ -44,9 +44,16 @@ class NotFound(MemorialException):
 
 
 class Driver(object):
-    recoverable: List[int] = [500, 502, 503, 504, 599]
+    recoverable_errors: Dict[int, str] = {
+        500: "Internal Server Error",
+        502: "Bad Gateway",
+        503: "Service Unavailable",
+        504: "Gateway Timeout",
+        599: "Network Connect Timeout Error",
+    }
 
     def __init__(self, **kwargs) -> None:
+        self.num_retries = 0
         self.max_retries: int = int(kwargs.get("max_retries", 3))
         self.retry_ms: int = int(kwargs.get("retry_ms", 500))
         self.session = requests.Session()
@@ -55,7 +62,10 @@ class Driver(object):
     def get(self, findagrave_url: str, **kwargs) -> Response:
         retries = 0
         response = self.session.get(findagrave_url, **kwargs)
-        while response.status_code in Driver.recoverable and retries < self.max_retries:
+        while (
+            response.status_code in Driver.recoverable_errors.keys()
+            and retries < self.max_retries
+        ):
             retries += 1
             log.warning(
                 f"Driver: [{response.status_code}: {response.reason}] {findagrave_url} "
@@ -64,6 +74,7 @@ class Driver(object):
             )
             sleep(self.retry_ms / 1000)
             response = self.session.get(findagrave_url, **kwargs)
+        self.num_retries += retries
         return response
 
 
@@ -90,12 +101,7 @@ class Cemetery:
         self.driver = kwargs.get("driver", Driver())
         self.get = kwargs.get("get", True)
         self.scrape = kwargs.get("scrape", True)
-        # self.search_url: Optional[str] = None
-        # self.soup: BeautifulSoup
         self.params: dict = {}
-
-        if "page" in kwargs:
-            self.params["page"] = kwargs.get("page")
 
         if self.get:
             response = self.driver.get(findagrave_url, params=self.params)
@@ -379,22 +385,25 @@ class _MemorialParser:
             response = self.driver.get(self.findagrave_url)
             self.soup = BeautifulSoup(response.content, "html.parser")
 
-            if not response.ok:
-                if self.check_removed():
-                    msg = f"{self.findagrave_url} has been removed"
-                    raise MemorialRemovedException(msg)
-                elif (new_url := self.check_merged()) is not None:
-                    msg = f"{self.findagrave_url} has been merged into {new_url}"
-                    raise MemorialMergedException(msg, self.findagrave_url, new_url)
-                else:
-                    response.raise_for_status()
-            else:
+            if response.ok:
                 self.scrape_canonical_url()
                 # Valid URL but not a Memorial
                 if "/memorial/" not in self.findagrave_url:
                     raise MemorialException(
                         f"Invalid memorial URL: {self.findagrave_url}"
                     )
+            else:
+                if response.status_code == 404:
+                    if self.check_removed():
+                        msg = f"{self.findagrave_url} has been removed"
+                        raise MemorialRemovedException(msg)
+                    elif (new_url := self.check_merged()) is not None:
+                        msg = f"{self.findagrave_url} has been merged into {new_url}"
+                        raise MemorialMergedException(msg, self.findagrave_url, new_url)
+                    else:
+                        response.raise_for_status()
+                else:
+                    response.raise_for_status()
 
         if self.scrape:
             self.scrape_page()

@@ -19,13 +19,7 @@ cov: ## run pytest coverage report
 	poetry run pytest --cov=graver --cov-report term-missing
 
 coveralls: ## report coverage data to coveralls.io
-	. $(VENV)/bin/activate && coveralls
-
-test-unit: ## run pytest unit tests only
-	poetry run pytest -rA -vvs --log-level INFO --without-integration
-
-test-integration: ## run pytest integration tests
-	poetry run pytest -rA -vvs --log-level INFO --with-integration
+	poetry run coveralls
 
 test: ## run pytest
 	poetry run pytest -rA -vvs --log-level INFO
@@ -34,10 +28,8 @@ lint: ## run flake8 to check the code
 	poetry run flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
 	poetry run flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
-# install-editable:
-# 	. $(VENV)/bin/activate && pip install -e .
 install:
-	. $(VENV)/bin/activate && poetry install
+	poetry install
 
 fmt: ## run black to format the code
 	poetry run isort $(PACKAGES) tests
@@ -46,6 +38,8 @@ fmt: ## run black to format the code
 $(VENV)/init: ## init the virtual environment
 	python3 -m venv $(VENV)
 	touch $@
+	$(VENV)/bin/activate && pip install -U pip
+	$(VENV)/bin/activate && pip install poetry
 
 $(VENV)/requirements: requirements.txt $(VENV)/init ## install requirements
 	$(PIP) install -r $<

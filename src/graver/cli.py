@@ -3,14 +3,25 @@ import logging
 import os
 import re
 import sys
+from logging.handlers import RotatingFileHandler
+from typing import List, Tuple
 from urllib.parse import urlparse
 
 import typer
 from tqdm import tqdm
 
-from graver import APP_NAME, FINDAGRAVE_BASE_URL, MEMORIAL_CANONICAL_URL_FORMAT
-
-from .api import Cemetery, Driver, Memorial, MemorialMergedException
+from graver import (
+    Cemetery,
+    Driver,
+    Memorial,
+    MemorialMergedException,
+    MemorialParseException,
+)
+from graver.constants import (
+    APP_NAME,
+    FINDAGRAVE_BASE_URL,
+    MEMORIAL_CANONICAL_URL_FORMAT,
+)
 
 # Constants
 DEFAULT_OUTPUT_FILE = sys.stdout
@@ -18,7 +29,7 @@ DEFAULT_DB_FILE_NAME = "graves.db"
 
 # Logging setup
 DEFAULT_LOG_FILENAME = "graver.log"
-DEFAULT_LOG_LEVEL = logging.WARN
+DEFAULT_LOG_LEVEL = "INFO"
 # DEFAULT_LOG_FORMAT = "%(asctime)s [%(levelname)s] %(message)s"
 # DEFAULT_LOG_FORMAT = "%(name)-12s: %(levelname)-8s %(message)s"
 DEFAULT_LOG_FORMAT = (
@@ -29,33 +40,26 @@ DEFAULT_LOG_DATE_FORMAT = "%H:%M:%S"
 
 # set up logging to console and file
 logging.root.handlers = []
-console = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter("%(name)-12s: %(levelname)-8s %(message)s")
-console.setFormatter(formatter)
+console = logging.StreamHandler(sys.stdout)
+console_formatter = logging.Formatter("%(message)s")
+console.setFormatter(console_formatter)
 logging.basicConfig(
     level=DEFAULT_LOG_LEVEL,
     format=DEFAULT_LOG_FORMAT,
     datefmt=DEFAULT_LOG_DATE_FORMAT,
     handlers=[
-        logging.FileHandler(DEFAULT_LOG_FILENAME),
+        RotatingFileHandler(
+            DEFAULT_LOG_FILENAME,
+            mode="a",
+            maxBytes=5 * 1024 * 1024,
+            backupCount=2,
+            encoding="utf8",
+        ),
         console,
     ],
 )
 
-# set up logging to console
-# console = logging.StreamHandler()
-# console.setLevel(DEFAULT_LOG_LEVEL)
-# # set a format which is simpler for console use
-# formatter = logging.Formatter("%(name)-12s: %(levelname)-8s %(message)s")
-# console.setFormatter(formatter)
-# # add the handler to the root logger
-
-
-# logging.getLogger().addHandler(console)
-
-# log = logging.getLogger(__name__)
 log = logging.getLogger()
-######
 
 
 def version_callback(value: bool):
@@ -64,7 +68,7 @@ def version_callback(value: bool):
         metadata = importlib.metadata.metadata("graver")
         name_str = metadata["Name"]
         version_str = metadata["Version"]
-        print("{} v{}".format(name_str, version_str))
+        log.info("{} v{}".format(name_str, version_str))
         raise typer.Exit()
 
 
@@ -76,41 +80,13 @@ def logging_callback(log_level: str):
         log.debug("Log level is " + str(log_level.upper()))
 
 
-def verbose_callback(verbose: bool = False):
-    """Set log level to DEBUG application"""
-    if verbose:
-        log_level = "INFO"
-        logging_callback(log_level)
-
-
 app = typer.Typer(
     add_completion=False, context_settings={"help_option_names": ["-h", "--help"]}
 )
 
 
 @app.callback()
-def main(verbose: bool = False):
-    print("Print FOO")
-    lvl = logging.INFO
-    fmt = "%(message)s"
-    if verbose:
-        lvl = logging.DEBUG
-    logging.basicConfig(level=lvl, format=fmt)
-    log.warning("FOO")
-    print("Print FOO")
-
-
-@app.callback()
 def common(
-    ctx: typer.Context,
-    verbose: bool = typer.Option(
-        False,
-        "-v",
-        "--verbose",
-        case_sensitive=True,
-        callback=verbose_callback,
-        help="Increase verbosity.",
-    ),
     version: bool = typer.Option(
         None,
         "-V",
@@ -120,7 +96,7 @@ def common(
         help=f"Return version of {APP_NAME} application.",
     ),
     loglevel: str = typer.Option(
-        "WARN",
+        DEFAULT_LOG_LEVEL,
         "-l",
         "--log",
         "--logging",
@@ -152,20 +128,58 @@ def common(
 
 def print_failed_urls(urls: list):
     if len(urls) > 0:
-        print("Failed urls were:")
-        print(*urls, sep="\n")
+        text = "\n".join(urls)
+        log.info(f"Failed urls were:\n{text}")
 
 
-def format_url(line):
-    """If this line is only an integer/ID, format it as a URL"""
-    if re.match("^[0-9]+$", line):  # id only
+def format_url(line: str):
+    """
+    Creates a properly formed FindAGrave URL from a memorial id (e.g. 1784) or an
+    old-style FindAGrave URL (e.g.
+    "https://secure.findagrave.com/cgi-bin/fg.cgi?page=gr&GRid=1784")
+
+    @param line: the input string
+    @return: a URL in the form "https://www.findagrave.com/memorial/<id>"
+    """
+    if re.search("^[0-9]+$", line) is not None:  # id only
         line = MEMORIAL_CANONICAL_URL_FORMAT.format(line)
+    elif (match := re.search("GRid=([0-9]+)$", line)) is not None:  # id only
+        line = MEMORIAL_CANONICAL_URL_FORMAT.format(match.group(1))
     return line
 
 
 def uri_validator(uri):
     result = urlparse(uri)
-    return all([result.scheme in ["file", "http", "https"], result.path])
+    is_memorial = ("/memorial/" in uri) or ("GRid=" in uri)
+    return is_memorial and all(
+        [result.scheme in ["file", "http", "https"], result.path]
+    )
+
+
+def collect_and_validate_urls(input_filename) -> Tuple[List[str], List[str]]:
+    good = []
+    bad = []
+    with open(input_filename) as file:
+        while line := file.readline().strip():
+            line = format_url(line)
+            if not uri_validator(line):
+                log.warning(f"{line} is not a valid URL")
+                bad.append(line)
+                continue
+            else:
+                if line not in good:
+                    good.append(line)
+    return good, bad
+
+
+def parse_and_save_memorial(url, driver=None) -> Memorial:
+    driver = driver if driver is not None else Driver()
+    try:
+        m = Memorial.parse(url, driver=driver).save()
+    except MemorialMergedException as ex:
+        log.warning(ex)
+        m = Memorial.parse(ex.new_url, driver=driver).save()
+    return m
 
 
 @app.command()
@@ -177,47 +191,34 @@ def scrape_file(
     log.info(f"Input file: {input_filename}")
     log.info(f"Database file: {db}")
 
-    urls = []
-    failed_urls = []
+    urls: List[str]
+    failed_urls: List[str]
 
     # Collect and validate URLs
     try:
-        with open(input_filename) as file:
-            os.environ["DATABASE_NAME"] = db
-            Memorial.create_table(db)
-            while line := file.readline().strip():
-                line = format_url(line)
-                if not uri_validator(line):
-                    log.warning(f"{line} is not a valid URL")
-                    failed_urls.append(line)
-                    continue
-                else:
-                    if line not in urls:
-                        urls.append(line)
+        urls, failed_urls = collect_and_validate_urls(input_filename)
     except OSError as e:
-        print(str(e))
+        log.error(e)
         raise typer.Exit(1)
 
     # Process URLs
     scraped = 0
     disable = os.getenv("TQDM_DISABLE")
+    os.environ["DATABASE_NAME"] = db
+    Memorial.create_table(db)
     # Pass in driver to ensure we reuse the same session
     driver: Driver = Driver()
     for url in (pbar := tqdm(urls, disable=bool(disable))):
+        pbar.set_postfix_str(url)
         try:
-            pbar.set_postfix_str(url)
-            Memorial.parse(url, driver=driver).save()
+            parse_and_save_memorial(url, driver)
             scraped += 1
-        except MemorialMergedException as ex:
-            log.warning(ex)
-        except Exception as e:
-            out = "Unable to scrape Memorial [" + url + "]!"
-            # log.error(out, ex.args)
-            print(out)
-            print(str(e))
+            pbar.set_postfix_str("")
+        except MemorialParseException as ex:
+            log.error(ex)
             failed_urls.append(url)
 
-    print(f"Successfully scraped {scraped} of {len(urls)}")
+    log.info(f"Successfully scraped {scraped} of {len(urls)}")
     print_failed_urls(failed_urls)
 
 
@@ -225,12 +226,15 @@ def scrape_file(
 def scrape_url(url: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
     """Scrape a specific memorial URL"""
     if not uri_validator(url):
-        log.error(f"Invalid URL: [{url}]")
+        log.error(f"Invalid or non-memorial URL: [{url}]")
         raise typer.Exit(1)
     Memorial.create_table(db)
-    m = Memorial.parse(url).save()
-    print(m.to_json())
-    return m
+    try:
+        m: Memorial = parse_and_save_memorial(url)
+    except MemorialParseException as ex:
+        log.error(ex)
+        raise SystemExit()
+    log.info(m.to_json())
 
 
 def gpsfilter_callback(value: str):
@@ -322,18 +326,20 @@ def search(
     famous: bool = typer.Option(
         None,
         "--famous",
+        is_flag=False,
         help="Limit search to people designated as Famous by FindAGrave (note: this is "
         "mutually exclusive with --sponsored)",
     ),
     sponsored: bool = typer.Option(
         None,
         "--sponsored",
+        is_flag=False,
         help="Limit search to memorials that have been sponsored on FindAGrave (note: "
         "this is mutually exclusive with --famous)",
     ),
-    cenotaph: bool = typer.Option(None, "--cenotaph"),
-    monument: bool = typer.Option(None, "--monument"),
-    veteran: bool = typer.Option(None, "--isVeteran"),
+    cenotaph: bool = typer.Option(None, "--cenotaph", is_flag=False),
+    monument: bool = typer.Option(None, "--monument", is_flag=False),
+    veteran: bool = typer.Option(None, "--isVeteran", is_flag=False),
     include_nickname: bool = typer.Option(None, "--includeNickName"),
     include_maiden_name: bool = typer.Option(None, "--includeMaidenName"),
     include_titles: bool = typer.Option(None, "--includeTitles"),
@@ -341,8 +347,8 @@ def search(
     fuzzy_names: bool = typer.Option(None, "--fuzzyNames"),
     photo_filter: str = typer.Option(None, "--photofilter"),
     gps_filter: str = typer.Option(None, "--gpsfilter", callback=gpsfilter_callback),
-    flowers: bool = typer.Option(None, "--flowers"),
-    has_plot: bool = typer.Option(None, "--hasPlot"),
+    flowers: bool = typer.Option(None, "--flowers", is_flag=False),
+    has_plot: bool = typer.Option(None, "--hasPlot", is_flag=False),
     page: int = typer.Option(None, "--page"),
     max_results: int = typer.Option(
         0,
@@ -397,7 +403,7 @@ def search(
 
     if memorial_id is not None:
         m = Memorial.parse(f"{FINDAGRAVE_BASE_URL}/memorial/{memorial_id}")
-        print(m.to_json())
+        log.info(m.to_json())
     else:
         cem = None
         if cemetery_id is not None:
@@ -406,11 +412,14 @@ def search(
         results = Memorial.search(cem, **search_terms)
         log.debug(f"Num results = {len(results)}")
         if len(results) > 0:
-            print("[")
             for idx, m in enumerate(results):
-                print(m.to_json())
-            print("]")
+                if idx == 0:
+                    log.info("[" + m.to_json() + ",")
+                elif idx == len(results) - 1:
+                    log.info(m.to_json() + "]")
+                else:
+                    log.info(m.to_json() + ",")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     typer.run(app)

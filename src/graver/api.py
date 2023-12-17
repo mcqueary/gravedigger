@@ -13,7 +13,7 @@ from urllib.parse import parse_qsl, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup, Tag
-from requests import Response
+from requests import RequestException, Response
 
 from .constants import FINDAGRAVE_BASE_URL, FINDAGRAVE_ROWS_PER_PAGE
 
@@ -25,7 +25,13 @@ log = logging.getLogger(__name__)
 
 
 class MemorialException(Exception):
-    pass
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class MemorialParseException(MemorialException):
+    def __init__(self, message):
+        super().__init__(message)
 
 
 class MemorialMergedException(MemorialException):
@@ -61,21 +67,24 @@ class Driver(object):
 
     def get(self, findagrave_url: str, **kwargs) -> Response:
         retries = 0
-        response = self.session.get(findagrave_url, **kwargs)
-        while (
-            response.status_code in Driver.recoverable_errors.keys()
-            and retries < self.max_retries
-        ):
-            retries += 1
-            log.warning(
-                f"Driver: [{response.status_code}: {response.reason}] {findagrave_url} "
-                f"-- Retrying ({retries} of {self.max_retries}, "
-                f"timeout={self.retry_ms}ms)"
-            )
-            sleep(self.retry_ms / 1000)
+        try:
             response = self.session.get(findagrave_url, **kwargs)
-        self.num_retries += retries
-        return response
+            while (
+                response.status_code in Driver.recoverable_errors.keys()
+                and retries < self.max_retries
+            ):
+                retries += 1
+                log.warning(
+                    f"Driver: [{response.status_code}: {response.reason}] "
+                    f"{findagrave_url} -- Retrying ({retries} of {self.max_retries}, "
+                    f"timeout={self.retry_ms}ms)"
+                )
+                sleep(self.retry_ms / 1000)
+                response = self.session.get(findagrave_url, **kwargs)
+            self.num_retries += retries
+            return response
+        except requests.exceptions.RequestException as e:
+            raise e
 
 
 @dataclass
@@ -332,17 +341,18 @@ class Memorial:
         return _MemorialParser(findagrave_url, **kwargs).parse()
 
     @classmethod
-    def get_by_id(cls, grave_id: int):
-        con = sqlite3.connect(os.getenv("DATABASE_NAME", "graves.db"))
+    def get_by_id(cls, memorial_id: int):
+        dbname = os.getenv("DATABASE_NAME", "graves.db")
+        con = sqlite3.connect(dbname)
         con.row_factory = sqlite3.Row
 
         cur = con.cursor()
-        cur.execute("SELECT * FROM graves WHERE memorial_id=?", (grave_id,))
+        cur.execute("SELECT * FROM graves WHERE memorial_id=?", (memorial_id,))
 
         record = cur.fetchone()
 
         if record is None:
-            raise NotFound
+            raise NotFound(f"memorial_id={memorial_id} not present in {dbname}")
 
         memorial = Memorial(**record)  # Row can be unpacked as dict
 
@@ -381,29 +391,35 @@ class _MemorialParser:
         self.soup = None
         self.m: dict = {}
 
-        if self.get:
-            response = self.driver.get(self.findagrave_url)
-            self.soup = BeautifulSoup(response.content, "html.parser")
+        # Valid URL but not a Memorial
+        # if "/memorial/" not in self.findagrave_url:
+        #     raise MemorialException(f"Invalid memorial URL: {self.findagrave_url}")
 
-            if response.ok:
-                self.scrape_canonical_url()
-                # Valid URL but not a Memorial
-                if "/memorial/" not in self.findagrave_url:
-                    raise MemorialException(
-                        f"Invalid memorial URL: {self.findagrave_url}"
-                    )
-            else:
-                if response.status_code == 404:
-                    if self.check_removed():
-                        msg = f"{self.findagrave_url} has been removed"
-                        raise MemorialRemovedException(msg)
-                    elif (new_url := self.check_merged()) is not None:
-                        msg = f"{self.findagrave_url} has been merged into {new_url}"
-                        raise MemorialMergedException(msg, self.findagrave_url, new_url)
+        if self.get:
+            try:
+                response = self.driver.get(self.findagrave_url)
+                self.soup = BeautifulSoup(response.content, "html.parser")
+
+                if response.ok:
+                    self.scrape_canonical_url()
+                else:
+                    if response.status_code == 404:
+                        if self.check_removed():
+                            msg = f"{self.findagrave_url} has been removed"
+                            raise MemorialRemovedException(msg)
+                        elif (new_url := self.check_merged()) is not None:
+                            msg = (
+                                f"{self.findagrave_url} has been merged into {new_url}"
+                            )
+                            raise MemorialMergedException(
+                                msg, self.findagrave_url, new_url
+                            )
+                        else:
+                            response.raise_for_status()
                     else:
                         response.raise_for_status()
-                else:
-                    response.raise_for_status()
+            except RequestException as ex:
+                raise MemorialParseException(ex) from ex
 
         if self.scrape:
             self.scrape_page()

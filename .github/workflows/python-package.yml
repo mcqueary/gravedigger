@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest,macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -45,7 +45,7 @@ jobs:
         poetry run flake8 src/graver tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest and report coverage
       run: |
-        poetry run pytest --cov=graver
+        poetry run pytest --cov=graver --cov-report term-missing
     - name: Publish to coveralls.io
       uses: coverallsapp/github-action@v2.2.3
       with:

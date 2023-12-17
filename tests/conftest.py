@@ -61,6 +61,7 @@ class Helpers:
         env["TQDM_DISABLE"] = "1"
         result = runner.invoke(app, command_list, env=env)
         output = result.stdout.rstrip()
+        # err_output = result.stderr.rstrip()
         return output
 
 

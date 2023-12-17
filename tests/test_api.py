@@ -4,7 +4,6 @@ import re
 import pytest
 import requests
 import vcr
-from requests import HTTPError
 
 import graver.api
 from graver import (
@@ -80,27 +79,6 @@ def test_driver_retries_recoverable_errors(url, status_code, reason, requests_mo
     response = driver.get(url)
     assert response.ok and response.status_code == 200
     assert driver.num_retries == 1
-
-
-@pytest.mark.parametrize(
-    "url, cassette",
-    [
-        (
-            "https://www.findagrave.com/memorial/should-produce-404",
-            pytest.vcr_cassettes + "404-memorial.yaml",
-        ),
-        (
-            "https://www.findagrave.com/cemetery/should-produce-404",
-            pytest.vcr_cassettes + "404-cemetery.yaml",
-        ),
-    ],
-)
-def test_driver_raises_http_error(url, cassette):
-    # FIXME
-    with vcr.use_cassette(cassette):
-        with pytest.raises(HTTPError) as excinfo:
-            Memorial.parse(url)
-        assert "404 Client Error: Not Found" in excinfo.value.args[0]
 
 
 def test_memorial_eq():

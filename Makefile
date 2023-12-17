@@ -29,17 +29,17 @@ lint: ## run flake8 to check the code
 	poetry run flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
 install:
-	poetry install
+	poetry install --with dev,test
 
 fmt: ## run black to format the code
 	poetry run isort $(PACKAGES) tests
 	poetry run black -q --line-length 88 $(PACKAGES) tests
 
 $(VENV)/init: ## init the virtual environment
-	python3 -m venv $(VENV)
+	python3.12 -m venv $(VENV)
 	touch $@
-	$(VENV)/bin/activate && pip install -U pip
-	$(VENV)/bin/activate && pip install poetry
+	. $(VENV)/bin/activate && pip install -U pip
+	. $(VENV)/bin/activate && pip install poetry
 
 $(VENV)/requirements: requirements.txt $(VENV)/init ## install requirements
 	$(PIP) install -r $<
@@ -53,4 +53,4 @@ clean: ## clean up test outputs and other temporary files
 	rm -f *.db
 
 testclean:
-	rm -f tests/fixtures/vcr_cassettes/
+	rm -f tests/fixtures/vcr_cassettes/*

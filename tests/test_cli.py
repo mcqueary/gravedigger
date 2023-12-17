@@ -333,7 +333,7 @@ def test_cli_scrape_file_handles_http_error(url, cassette, helpers, tmp_path, ca
     url_file = d / "single_url.txt"
     url_file.write_text(f"{url}\n")
 
-    command = f"scrape-file {url_file}"
+    command = f"scrape-file '{url_file}'"
     assert helpers.graver_cli(command) == ""
     assert f"404 Client Error: Not Found for url: {url}" in caplog.text
 

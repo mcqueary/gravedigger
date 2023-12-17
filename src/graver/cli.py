@@ -53,7 +53,7 @@ logging.basicConfig(
             mode="a",
             maxBytes=5 * 1024 * 1024,
             backupCount=2,
-            encoding=None,
+            encoding="utf8",
         ),
         console,
     ],

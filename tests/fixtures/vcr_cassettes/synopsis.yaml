@@ -73,7 +73,7 @@ interactions:
         z80ONvYPfbCYvcXRtAguHy0UXuUTVARRZc14fhKYD/9z/2S3cG8R3rPrira5svpfWcKSb8oqAAA=
     headers:
       Age:
-      - '12185'
+      - '2403'
       Cache-Control:
       - public, max-age=21603
       Connection:
@@ -93,9 +93,9 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sat, 16 Dec 2023 22:55:48 GMT
+      - Sun, 17 Dec 2023 21:51:32 GMT
       Expires:
-      - Sun, 17 Dec 2023 00:55:48 GMT
+      - Sun, 17 Dec 2023 23:11:29 GMT
       Keep-Alive:
       - timeout=2, max=358
       Last-Modified:
@@ -107,6 +107,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
+      - nosniff
       - nosniff
       - nosniff
       X-Frame-Options:

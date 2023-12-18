@@ -39,6 +39,7 @@ $(VENV)/init: ## init the virtual environment
 	python3.12 -m venv $(VENV)
 	touch $@
 	. $(VENV)/bin/activate && pip install -U pip
+	. $(VENV)/bin/activate && pip install -r requirements.txt
 	. $(VENV)/bin/activate && pip install poetry
 
 $(VENV)/requirements: requirements.txt $(VENV)/init ## install requirements

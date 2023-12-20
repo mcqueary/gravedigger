@@ -26,8 +26,8 @@ def database():
         yield tf
 
 
-def pytest_configure():
-    pytest.CASSETTES = f"tests/fixtures/vcr_cassettes/"
+# def pytest_configure():
+#     pytest.CASSETTES = f"tests/fixtures/vcr_cassettes/"
 
 
 class Helpers:

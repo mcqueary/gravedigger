@@ -61,7 +61,7 @@ class TestCliScrapeFile(TestCli):
         db = os.getenv("DATABASE_NAME")
         command = f"scrape-file '{url_file}' --db '{db}'"
         assert helpers.graver_cli(command) == ""
-        assert f"Successfully scraped 1 of 1" in caplog.text
+        assert "Successfully scraped 1 of 1" in caplog.text
         mem_id = person["memorial_id"]
         m = Memorial.get_by_id(mem_id)
         assert m is not None

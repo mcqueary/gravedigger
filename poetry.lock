@@ -513,6 +513,20 @@ test = ["pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
+name = "deadcode"
+version = "2.2.2"
+description = "Find and remove dead code."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "deadcode-2.2.2-py3-none-any.whl", hash = "sha256:d8280cf44e224e47e061f9b9963b902c009dc1ba1e43a42623a43ab88e1afa36"},
+    {file = "deadcode-2.2.2.tar.gz", hash = "sha256:b63e207999667e731212e04f6d48888a2e3f7256e5ee808ba9082af20d99dca0"},
+]
+
+[package.dependencies]
+tomli = "2.0.1"
+
+[[package]]
 name = "decli"
 version = "0.6.1"
 description = "Minimal, easy-to-use, declarative cli tool"
@@ -2336,4 +2350,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0"
-content-hash = "c79c21706e2e30d4bba1224c03b637019d1f0012dfe319e7d94387e8146c2d15"
+content-hash = "86cc76ae1d33dd65738b34fcd7c0246ae5262262ed675a9fdb8f1f6c483d110d"

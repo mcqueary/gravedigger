@@ -65,10 +65,10 @@ class Driver(object):
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "Mozilla/5.0"})
 
-    def get(self, findagrave_url: str, **kwargs) -> Response:
+    def get(self, url: str, **kwargs) -> Response:
         retries = 0
         try:
-            response = self.session.get(findagrave_url, **kwargs)
+            response = self.session.get(url, **kwargs)
             while (
                 response.status_code in Driver.recoverable_errors.keys()
                 and retries < self.max_retries
@@ -76,11 +76,11 @@ class Driver(object):
                 retries += 1
                 log.warning(
                     f"Driver: [{response.status_code}: {response.reason}] "
-                    f"{findagrave_url} -- Retrying ({retries} of {self.max_retries}, "
+                    f"{url} -- Retrying ({retries} of {self.max_retries}, "
                     f"timeout={self.retry_ms}ms)"
                 )
                 sleep(self.retry_ms / 1000)
-                response = self.session.get(findagrave_url, **kwargs)
+                response = self.session.get(url, **kwargs)
             self.num_retries += retries
             return response
         except requests.exceptions.RequestException as e:

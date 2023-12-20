@@ -1,6 +1,6 @@
-"""Top-level package for graver."""
-
-__version__ = "0.1.0"
+"""
+Python library for scraping and storing information from FindAGrave.com
+"""
 
 # from .api import MemorialException  # noqa
 # noinspection PyUnresolvedReferences
@@ -25,3 +25,10 @@ __all__ = (
     "MemorialParseException",
     "MemorialRemovedException",
 )
+
+import logging
+from logging import NullHandler
+
+logging.getLogger(__name__).addHandler(NullHandler())
+
+del NullHandler

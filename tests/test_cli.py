@@ -2,6 +2,7 @@ import importlib.metadata
 import logging
 import os
 import random
+from typing import Dict
 
 import pytest
 from click.testing import Result
@@ -18,8 +19,8 @@ log.setLevel(logging.DEBUG)
 
 @pytest.mark.usefixtures("api_mock", "faker")
 class TestCli(Test):
-    memorials_by_url: dict[str, Memorial] = {}
-    memorials_by_id: dict[int, Memorial] = {}
+    memorials_by_url: Dict[str, Memorial] = {}
+    memorials_by_id: Dict[int, Memorial] = {}
 
     @staticmethod
     def cache(memorial: Memorial):

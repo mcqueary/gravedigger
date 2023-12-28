@@ -1,3 +1,4 @@
+.install.stamp
 __pycache__/
 .*.swp
 .DS_Store

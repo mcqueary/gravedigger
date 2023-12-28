@@ -1,40 +1,52 @@
-import json
 import os
-import pathlib
 import shlex
 import tempfile
+from datetime import datetime
 
 import pytest
+from betamax import Betamax
+from click.testing import Result
+from faker import Faker
 from typer.testing import CliRunner
 
-# from cli import app
-from definitions import PROJECT_ROOT
-from graver import Cemetery, Memorial
+from graver import Cemetery, Driver, Memorial
 from graver.cli import app
+from tests.memorial_provider import MemorialProvider, ResultSetProvider
 
-# from graver import app
 
 pytest_plugins = ["helpers_namespace"]
+
+
+def pytest_configure():
+    pass
+
+
+@pytest.fixture(autouse=True)
+def customize_faker(faker: Faker):
+    faker.add_provider(MemorialProvider)
+    faker.add_provider(ResultSetProvider)
+
+
+# configure Betamax
+with Betamax.configure() as config:
+    path = os.path.dirname(os.path.abspath(__file__))
+    config.cassette_library_dir = os.path.join(path, "fixtures/cassettes")
+    # config.default_cassette_options["record_mode"] = "none"
 
 runner = CliRunner()
 
 
-def to_uri(path: str):
-    return pathlib.Path(PROJECT_ROOT + path).as_uri()
+@pytest.fixture(scope="function")
+def driver(betamax_parametrized_session):
+    d = Driver(session=betamax_parametrized_session)
+    yield d
 
 
-@pytest.helpers.register
-def load_memorial_from_json(filename: str):
-    json_path = f"{PROJECT_ROOT}/tests/fixtures/memorials/{filename}.json"
-    with open(json_path) as f:
-        return json.load(f)
-
-
-@pytest.helpers.register
-def load_cemetery_from_json(filename: str):
-    json_path = f"{PROJECT_ROOT}/tests/fixtures/cemeteries/{filename}.json"
-    with open(json_path) as f:
-        return json.load(f)
+# configure Faker
+@pytest.fixture(scope="session", autouse=True)
+def faker_seed() -> int:
+    seed: int = int(datetime.now().timestamp())
+    return seed
 
 
 @pytest.fixture
@@ -45,24 +57,16 @@ def database():
         Memorial.create_table(database_name=tf.name)
         Cemetery.create_table(database_name=tf.name)
         yield tf
-        # tf.close()
-        # os.unlink(tf.name)
-
-
-def pytest_configure():
-    pytest.vcr_cassettes = f"{PROJECT_ROOT}/tests/fixtures/vcr_cassettes/"
 
 
 class Helpers:
     @staticmethod
-    def graver_cli(command_string):
+    def graver_cli(command_string) -> Result:
         command_list = shlex.split(command_string)
         env = os.environ.copy()
         env["TQDM_DISABLE"] = "1"
-        result = runner.invoke(app, command_list, env=env)
-        output = result.stdout.rstrip()
-        # err_output = result.stderr.rstrip()
-        return output
+        result = runner.invoke(app, command_list, env=env, obj=driver)
+        return result
 
 
 @pytest.fixture

@@ -1,0 +1,6 @@
+[installer]
+max-workers = 10
+
+[virtualenvs]
+create = true
+in-project = true

@@ -17,9 +17,6 @@ from requests import RequestException, Response
 
 from .constants import FINDAGRAVE_BASE_URL, FINDAGRAVE_ROWS_PER_PAGE
 
-# import graver
-
-# from graver import constants
 
 log = logging.getLogger(__name__)
 
@@ -49,7 +46,7 @@ class NotFound(MemorialException):
     pass
 
 
-class Driver(object):
+class Driver:
     recoverable_errors: Dict[int, str] = {
         500: "Internal Server Error",
         502: "Bad Gateway",
@@ -62,7 +59,7 @@ class Driver(object):
         self.num_retries = 0
         self.max_retries: int = int(kwargs.get("max_retries", 3))
         self.retry_ms: int = int(kwargs.get("retry_ms", 500))
-        self.session = requests.Session()
+        self.session = kwargs.get("session", requests.Session())
         self.session.headers.update({"User-Agent": "Mozilla/5.0"})
 
     def get(self, url: str, **kwargs) -> Response:
@@ -111,6 +108,11 @@ class Cemetery:
         self.get = kwargs.get("get", True)
         self.scrape = kwargs.get("scrape", True)
         self.params: dict = {}
+        self.search_url = (
+            f"{FINDAGRAVE_BASE_URL}"
+            f"/cemetery/{self.cemetery_id}"
+            f"/memorial-search?"
+        )
 
         if self.get:
             response = self.driver.get(findagrave_url, params=self.params)

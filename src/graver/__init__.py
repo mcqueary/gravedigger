@@ -16,6 +16,7 @@ from graver.api import (
 
 from .constants import *  # noqa
 
+
 __all__ = (
     "Cemetery",
     "Driver",
@@ -28,6 +29,7 @@ __all__ = (
 
 import logging
 from logging import NullHandler
+
 
 logging.getLogger(__name__).addHandler(NullHandler())
 

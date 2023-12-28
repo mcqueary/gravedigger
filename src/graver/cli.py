@@ -23,7 +23,11 @@ from graver.constants import (
     MEMORIAL_CANONICAL_URL_FORMAT,
 )
 
+
 log = logging.getLogger(__name__)
+
+# Global Driver
+cli_driver = Driver()
 
 # Defaults
 DEFAULT_DB_FILE_NAME = "graves.db"
@@ -83,7 +87,7 @@ app = typer.Typer(
 
 
 @app.callback()
-def common(
+def graver(
     version: bool = typer.Option(
         None,
         "-V",
@@ -150,7 +154,7 @@ def format_url(line: str):
     return mid, line
 
 
-def uri_validator(uri):
+def url_validator(uri):
     result = urlparse(uri)
     is_memorial = ("/memorial/" in uri) or ("GRid=" in uri)
     return is_memorial and all(
@@ -165,7 +169,7 @@ def collect_and_validate_urls(input_filename) -> Tuple[List[str], List[str]]:
     with open(input_filename) as file:
         while line := file.readline().strip():
             memorial_id, line = format_url(line)
-            if not uri_validator(line):
+            if not url_validator(line):
                 log.warning(f"{line} is not a valid URL")
                 bad.append(line)
                 continue
@@ -177,22 +181,23 @@ def collect_and_validate_urls(input_filename) -> Tuple[List[str], List[str]]:
     return good, bad
 
 
-def parse_and_save_memorial(url, driver=None) -> Memorial:
-    driver = driver if driver is not None else Driver()
+def parse_and_save_memorial(url) -> Memorial:
     try:
-        m = Memorial.parse(url, driver=driver).save()
+        m = Memorial.parse(url).save()
     except MemorialMergedException as ex:
         log.warning(ex)
-        m = Memorial.parse(ex.new_url, driver=driver).save()
+        m = Memorial.parse(ex.new_url).save()
     return m
 
 
 @app.command()
 def scrape_file(
-    input_filename: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")
+    input_filename: str,
+    db: str = typer.Option(
+        DEFAULT_DB_FILE_NAME, "--db", help="Database name (results will be stored here)"
+    ),
 ):
     """Scrape URLs from a file"""
-
     log.debug(f"Input file: {input_filename}")
     log.debug(f"Database file: {db}")
 
@@ -213,11 +218,11 @@ def scrape_file(
     os.environ["DATABASE_NAME"] = db
     Memorial.create_table(db)
     # Pass in driver to ensure we reuse the same session
-    driver: Driver = Driver()
+    # driver: Driver = Driver()
     for url in (pbar := tqdm(urls, disable=bool(disable))):
         pbar.set_postfix_str(url)
         try:
-            parse_and_save_memorial(url, driver)
+            parse_and_save_memorial(url)
             scraped += 1
             pbar.set_postfix_str("")
         except MemorialParseException as ex:
@@ -229,9 +234,14 @@ def scrape_file(
 
 
 @app.command()
-def scrape_url(url: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
+def scrape_url(
+    url: str,
+    db: str = typer.Option(
+        DEFAULT_DB_FILE_NAME, "--db", help="Database name (results will be stored here)"
+    ),
+):
     """Scrape a specific memorial URL"""
-    if not uri_validator(url):
+    if not url_validator(url):
         log.error(f"Invalid or non-memorial URL: [{url}]")
         raise typer.Exit(1)
     Memorial.create_table(db)
@@ -239,7 +249,7 @@ def scrape_url(url: str, db: str = typer.Option(DEFAULT_DB_FILE_NAME, "--db")):
         m: Memorial = parse_and_save_memorial(url)
     except MemorialParseException as ex:
         log.error(ex)
-        raise SystemExit()
+        raise typer.Exit(1)
     log.info(m.to_json())
 
 
@@ -250,6 +260,13 @@ def gpsfilter_callback(value: str):
     return value
 
 
+def photofilter_callback(value: str):
+    if value is not None:
+        if value not in ["photos", "nophotos"]:
+            raise typer.BadParameter("Only 'photos' or 'nophotos' is allowed")
+    return value
+
+
 def year_filter_callback(value: str):
     if value is not None and value != "":
         if value not in ["before", "after", "exact"]:
@@ -257,6 +274,20 @@ def year_filter_callback(value: str):
                 raise typer.BadParameter(
                     "Only 'before', 'after', 'exact', or 0 < value < 999 is allowed"
                 )
+    return value
+
+
+def name_filter_callback(ctx: typer.Context, value: str):
+    # TODO: Use a context and require a name (any combo of first, middle, last)
+    #  in order to use these filters
+    if (
+        "firstname" not in ctx.params
+        and "middlename" not in ctx.params
+        and "lastname" not in ctx.params
+    ):
+        raise typer.BadParameter(
+            "A name must be specified in order to use name filters"
+        )
     return value
 
 
@@ -319,8 +350,9 @@ def search(
     orderby: str = typer.Option(
         "r",
         "--orderby",
-        help="Order results by: date created(n/n-), birth year(b/b-), "
-        "death year(d/d-), plot(pl)",
+        help="Order results by (ascending/descending): relevance(r/r-), name(n/n-), birth year(b/b-), "
+        "death year(d/d-), cemetery(c/c-), date created(dc), date modified(dm), "
+        "plot(pl)",
     ),
     plot: str = typer.Option("", "--plot"),
     no_cemetery: bool = typer.Option(
@@ -346,12 +378,22 @@ def search(
     cenotaph: bool = typer.Option(None, "--cenotaph", is_flag=False),
     monument: bool = typer.Option(None, "--monument", is_flag=False),
     veteran: bool = typer.Option(None, "--isVeteran", is_flag=False),
-    include_nickname: bool = typer.Option(None, "--includeNickName"),
-    include_maiden_name: bool = typer.Option(None, "--includeMaidenName"),
-    include_titles: bool = typer.Option(None, "--includeTitles"),
-    exact_name: bool = typer.Option(None, "--exactName"),
-    fuzzy_names: bool = typer.Option(None, "--fuzzyNames"),
-    photo_filter: str = typer.Option(None, "--photofilter"),
+    include_nickname: bool = typer.Option(
+        None, "--includeNickName", callback=name_filter_callback
+    ),
+    include_maiden_name: bool = typer.Option(
+        None, "--includeMaidenName", callback=name_filter_callback
+    ),
+    include_titles: bool = typer.Option(
+        None, "--includeTitles", callback=name_filter_callback
+    ),
+    exact_name: bool = typer.Option(None, "--exactName", callback=name_filter_callback),
+    fuzzy_names: bool = typer.Option(
+        None, "--fuzzyNames", callback=name_filter_callback
+    ),
+    photo_filter: str = typer.Option(
+        None, "--photofilter", callback=photofilter_callback
+    ),
     gps_filter: str = typer.Option(None, "--gpsfilter", callback=gpsfilter_callback),
     flowers: bool = typer.Option(None, "--flowers", is_flag=False),
     has_plot: bool = typer.Option(None, "--hasPlot", is_flag=False),

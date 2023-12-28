@@ -1,30 +1,34 @@
 import json
-import logging
 import os
+from datetime import datetime
 
 import pytest
-import requests
-import vcr
+
+from graver import Memorial
 
 
-def test_vcr():
-    with vcr.use_cassette(Test.get_cassette("synopsis")):
-        response = requests.get("http://www.iana.org/domains/reserved")
-        assert b"Example domains" in response.content
+@pytest.mark.usefixtures("betamax_parametrized_session")
+def test_vcr(betamax_parametrized_session):
+    response = betamax_parametrized_session.get("http://www.iana.org/domains/reserved")
+    assert b"Example domains" in response.content
+
+
+def test_faker(faker):
+    name = faker.name()
+    assert isinstance(name, str)
+    address = faker.address()
+    assert isinstance(address, str)
+    dt = faker.date_time()
+    assert isinstance(dt, datetime)
+    prof = faker.profile()
+    assert isinstance(prof, dict)
+    url = faker.url(schemes=["https"])
+    assert isinstance(url, str)
 
 
 @pytest.mark.usefixtures("helpers")
 class Test:
     ROOT = os.path.dirname(os.path.abspath(__file__))
-    CASSETTES = f"{ROOT}/fixtures/vcr_cassettes/"
-
-    logging.basicConfig()
-    vcr_log = logging.getLogger("vcr")
-    vcr_log.setLevel(logging.WARN)
-
-    @staticmethod
-    def get_cassette(name: str):
-        return os.path.join(Test.CASSETTES, f"{name}.yaml")
 
     @staticmethod
     def load_memorial_from_json(filename: str):
@@ -37,3 +41,17 @@ class Test:
         json_path = f"{Test.ROOT}/fixtures/cemeteries/{filename}.json"
         with open(json_path) as f:
             return json.load(f)
+
+    @pytest.mark.usefixtures("faker")
+    def test_gen_memorial(self, faker):
+        num_memorials = 50
+        memorials = []
+        for _ in range(num_memorials):
+            m = faker.memorial(faker)
+            assert isinstance(m, Memorial)
+            memorials.append(m)
+        pass
+
+    @staticmethod
+    def fake_result_set(source: str, num: int, faker):
+        pass

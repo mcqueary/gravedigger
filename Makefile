@@ -1,70 +1,66 @@
-.PHONY: test run build help fmt install install-editable lint git-setup clean realclean all commitizen cov coveralls
-
-# same as `export PYTHONPATH="$PWD:$PYTHONPATH"`
-# see also https://stackoverflow.com/a/18137056
-mkfile_path := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-PYTHONPATH:=$(PYTHONPATH)
-PACKAGES:=src/graver
-
+NAME := graver
+INSTALL_STAMP := .install.stamp
+POETRY := $(shell command -v poetry 2> /dev/null)
 VENV?=.venv
-PIP=$(VENV)/bin/pip
-PY=$(VENV)/bin/python
-POETRY=$(VENV)/bin/poetry
-VCR_CASSETTES=$(mkfile_path)tests/fixtures/vcr_cassettes/
 
-all: ; $(info $$PYTHONPATH is [${PYTHONPATH}])
+SRC := src/$(NAME)
 
+.PHONY: test run build help fmt install install-editable lint git-setup clean realclean all commitizen
+.DEFAULT_GOAL := help
+
+.PHONY: help
 help: ## list targets with short description
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9._-]+:.*?## / {printf "\033[1m\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-cov: ## run pytest coverage report
-	$(POETRY) run pytest --cov=graver --cov-report term-missing
+.PHONY: install
+install: $(INSTALL_STAMP) ## install project using `which poetry` from pyproject.toml
+$(INSTALL_STAMP): pyproject.toml poetry.lock
+	@if [ -z $(POETRY) ]; then echo "Poetry could not be found. See https://python-poetry.org/docs/"; exit 2; fi
+	$(POETRY) --version
+	poetry install --with dev,test --no-ansi --no-interaction --verbose
+	touch $(INSTALL_STAMP)
 
-coveralls: ## report coverage data to coveralls.io
-	$(POETRY) run coveralls
+.PHONY: lint
+lint: $(INSTALL_STAMP) ## run flake8 to check the code
+	$(POETRY) run isort --profile=black --lines-after-imports=2 --check-only tests $(SRC)
+	$(POETRY) run black --check tests $(SRC) --diff
+	$(POETRY) run flake8 tests $(SRC) --count --select=E9,F63,F7,F82 --show-source --statistics
+	$(POETRY) run flake8 tests $(SRC) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	$(POETRY) run mypy tests $(SRC) --ignore-missing-imports
 
-test: ## run pytest
-	$(POETRY) run pytest -rA -vvs --log-level INFO
+.PHONY: fmt
+fmt: $(INSTALL_STAMP) ## run black to format the code
+	$(POETRY) run isort --profile=black --lines-after-imports=2 tests $(SRC)
+	$(POETRY) run black --line-length 88 $(SRC) tests
 
-lint: ## run flake8 to check the code
-	$(POETRY) run flake8 $(PACKAGES) tests --count --select=E9,F63,F7,F82 --show-source --statistics
-	$(POETRY) run flake8 $(PACKAGES) tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-	$(POETRY) run deadcode $(PACKAGES)
+.PHONY: test
+test: $(INSTALL_STAMP) tests ## run pytest
+	$(POETRY) run pytest tests --cov-report term-missing --cov-fail-under 100 --cov $(NAME) --durations=10 $(ARGS)
 
-install: ## install project using `which poetry` from pyproject.toml
-	poetry install --with dev,test
+.PHONY: test-verbose
+test-verbose: tests ## run pytest
+	$(POETRY) run pytest -rA -vvs --log-level INFO $(ARGS)
 
-fmt: ## run black to format the code
-	$(POETRY) run isort $(PACKAGES) tests
-	$(POETRY) run black -q --line-length 88 $(PACKAGES) tests
-
-$(VENV)/init: ## init the virtual environment via standard pip
-	python3.12 -m venv $(VENV)
-	touch $@
-	. $(VENV)/bin/activate && pip install -U pip
-	. $(VENV)/bin/activate && pip install -r requirements.txt
-
-$(VENV)/requirements: requirements.txt $(VENV)/init ## install requirements
-	$(PIP) install -r $<
-	touch $@
-
+.PHONY: build
 build: ## export requirements.txt (for standard pip install) and build dist
 	$(POETRY) export -f requirements.txt --output requirements.txt
 	$(POETRY) build
 
-commitizen:
-	@cz check --commit-msg-file .git/COMMIT_EDITMSG
+.PHONY: clean
+clean: ## Delete cache and other temporary files
+	find . -type d -name "__pycache__" | xargs rm -rf {};
+	rm -rf .install.stamp .coverage .mypy_cache $(VERSION_FILE)
 
-clean: ## clean up test outputs and other temporary files
-	rm -f *.csv
-	rm -f *.db
-	rm -f tests/*.log
-	rm -f tests/*.db
-	rm -f *.log*
-
+.PHONY: realclean
 realclean: clean ## clean up everything produced by the install and build
 	rm -rf dist/
 	rm -rf $(VENV)
+	rm -f *.csv *.db *.log* tests/*.log* tests/*.db
 
-vcrclean:
-	rm -f $(VCR_CASSETTES)/*
+.PHONY: vcrclean
+vcrclean: ## clean up VCR.py cassettes
+	rm -f tests/fixtures/vcr_cassettes/* tests/fixtures/cassettes/*
+
+.PHONY: commitizen
+commitizen:
+	@cz check --commit-msg-file .git/COMMIT_EDITMSG
